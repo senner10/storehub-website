@@ -1,1 +1,91 @@
 /****** PLACE YOUR CUSTOM STYLES HERE ******/
+
+.main .col-xs-12.ng-enter {
+    transform: translateX(-500px);
+    opacity: 0;
+
+    -webkit-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -moz-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -ms-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -o-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+}
+
+.main .col-xs-12 {
+    margin-top: 55px;
+}
+
+.main .col-xs-12.ng-enter-active {
+    transform: translateX(0px);
+    opacity: 1;
+}
+
+pre {
+    padding: 16px;
+}
+
+.main .col-xs-12.ng-leave {
+    transform: translateX(0);
+    opacity: 1;
+
+    -webkit-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -moz-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -ms-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    -o-transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+    transition: all 0.35s cubic-bezier(1, .01, 0, .99);
+}
+
+.main .col-xs-12.ng-leave-active {
+    transform: translateX(500px);
+    opacity: 0;
+}
+
+.abutton.col-xs-2 {
+    margin-right: 6px;
+    padding: 6px;
+}
+
+.abutton {}
+
+.field-help {
+    position: relative;
+    top: -24px;
+    font-size: 12px;
+}
+
+.list-group-item h4, .list-group-item button {
+    margin-bottom: 10px;
+}
+
+.sticky-panel {
+    position: fixed;
+    right: 15px;
+    height: calc(100% - 160px);
+    border-bottom: 1px solid #666;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.swal-button {
+    background: none !important;
+    color: #333347 !important;
+}
+
+div.scrollmenu {
+    position: absolute;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    max-height: 500px;
+    margin: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
+}
+
+div.scrollmenu>div.block {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    width: 165px;
+    height: 115px;
+}

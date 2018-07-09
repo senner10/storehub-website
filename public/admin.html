@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin panel ::: StoreHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/theme-gunmetal.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/jQuery.menuUI.css" media="all">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/taggd.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+    <script src="/js/sweet-alert.js"></script>
+    <script type="text/javascript" src="/js/admin/app.js"></script>
+    <script type="text/javascript" src="/js/admin/layerController.js"></script>
+    <script type="text/javascript" src="/js/admin/router.js"></script>
+    <script type="text/javascript" src="/js/admin/itemControllers.js"></script>
+    <script type="text/javascript" src="/js/admin/locations.js"></script>
+    <script type="text/javascript" src="/js/admin/products.js"></script>
+    <script type="text/javascript" src="/js/admin/websites.js"></script>
+    <script type="text/javascript" src="/js/admin/events.js"></script>
+    <script type="text/javascript" src="/js/admin/images.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLgmwUaIeLVE6XBhaTo6LVBXZFG3CtLcE&libraries=geometry,places"></script>
+    <script type="text/javascript" src="/js/admin/settings.js"></script>
+</head>
+
+<body ng-app="app">
+    <style type="text/css">
+    .navbar.navbar-default.navbar-fixed-top {
+        display: none;
+    }
+
+    .list-group-item.col-sm-3 {
+        margin: 13px;
+        width: 30%;
+    }
+
+    .full-checkbox {
+        float: left;
+        height: 65px;
+        position: relative;
+        left: -5px;
+    }
+
+    .list-group-item {
+        line-height: 1px;
+        padding-bottom: 20px;
+    }
+
+    .dropdown-menu.forAnimate {
+        font-size: 13px;
+        color: #333;
+    }
+
+    #menuUI .navbar-header {
+        display: none;
+    }
+
+    input {
+        background: #ededed !important;
+    }
+    </style>
+    <div ng-controller="layerController">
+        <div class="nav-container">
+            <nav>
+                <div class="nav-bar">
+                    <div class="module left">
+                        <a href="index.html">
+                            <div class="vnu"><img class="logo logo-light" alt="Foundry" src="img/logo-light.png"></div>
+                            <div class="vnu"><img class="logo logo-dark" alt="Foundry" src="img/logo-dark.png"></div>
+                        </a>
+                    </div>
+                    <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+                        <i class="ti-menu"></i>
+                    </div>
+                    <div class="module-group right">
+                        <div class="module left">
+                            <ul class="menu">
+                                <li class="vpf">
+                                    Welcome back {{ name }}
+                                </li>
+                                <li class="vpf">
+                                    <input type="text" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
+                                </li>
+                                <li class="vpf">
+                                    <a href="#">Alerts <span style="    line-height: 11px;
+    font-size: 11px;
+    padding-bottom: 6px;
+    background: red;" class="badge">4</span> </a>
+                                </li>
+                                <li class="vpf">
+                                    <a  href="javascript:logout()" class="inner-link" target="_self">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Modal -->
+            <div class="modal modal-xl fade" id="file-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">File upload</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="file" required multiple onchange="handleFiles(this.files)">
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-disabled="working" type="button" class="btn btn-default pull-left" style="margin-bottom: 1px;" ng-click="upload()">Upload</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav id="menuUI"></nav>
+        <div class="main container-fluid">
+            <div class="col-xs-12" ng-if="ready" ng-view>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/taggd.js"></script>
+
+    <script src="/js/maplace.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/smooth-scroll.min.js"></script>
+    <script src="js/parallax.js"></script>
+    <script src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/jQuery.menuUI.min.js"></script>
+    <script type="text/javascript" src="js/admin/navigation.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<div ng-if="item" class="col-sm-8">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#/list/images">Images</a></li>
+        <li class="active"> {{ item.name }}</li>
+    </ol>
+    <div class="row">
+        <button class="abutton col-xs-2" ng-click="back()">Back</button>
+        <button class="abutton col-xs-2" ng-click="update('images', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" ng-click="delete('images', item._id)">Delete</button>
+    </div>
+    <hr>
+    <input type="text" placeholder="Name" ng-model="item.name">
+    <span class="field-help">Displayed image name</span>
+    <br>
+    <label>Image</label>
+    <br />
+    <button  class="abutton btn" ng-click="item.meta.image = false;uploadFile(addImage)">Upload image</button>
+    <div style="padding-top: 1.0em;" ng-if="item.meta.image" class="text-center">
+        <div class="scrollmenu " style="text-align:left;overflow-y: auto;">
+            <p>Click on the image below to tag an item to it.</p>
+            <img class="tag-image" id="tag-image" src="/file/{{ item.meta.image }}" style="max-width:  initial;" width="500">
+            <div style="display:none">
+                <div id="imageForm">
+                    <button class="btn" type="button" onclick="addProduct(this)">Select item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="item && !showitems && item.meta.index.length >  0" class="col-sm-4 sticky-panel">
+    <label>Items in image</label>
+    <div class="list-group">
+        <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">
+            <h6>{{ item.meta.items[product].name }}</h6>
+            <button class=" btn btn-sm abutton" ng-click="pulse(product)">Show</button>
+            <button class=" btn btn-sm abutton" ng-click="removeProduct(product)">REMOVE</button>
+            
+        </div>
+    </div>
+</div>
+<div ng-if="item && showitems"  class="col-sm-4 sticky-panel">
+    <button class="btn btn-sm btn-block" ng-click="hideitems()">CANCEL</button>
+    <input type="text" ng-model="filterName" placeholder="Filter products by name">
+    <div class="text-center" ng-if="items.length == 0" >
+            <h6>You currently have no products listed.</h6>
+            <hr>
+            <a href="#/new/products" class="btn">New</a>
+    </div>
+    <div class="list-group">
+        <div  class="list-group-item" ng-if="( !filterName || product.name.contains(filterName) ) && !item.meta.items[product._id]" ng-repeat="product in items">
+            <button ng-click="selectProduct(product)" class="pull-right btn">SELECT</button>
+            <h6>{{ product.name }}</h6>
+        </div>
+    </div>
+</div>
