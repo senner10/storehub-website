@@ -45,5 +45,5 @@ app.use('/api/res',
 
 
 app.listen(parseInt(port),
-    () => console.log('listening on port 3000!')
+    () => console.log(`listening on port ${port}!`)
 )

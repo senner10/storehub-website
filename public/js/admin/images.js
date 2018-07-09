@@ -17,10 +17,14 @@ app.controller('images', [
             });
 
         $scope.addImage = (data) => {
-            $scope.item.meta.image = data._id;
-            $scope.update('images', $scope.item._id, $scope.item);
-            $scope.prepareImage();
-            $scope.$apply();
+            $scope.item.meta.image = false;
+
+            pasync(() => {
+                $scope.item.meta.image = data._id;
+                $scope.update('images', $scope.item._id, $scope.item);
+                $scope.prepareImage();
+                $scope.$apply();
+            });
         }
 
         $scope.hideitems = () => {
@@ -117,12 +121,12 @@ app.controller('images', [
                     tagForm: $("#imageForm")
                 });
 
-                if($scope.item.meta && $scope.item.meta.index)
-                for (var i = $scope.item.meta.index.length - 1; i >= 0; i--) {
-                    var id = $scope.item.meta.index[i];
-                    var position = $scope.item.meta.items[id].position;
-                   $(".image-tag-wrapper.enabled").append(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">Product </div>`);
-                }
+                if ($scope.item.meta && $scope.item.meta.index)
+                    for (var i = $scope.item.meta.index.length - 1; i >= 0; i--) {
+                        var id = $scope.item.meta.index[i];
+                        var position = $scope.item.meta.items[id].position;
+                        $(".image-tag-wrapper.enabled").append(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">Product </div>`);
+                    }
 
             });
         }
