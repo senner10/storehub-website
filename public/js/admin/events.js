@@ -26,7 +26,7 @@ app.controller('events', [
 
         $scope.addImage = (data) => {
             $scope.item.images.push(data._id);
-            $scope.update('locations', $scope.item._id, $scope.item);
+            $scope.update('events', $scope.item._id, $scope.item);
             $scope.$apply();
         }
 
@@ -46,7 +46,7 @@ app.controller('events', [
                 if (response) {
                     var imageIndex = $scope.item.images.indexOf(file);
                     $scope.item.images.splice(imageIndex, 1)
-                    $scope.update('locations', $scope.item._id, $scope.item);
+                    $scope.update('events', $scope.item._id, $scope.item);
                     $scope.apply();
 
                 } else swal("Error", "Please try again.", "error");
