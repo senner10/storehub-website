@@ -56,6 +56,7 @@ app.controller('locations', [
                 if (data) {
                     $scope.item = data;
                     $scope.setupFence();
+                    var id = data._id;
                     pasync(() => {
                         var input = document.getElementById('location-address'),
                             autocomplete = new google.maps.places.Autocomplete(input);
@@ -64,9 +65,15 @@ app.controller('locations', [
                         autocomplete.addListener('place_changed', function() {
                             var place = autocomplete.getPlace();
                             $scope.item.address = place.formatted_address;
-                            $scope.item.location = place;
+                            $scope.item.location = JSON.parse(JSON.stringify(place));
+                            if($scope.item.meta && $scope.item.meta.geofence)
+                            delete $scope.item.meta.geofence;
                             $scope.$apply();
+                            $scope.update('locations', $scope.item._id, $scope.item);
                             $scope.setupFence();
+
+                            pasync(() => { window.location = `#/locations/${data._id}` });
+
                         })
                     })
                 } else {
@@ -107,7 +114,7 @@ app.controller('locations', [
 
                 if (!$scope.item.meta)
                     $scope.item.meta = { geofence: [] };
-                if ($scope.item.meta.geofence) $scop.item.meta.geofence = [];
+                if ($scope.item.meta.geofence) $scope.item.meta.geofence = [];
 
                 tempfence = [{
                         lat: $scope.item.location.geometry.location.lat + 0.003,
@@ -134,6 +141,7 @@ app.controller('locations', [
                         //editable: true
                     }
                 ];
+
             } else tempfence = $scope.item.meta.geofence;
 
 
