@@ -43,7 +43,8 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/templates/help.html'
         })
         .when('/themes', {
-            templateUrl : '/templates/themes.html'
+            templateUrl : '/templates/themes.html',
+            controller : 'themes'
         })
 
 

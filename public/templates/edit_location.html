@@ -34,6 +34,7 @@
         </p>
     </div>
     <button class="abutton btn col-md-12" ng-click="modal('perk-modal')">Manage store perks</button>
+    <label class="field-help">Specify the amenities offered by this location.</label>
 </div>
 <div ng-if="item" class="col-sm-6">
     <label>Images</label>
@@ -52,13 +53,13 @@
     </div>
     <br/>
     <label>Social profiles</label>
-    <input type="text" placeholder="Facebook page URL">
-    <input type="text" placeholder="Twitter profile URL">
-    <input type="text" placeholder="Pinterest URL">
+    <input type="text" ng-model="item.meta.facebook" placeholder="Facebook page URL">
+    <input type="text" ng-model="item.meta.twitter" placeholder="Twitter profile URL">
+    <input type="text" ng-model="item.meta.pinterest" placeholder="Pinterest URL">
     <label>Contact information</label>
-    <input type="text" placeholder="Phone number">
-    <input type="text" placeholder="Email address">
-    <button class="btn abutton" ng-click="modal('hour-modal')"> Manage hours</button>
+    <input type="text" ng-model="item.meta.phone" placeholder="Phone number">
+    <input type="text" ng-model="item.meta.email" placeholder="Email address">
+    <button class="btn abutton" ng-click="verifyHoursArray();modal('hour-modal')"> Manage hours</button>
 </div>
 <!-- modals -->
 <!-- Modal -->
@@ -120,7 +121,22 @@
                 <h4 class="modal-title" id="myModalLabel">Location hours</h4>
             </div>
             <div class="modal-body">
-               
+               <div class="list-group">
+                   <div ng-repeat="day in item.meta.hours" class="list-group-item">
+                     <h3 class="pull-left">{{ day.day }}</h3>
+                       <div class="row pull-right" style="max-width: 320px;">
+                           <div class="col-xs-6">
+                               <input type="text" ng-model="day.open_time" placeholder="Open time">
+                           </div>
+                            <div class="col-xs-6">
+                                <input type="text" ng-model="day.close_time" placeholder="Close time">
+                            </div>
+                       </div>
+                     
+
+                       <p style="clear:both;"> <input type="checkbox" ng-model="day.open" >Open</p>
+                   </div>
+               </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

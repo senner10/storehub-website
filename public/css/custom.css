@@ -15,6 +15,74 @@
     margin-top: 55px;
 }
 
+.cp-cont .btn {
+    min-width: 100px;
+}
+
+.button-bar {}
+
+.storehub button {
+    padding: 3px 10px;
+    height: 30px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    font-family: inherit !important;
+}
+
+.storehub button:focus {
+    border: 1px solid #333;
+}
+
+.storehub input {
+    background: #f5f5f5;
+    border: none;
+    width: initial !important;
+    height: 50px;
+    min-width: 400px;
+    padding-left: 20px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    border-radius: 0;
+}
+
+.storehub-panel {
+    overflow: hidden;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.storehub-panel .header,
+.storehub-panel .panel {
+    padding: 10px;
+    border-radius: 0;
+    margin: 0;
+    font-family: inherit !important;
+}
+
+
+
+.cp-cont input[data-cp-t] {
+    padding-left: 1px;
+    height: 30px;
+    margin: 0px;
+}
+
+.colorTarget .preview {
+    float: left;
+    margin-bottom: -10em;
+    position: relative;
+    width: 14px;
+    height: 50px;
+}
+
+.col-xs-12.ng-scope .tab-content>.active {
+    margin-top: 2em;
+}
+
+.cpBG {
+    margin-top: -3em;
+}
+
 .main .col-xs-12.ng-enter-active {
     transform: translateX(0px);
     opacity: 1;
@@ -23,7 +91,7 @@
 .alerList {
     position: fixed;
     right: 10px;
-    top:30px;
+    top: 30px;
     width: 280px;
     z-index: 100;
     max-height: 500px;
@@ -63,7 +131,7 @@ pre {
     text-align: center;
 }
 
-.row > .abutton {
+.row>.abutton {
     height: 30px;
     font-size: 11px;
     line-height: 15px;

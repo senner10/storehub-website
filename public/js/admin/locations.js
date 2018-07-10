@@ -66,8 +66,8 @@ app.controller('locations', [
                             var place = autocomplete.getPlace();
                             $scope.item.address = place.formatted_address;
                             $scope.item.location = JSON.parse(JSON.stringify(place));
-                            if($scope.item.meta && $scope.item.meta.geofence)
-                            delete $scope.item.meta.geofence;
+                            if ($scope.item.meta && $scope.item.meta.geofence)
+                                delete $scope.item.meta.geofence;
                             $scope.$apply();
                             $scope.update('locations', $scope.item._id, $scope.item);
                             $scope.setupFence();
@@ -103,6 +103,21 @@ app.controller('locations', [
                 }
 
             );
+        }
+
+        $scope.verifyHoursArray = () => {
+
+            if (!$scope.item.meta.hours) {
+                var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+               
+               $scope.item.meta.hours = [];
+               for (var i = 0; i < daysOfWeek.length; i++) {
+                    var day = daysOfWeek[i];
+                    var entry = {day : day,open : true };
+
+                    $scope.item.meta.hours.push(entry);
+                }
+            }
         }
 
         // setup geo fence

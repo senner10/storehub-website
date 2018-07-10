@@ -6,6 +6,7 @@ var image = require("./models/image")
 var location = require("./models/location")
 var product = require("./models/product")
 var website = require("./models/website")
+var alert = require("./models/alert")
 
 
 var db = mongoose.connect('mongodb://localhost/test');
@@ -15,7 +16,8 @@ var models = [
     image,
     location,
     product,
-    website
+    website,
+    alert
 ];
 
 
