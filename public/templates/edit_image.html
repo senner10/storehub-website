@@ -33,6 +33,29 @@
     <div class="list-group">
         <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">
             <h6>{{ item.meta.items[product].name }}</h6>
+
+            <a ng-click="">Show settings</a>
+            <a ng-click="">Hide settings</a>
+
+
+            <div style="margin-top: 1.2em;">
+                <hr >
+                <div class="row" >
+                    <div class="col-md-6" >
+                        <input type="text" placeholder="Size">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" placeholder="Call to action">
+                    </div>
+                    <div class="col-md-12">
+                        <textarea placeholder="Comments"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                          <input type="text" placeholder="Color">
+                    </div>
+                </div>
+            </div>
+
             <button class=" btn btn-sm abutton" ng-click="pulse(product)">Show</button>
             <button class=" btn btn-sm abutton" ng-click="removeProduct(product)">REMOVE</button>
             

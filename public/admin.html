@@ -39,6 +39,10 @@
         margin: 13px;
     }
 
+    .popover {
+        width: 250px;
+    }
+
     .full-checkbox {
         float: left;
         height: 65px;
@@ -96,12 +100,12 @@
                                 <li class="vpf">
                                     <input type="text" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
                                 </li>
+
+                               
                                 <li class="vpf">
-                                    <a href="#">Alerts <span style="    line-height: 11px;
-    font-size: 11px;
-    padding-bottom: 6px;
-    background: red;" class="badge">4</span> </a>
+                                    <a data-toggle="popover" title="Alerts" data-content="No alerts at the moment." data-placement="bottom">Alerts <span style="    line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">4</span> </a>
                                 </li>
+                                 <li> <a href="javascript:manageAccount()"><i class="glyphicon glyphicon-user"></i></a> </li>
                                 <li class="vpf">
                                     <a href="javascript:logout()" class="inner-link" target="_self">Logout</a>
                                 </li>

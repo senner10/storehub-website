@@ -2,7 +2,7 @@ app.controller('layerController', [
     '$scope',
     'Ape',
     '$http',
-    function($scope, Ape,$http) {
+    function($scope, Ape, $http) {
 
         $scope.fileTarget = {};
         $scope.uploadFile = (cb) => {
@@ -119,6 +119,9 @@ app.controller('layerController', [
                 return;
             }
             $scope.ready = true;
+            pasync(() => {
+                $("a[data-placement]").popover({});
+            });
             $scope.name = data.name;
             $scope.id = data.id;
             Ape.Init({
@@ -164,20 +167,20 @@ function randomString(length) {
     return str;
 }
 
- function serialize(obj, prefix) {
-     var str = [],
-         p;
-     for (p in obj) {
-         if (obj.hasOwnProperty(p)) {
-             var k = prefix ? prefix + "[" + p + "]" : p,
-                 v = obj[p];
-             str.push((v !== null && typeof v === "object") ?
-                 serialize(v, k) :
-                 encodeURIComponent(k) + "=" + encodeURIComponent(v));
-         }
-     }
-     return str.join("&");
- }
+function serialize(obj, prefix) {
+    var str = [],
+        p;
+    for (p in obj) {
+        if (obj.hasOwnProperty(p)) {
+            var k = prefix ? prefix + "[" + p + "]" : p,
+                v = obj[p];
+            str.push((v !== null && typeof v === "object") ?
+                serialize(v, k) :
+                encodeURIComponent(k) + "=" + encodeURIComponent(v));
+        }
+    }
+    return str.join("&");
+}
 
 function uploadFile(file, cb) {
     var reader = new FileReader();

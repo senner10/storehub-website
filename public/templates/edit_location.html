@@ -55,6 +55,10 @@
     <input type="text" placeholder="Facebook page URL">
     <input type="text" placeholder="Twitter profile URL">
     <input type="text" placeholder="Pinterest URL">
+    <label>Contact information</label>
+    <input type="text" placeholder="Phone number">
+    <input type="text" placeholder="Email address">
+    <button class="btn abutton" ng-click="modal('hour-modal')"> Manage hours</button>
 </div>
 <!-- modals -->
 <!-- Modal -->
@@ -90,7 +94,7 @@
 <!-- Modal -->
 <div class="modal  fade" id="fence-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <div class="modal-content modal-lg">
+        <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Geofence</h4>
@@ -100,6 +104,23 @@
                     <div style="height:100%" id="gmap-polygon"></div>
                     <div id="controls-polygon"></div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal  fade" id="hour-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Location hours</h4>
+            </div>
+            <div class="modal-body">
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

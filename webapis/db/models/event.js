@@ -9,7 +9,8 @@ base.add({
     start_date: Date,
     end_date: Date,
     description: String,
-    meta: Mixed
+    meta: Mixed,
+    rsvp : Boolean
 });
 
 var model = mongoose.model('Event', base);
