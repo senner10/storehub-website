@@ -8,6 +8,7 @@ base.add({
     price : Number,
     sku : String,
     live : Boolean,
+    quantity : Number,
     description : String,
     tags : Array,
     images : Array,

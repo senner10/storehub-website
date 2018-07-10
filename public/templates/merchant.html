@@ -1,0 +1,10 @@
+<div class="text-center" ng-if="!merchantData">
+    <h3>No connected merchant account.</h3>
+    <p>Click on the button below to connect Storehub, to your Stripe account.</p>
+    <a href="#" class="btn">Connect</a>
+</div>
+<div class="col-md-3 list-group-item" ng-if="merchantData">
+    <h3>Account connected</h3>
+    <p>Connected to <b>{{ merchantData.id }}</b></p>
+    <button class="btn abutton">DELETE ACCOUNT</button>
+</div>

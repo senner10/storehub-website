@@ -35,10 +35,6 @@ app.config(function($routeProvider, $locationProvider) {
             templateUrl: '/templates/apps.html',
             controller : 'apps'
         })
-        .when('/users', {
-            templateUrl: '/templates/users.html',
-            controller : 'users'
-        })
         .when('/stripe_settings', {
             templateUrl: '/templates/merchant.html',
             controller : 'stripe_controller'

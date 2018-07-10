@@ -5,9 +5,9 @@
         <li class="active"> {{ item.name }}</li>
     </ol>
     <div class="row">
-        <button class="abutton col-xs-2" ng-click="back()">Back</button>
-        <button class="abutton col-xs-2" ng-click="update('locations', item._id, item)">Update</button>
-        <button class="abutton col-xs-2" ng-click="delete('locations', item._id)">Delete</button>
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="back()">Back</button>
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="update('locations', item._id, item)">Update</button>
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="delete('locations', item._id)">Delete</button>
     </div>
     <hr>
     <input type="text" placeholder="Name" ng-model="item.name">

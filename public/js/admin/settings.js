@@ -6,13 +6,6 @@ app.controller('apps', [
     }
 ]);
 
-app.controller('users', [
-    '$scope',
-    function($scope, ) {
-       
-
-    }
-]);
 
 app.controller('stripe_controller', [
     '$scope',

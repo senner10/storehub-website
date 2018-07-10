@@ -45,7 +45,19 @@ pre {
     padding: 6px;
 }
 
-.abutton {}
+.row > .abutton {
+    height: 30px;
+    font-size: 11px;
+    line-height: 15px;
+    min-width: 0;
+    border: 2px solid #333347;
+    background: #333347;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-radius: 0 !important;
+}
 
 .field-help {
     position: relative;
@@ -53,7 +65,8 @@ pre {
     font-size: 12px;
 }
 
-.list-group-item h4, .list-group-item button {
+.list-group-item h4,
+.list-group-item button {
     margin-bottom: 10px;
 }
 
