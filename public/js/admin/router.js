@@ -42,6 +42,9 @@ app.config(function($routeProvider, $locationProvider) {
         .when('/help', {
             templateUrl: '/templates/help.html'
         })
+        .when('/themes', {
+            templateUrl : '/templates/themes.html'
+        })
 
 
         .otherwise({

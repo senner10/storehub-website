@@ -70,6 +70,7 @@ $(document).ready(function() {
                 show: true,
                 submenu: [
                     { id: '#/apps', value: 'Apps', action: 'click' },
+                    { id: '#/themes', value: 'Colors', action: 'click' },
                     { id: '#/stripe_settings', value: 'Merchant settings', show: true, action: 'click' },
                     { id: '#/help', value: 'Help', show: true, action: 'click' }
                 ]

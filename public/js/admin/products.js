@@ -22,8 +22,8 @@ app.controller('products', [
         }
 
         $scope.addStore = (store) => {
-            if(!$scope.item.meta)
-                $scope.item.meta = {stores : {} };
+            if (!$scope.item.meta)
+                $scope.item.meta = { stores: {} };
             $scope.item.meta.stores[store._id] = store;
         }
 
@@ -53,5 +53,49 @@ app.controller('products', [
                 }
             });
 
+        $scope.Do("GET", "products", {},
+            (data) => {
+                if (data) {
+
+                    var categories = [];
+                    var subCategories = [];
+
+                    for (var i = data.length - 1; i >= 0; i--) {
+                        var item = data[i],
+                            subEntry = { name: item.sub_category },
+                            entry = { name: item.category };
+
+
+                        var indexCategory = categories.indexOf(item.category);
+                        var indexSubCategory = subCategories.indexOf(item.sub_category);
+
+                        if (indexCategory == -1 && entry.name != "")
+                            categories.push(entry);
+
+                        if (indexSubCategory == -1 && subEntry.name != "")
+                            subCategories.push(subEntry);
+
+                    }
+
+
+                    pasync(() => {
+                        SetupAutoComplete("input.category", categories);
+                        SetupAutoComplete("input.subCategory", subCategories);
+                    });
+
+
+
+
+                }
+            });
+
     }
 ]);
+
+function SetupAutoComplete(name, categories) {
+    var options = {
+        data: categories,
+        getValue: "name"
+    };
+    $(name).easyAutocomplete(options);
+}
