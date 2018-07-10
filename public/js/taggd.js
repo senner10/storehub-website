@@ -56,7 +56,7 @@
         if (wrap.data('image-tag-enabled')) {
           var id = randomString(25);
           tag = $(
-            $(`<div data-id="${id}" class = 'tagdiv unsaved'>Product </div>`)
+            $(`<div data-id="${id}" class = 'tagdiv unsaved'>+</div>`)
             );
             // .append('<button class="close" style="margin:0;">×</button>')
           tag.css({

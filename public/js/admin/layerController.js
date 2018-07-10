@@ -119,8 +119,13 @@ app.controller('layerController', [
                 return;
             }
             $scope.ready = true;
+
+
+            // initialize toolbar jquery plugins
             pasync(() => {
-                $("a[data-placement]").popover({});
+                InitSearchAutocomplete();
+                $("a[data-placement].alerts").popover({});
+                $("a[data-placement].account").popover({});
             });
             $scope.name = data.name;
             $scope.id = data.id;
@@ -165,6 +170,10 @@ function randomString(length) {
         str += chars[Math.floor(Math.random() * chars.length)];
     }
     return str;
+}
+
+function InitSearchAutocomplete() {
+    
 }
 
 function serialize(obj, prefix) {

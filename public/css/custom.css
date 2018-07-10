@@ -20,6 +20,20 @@
     opacity: 1;
 }
 
+.alerList {
+    position: fixed;
+    right: 10px;
+    top:30px;
+    width: 280px;
+    z-index: 100;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.alerList .alert {
+    background-color: #ededed;
+}
+
 pre {
     padding: 16px;
 }
@@ -43,6 +57,10 @@ pre {
 .abutton.col-xs-2 {
     margin-right: 6px;
     padding: 6px;
+}
+
+.popover-title {
+    text-align: center;
 }
 
 .row > .abutton {

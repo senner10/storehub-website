@@ -15,9 +15,9 @@
     <br>
     <label>Image</label>
     <br />
-    <button  class="abutton btn" ng-click="uploadFile(addImage)">Upload image</button>
+    <button class="abutton btn" ng-click="uploadFile(addImage)">Upload image</button>
     <div style="padding-top: 1.0em;" ng-if="item.meta.image" class="text-center">
-        <div class="scrollmenu " style="text-align:left;overflow-y: auto;">
+        <div class="scrollmenu " style="text-align:left;overflow-y: auto;max-height:1000px;">
             <p>Click on the image below to tag an item to it.</p>
             <img class="tag-image" id="tag-image" src="/file/{{ item.meta.image }}" style="max-width:  initial;" width="500">
             <div style="display:none">
@@ -33,45 +33,44 @@
     <div class="list-group">
         <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">
             <h6>{{ item.meta.items[product].name }}</h6>
-
-            <a ng-click="">Show settings</a>
-            <a ng-click="">Hide settings</a>
-
-
-            <div style="margin-top: 1.2em;">
-                <hr >
-                <div class="row" >
-                    <div class="col-md-6" >
-                        <input type="text" placeholder="Size">
+            <a ng-click="toggleSettings(product)" ng-if="!toggleMap[product]">Show settings</a>
+            <a ng-click="toggleSettings(product)" ng-if="toggleMap[product]">Hide settings</a>
+            <div ng-if="toggleMap[product ]" style="margin-top: 1.2em;">
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input type="number" ng-change="updateSize(product)" ng-model="item.meta.items[product].size" max="80" placeholder="Size (In pixels)">
                     </div>
-                    <div class="col-md-6">
-                        <input type="text" placeholder="Call to action">
+                    <div class="col-lg-6">
+                        <input type="text" ng-model="item.meta.items[product].cta" placeholder="Call to action">
                     </div>
                     <div class="col-md-12">
-                        <textarea placeholder="Comments"></textarea>
+                        <textarea ng-model="item.meta.items[product].comment" placeholder="Comments"></textarea>
                     </div>
                     <div class="col-md-12">
-                          <input type="text" placeholder="Color">
+
+                        <br>
+                        <button class=" btn btn-sm abutton" ng-click="preview(product)">Toggle preview</button>
                     </div>
                 </div>
             </div>
-
-            <button class=" btn btn-sm abutton" ng-click="pulse(product)">Show</button>
-            <button class=" btn btn-sm abutton" ng-click="removeProduct(product)">REMOVE</button>
-            
+            <div style="margin-top: 1.2em;">
+                <button class=" btn btn-sm abutton" ng-click="pulse(product)">Pulse</button>
+                <button class=" btn btn-sm abutton" ng-click="removeProduct(product)">REMOVE</button>
+            </div>
         </div>
     </div>
 </div>
-<div ng-if="item && showitems"  class="col-sm-4 sticky-panel">
+<div ng-if="item && showitems" class="col-sm-4 sticky-panel">
     <button class="btn btn-sm btn-block" ng-click="hideitems()">CANCEL</button>
     <input type="text" ng-model="filterName" placeholder="Filter products by name">
-    <div class="text-center" ng-if="items.length == 0" >
-            <h6>You currently have no products listed.</h6>
-            <hr>
-            <a href="#/new/products" class="btn">New</a>
+    <div class="text-center" ng-if="items.length == 0">
+        <h6>You currently have no products listed.</h6>
+        <hr>
+        <a href="#/new/products" class="btn">New</a>
     </div>
     <div class="list-group">
-        <div  class="list-group-item" ng-if="( !filterName || product.name.contains(filterName) ) && !item.meta.items[product._id]" ng-repeat="product in items">
+        <div class="list-group-item" ng-if="( !filterName || product.name.contains(filterName) ) && !item.meta.items[product._id]" ng-repeat="product in items">
             <button ng-click="selectProduct(product)" class="pull-right btn">SELECT</button>
             <h6>{{ product.name }}</h6>
         </div>

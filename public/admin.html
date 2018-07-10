@@ -98,18 +98,13 @@
                                 <li class="vpf">
                                     Welcome back {{ name }}
                                 </li>
-                                <li class="vpf">
-                                    <input type="text" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
+                                <li class="vpf easy-autocomplete">
+                                    <input type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
                                 </li>
-
-                               
                                 <li class="vpf">
-                                    <a data-toggle="popover" title="Alerts" data-content="No alerts at the moment." data-placement="bottom">Alerts <span style="    line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">4</span> </a>
+                                    <a data-toggle="popover" title="Alerts" class="alerts" data-content="No alerts at the moment." data-placement="bottom">Alerts <span style="    line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">4</span> </a>
                                 </li>
-                                 <li> <a href="javascript:manageAccount()"><i class="glyphicon glyphicon-user"></i></a> </li>
-                                <li class="vpf">
-                                    <a href="javascript:logout()" class="inner-link" target="_self">Logout</a>
-                                </li>
+                                <li> <a data-toggle="popover" title="Account" class="account" data-content="" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
                             </ul>
                         </div>
                     </div>
@@ -150,6 +145,17 @@
         </div>
         <nav id="menuUI"></nav>
         <div class="main container-fluid">
+            <div class="alerList">
+                <div style="margin-top:2.8em;" class="alert alert-default alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4>Oh snap! You got an error!</h4>
+                    <hr>
+                    <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+                    <p>
+                        <button type="button" class="btn">Take this action</button>
+                    </p>
+                </div>
+            </div>
             <div class="col-xs-12" ng-if="ready" ng-view>
             </div>
         </div>

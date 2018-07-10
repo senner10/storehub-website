@@ -4,12 +4,19 @@
 }
 
 .image-tag-wrapper .tagdiv {
-  position: absolute;
-  background-color: #E74C3C;
-  color: white;
-  z-index: 10;
-  cursor: default;
-  padding:0 10px;
+    position: absolute;
+    background-color: #e74c3c57;
+    color: white;
+    z-index: 10;
+    cursor: default;
+    padding: 0 10px;
+    border: 1px solid #e74c3c;
+    font-weight: bolder;
+    font-size: 23px;
+    border-radius: 50%;
+    height: 35.46px;
+    padding-top: 4px;
+    text-align: center;
 }
 
 .image-tag-wrapper .tagform-wrapper {
