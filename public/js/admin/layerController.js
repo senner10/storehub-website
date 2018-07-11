@@ -287,6 +287,19 @@ app.controller('layerController', [
             })
         }
 
+        $scope.planMaxs = {
+            Essential: 3,
+            Basic: 5,
+            Professional: 7,
+            Enterprise: 7
+        }
+
+        $scope.atMax = () => {
+            if(!$scope.apps) return false;
+            
+            return $scope.apps.length >= $scope.planMaxs[$scope.plan_id];
+        }
+
         Ape.Request("GET", "/api/is_loggedin", {}, (data) => {
             if (!data) {
                 window.location = "/login.html";

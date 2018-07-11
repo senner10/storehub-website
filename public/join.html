@@ -65,15 +65,24 @@
                     <p>enter your personal information to join.</p>
                     <hr>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-md-3">
                             <input type="text" ng-model="data.email" class="validate-required field-error" placeholder="Email">
                             <label class="field-help">Your email address</label>
                         </div>
-                         <div class="col-sm-4">
+                         <div class="col-md-3">
                             <input type="text" ng-model="data.name" class="validate-required field-error" placeholder="Name">
                             <label class="field-help">Your full name</label>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-md-3">
+                            <select ng-model="data.plan_id">
+                                <option value="">Essential</option>
+                                <option>Basic</option>
+                                <option>Professional</option>
+                                <option>Enterprise</option>
+                            </select>
+                            <span class="field-help">Storehub subcription</span>
+                        </div>
+                        <div class="col-md-3">
                             <input ng-model="data.password" type="password" class="validate-required field-error" placeholder="Password">
                         </div>
                     </div>

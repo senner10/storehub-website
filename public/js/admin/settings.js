@@ -21,12 +21,9 @@ app.controller('apps', [
             }
         };
 
-        $scope.planMaxs = {
-            Essential: 3,
-            Basic: 5,
-            Professional: 7,
-            Enterprise: 7
-        }
+        $scope.plansIndex =Object.keys($scope.plans);
+
+        
 
         $scope.appList = [
             { name: "Geolocation marketing", description: "", icon: "glyphicon glyphicon-flag", id: "gm" },
@@ -51,7 +48,9 @@ app.controller('apps', [
             })
         }
 
-
+        $scope.upgrade = (id) => {
+            
+        }
 
         $scope.uninstall = (id) => {
             $scope.Do("GET", `app/uninstall/${id}`, {}, (data) => {

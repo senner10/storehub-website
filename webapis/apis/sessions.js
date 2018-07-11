@@ -18,6 +18,8 @@ router.post('/join', (req, res) => {
     var username = req.body.email;
     var password = req.body.password;
     var name = req.body.name;
+    var plan_id = req.body.plan_id;
+    
     var newo = new User();
 
     var sess = req.session;
@@ -25,6 +27,7 @@ router.post('/join', (req, res) => {
     newo.name = name;
     newo.email = username;
     newo.password = password;
+    newo.plan_id = plan_id;
 
     newo.save(function(err) {
         if (err) {
