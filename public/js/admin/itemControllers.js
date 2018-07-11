@@ -39,7 +39,8 @@ app.controller('List', [
     '$routeParams',
     function($scope, $routeParams) {
 
-        $scope.selectMap = {};
+        $scope.selectMap = {},
+            $scope.prev = {};
 
         $scope.selectedCount = () => {
             var keys = Object.keys($scope.selectMap),
@@ -125,7 +126,16 @@ app.controller('List', [
         }
 
         $scope.html = () => {
-
+            $scope.previewSet = [];
+            var keys = Object.keys($scope.selectMap);
+            for (var i = keys.length - 1; i >= 0; i--) {
+                var key = keys[i];
+                if ($scope.selectMap[key]) {
+                    var item = $scope.findItem(key);
+                    $scope.previewSet.push(item);
+                }
+            }
+            $scope.modal('preview-modal');
         }
 
         $scope.capitalizeFirstLetter = (string) => {
@@ -142,7 +152,12 @@ app.controller('List', [
 
         $scope.Do("GET", "theme", {}, (data) => {
             if (data)
-                $scope.theme = data;
+                $scope.theme = data.theme;
+        });
+
+        $scope.Do("GET", "apis", {}, (data) => {
+            if (data)
+                $scope.websites = data;
         });
 
         $scope.findItem = (id) => {

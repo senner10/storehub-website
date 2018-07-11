@@ -11,6 +11,11 @@ app.controller('layerController', [
             $scope.modal("file-upload");
         }
 
+        $scope.options = [
+            {name : "Account settings" , modal: "account-modal"},
+            {name : "Update password" , modal: "password-modal"},
+            {name : "Logout" , modal: "logout"}
+        ];
 
         $scope.help = {};
 
@@ -100,6 +105,10 @@ app.controller('layerController', [
         }
 
         $scope.modal = (id) => {
+            if(id == "logout"){
+                $scope.logout();
+                return;
+            }
             $(`#${id}`).modal('toggle');
         }
 

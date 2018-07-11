@@ -1,12 +1,11 @@
 <div class="row" style="position: fixed;
     top: 63px;z-index: 20">
     <button class="abutton btn btn-sm" ng-click="selectAll()" ng-if="selectedCount() == 0">Select all</button>
-   
     <div class="row" style="display: inline" ng-if="selectedCount() > 0">
-     <button class="abutton  btn btn-sm" ng-click="deselectAll()" >Deselect all</button>
+        <button class="abutton  btn btn-sm" ng-click="deselectAll()">Deselect all</button>
         <button class="abutton  btn btn-sm" ng-click="clone()">Clone</button>
-        <button class="abutton btn btn-sm"  ng-click="deleteSelected()">Delete</button>
-        <button class="abutton  btn btn-sm"   ng-click="html()">Get HTML code</button>
+        <button class="abutton btn btn-sm" ng-click="deleteSelected()">Delete</button>
+        <button class="abutton  btn btn-sm" ng-if="resName != 'location' && resName != 'event'" ng-click="html()">Get HTML code</button>
     </div>
     <br>
 </div>
@@ -24,6 +23,106 @@
             <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>
             <p>Created : {{ item.created_at }} </p>
             <a href="#/{{ resName == 'api' ?  'website' : resName }}s/{{item._id}}">edit</a>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal  fade" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Get HTML code</h4>
+            </div>
+            <div class="modal-body" style="min-height: 400px;">
+                <div ng-if="resName != 'api'">
+                    <div class="text-center" ng-if="websites.length == 0">
+                        <h6>You currently have no websites listed.</h6>
+                        <hr>
+                        <a href="javascript: $('#preview-modal').modal('trigger');window.location='#/new/apis'" class="btn">New</a>
+                    </div>
+                    <div ng-if="websites.length > 0">
+                        <label>Select a website to add this resource to.</label>
+                        <select ng-model="prev.website">
+                            <option value="">Select a website</option>
+                            <option ng-repeat="website in websites" value="{{ website._id }},{{ website.secret }}">{{ website.name }}</option>
+                        </select>
+                    </div>
+                    <div ng-if="prev.website">
+                        <label>Add this tag to your website</label>
+                        <pre><code>
+&lt;script&gt;
+    var storeToken = {{ prev.website }}
+&lt;/script&gt;
+&lt;script src="http://storehub.com/js/snippet.js" type="text/javascript"&gt;&lt;/script&gt;
+                            </code></pre>
+                    </div>
+                </div>
+                <div ng-if="resName == 'image'">
+                    <label>Preview</label><br>
+                    <img src="https://placehold.it/320x400">
+                    <h3>Name</h3>
+                    <p class="field-help">5 items in photo</p>
+
+                     <div ng-repeat="item in previewSet">
+                        <br>
+                        <label>Code for {{ item.name }}</label>
+                        <pre><code>
+&lt;div data-id="{{ item._id }}" class="storehub" data-type="image" &gt;&lt;/div&gt;
+                    </code></pre>
+                    </div>
+
+                </div>
+                <div ng-if="resName == 'api'">
+                    <div ng-repeat="item in previewSet">
+                        <br>
+                        <label>Code for {{ item.name }}</label>
+                        <pre><code>
+&lt;script&gt;
+    var storeToken = {{ item._id }},{{ item.secret }}
+&lt;/script&gt;
+&lt;script src="http://storehub.com/js/snippet.js" type="text/javascript"&gt;&lt;/script&gt;
+                    </code></pre>
+                    </div>
+                </div>
+                <div ng-if="resName == 'product'">
+                    <label>Preview:</label>
+                    <div class="list-group-item">
+                        <h2> Product name</h2>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="https://placehold.it/400x400">
+                            </div>
+                            <div class="col-md-8">
+                                <p style="line-height: 22px;">
+                                    <strong>Category</strong> / category name
+                                    <br>
+                                    <strong>Sub category</strong> / sub category name
+                                    <br>
+                                    <strong>Description</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet placerat est. Nullam vitae cursus lorem. Praesent nec lectus at leo euismod pretium. Aenean rutrum massa quis metus molestie, posuere egestas elit cursus...
+                                    <br>
+                                    <a>View more</a>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="storehub" style="margin:0;">
+                            <button>Add to cart</button>
+                            <button>+Wishlist</button>
+                        </p>
+                    </div>
+                    <div ng-repeat="item in previewSet">
+                        <br>
+                        <label>Code for {{ item.name }}</label>
+                        <pre><code>
+&lt;div data-id="{{ item._id }}" data-type="product" class="storehub" &gt;&lt;/div&gt;
+                    </code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
