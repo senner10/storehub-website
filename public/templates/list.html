@@ -1,12 +1,13 @@
 <div class="row" style="position: fixed;
-    top: 63px;">
-
-    <button class="abutton  btn btn-sm" ng-click="">Select all</button>
-    <button class="abutton  btn btn-sm" ng-click="">Deselect all</button>
-
-    <button class="abutton  btn btn-sm" ng-click="">Clone</button>
-    <button class="abutton btn btn-sm" ng-click="">Delete</button>
-    <button class="abutton  btn btn-sm" ng-click="">Get HTML code</button>
+    top: 63px;z-index: 20">
+    <button class="abutton btn btn-sm" ng-click="selectAll()" ng-if="selectedCount() == 0">Select all</button>
+   
+    <div class="row" style="display: inline" ng-if="selectedCount() > 0">
+     <button class="abutton  btn btn-sm" ng-click="deselectAll()" >Deselect all</button>
+        <button class="abutton  btn btn-sm" ng-click="clone()">Clone</button>
+        <button class="abutton btn btn-sm"  ng-click="deleteSelected()">Delete</button>
+        <button class="abutton  btn btn-sm"   ng-click="html()">Get HTML code</button>
+    </div>
     <br>
 </div>
 <div class="col-sm-12">
@@ -19,7 +20,7 @@
     </div>
     <div class="list-group">
         <div class="list-group-item col-lg-3" ng-repeat="item in items">
-            <input type="checkbox" class="full-checkbox" name="">
+            <input type="checkbox" class="full-checkbox" ng-model="selectMap[item._id]">
             <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>
             <p>Created : {{ item.created_at }} </p>
             <a href="#/{{ resName == 'api' ?  'website' : resName }}s/{{item._id}}">edit</a>

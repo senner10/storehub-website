@@ -23,14 +23,15 @@ app.controller('images', [
             var p = $scope.item.meta.items[product],
                 comment = p.comment ? p.comment : "Comments",
                 cta = p.cta ? p.cta : "CALL TO ACTION",
-                item = $scope.GetProduct(p._id);
+                item = $scope.GetProduct(p._id),
+                theme = $scope.theme.theme;
 
             var options = {
                 placement: "left auto",
                 html: true,
-                content: `<p class="text-center">${comment}</p><h3 class="text-center">$ ${item.price}</h3><p class="text-center"><button style="margin-bottom:1px;" class="module-storehub btn btn-sm">${cta}</button> </p>`,
+                content: `<p style="color:${theme.paragraphColor}" class="text-center">${comment}</p><h3 style="color:${theme.paragraphColor}" class="text-center">$ ${item.price}</h3><p class="text-center storehub"><button style="margin-bottom:1px;color:${theme.paragraphColor};border:1px solid ${theme.paragraphColor}">${cta}</button> </p>`,
                 viewport: "body",
-                title: item.name
+                title: `<span style="color:${theme.paragraphColor}">${item.name}</span>`
             };
 
 
@@ -200,6 +201,12 @@ app.controller('images', [
         $scope.Do("GET", "products", {}, (data) => {
             if (data) {
                 $scope.items = data;
+            }
+        });
+
+        $scope.Do("GET", "theme", {}, (data) => {
+            if(data){
+                $scope.theme = data;
             }
         });
 

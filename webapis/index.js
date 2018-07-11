@@ -5,6 +5,7 @@ const sessions = require("./apis/sessions")
 const fileApi = require("./apis/fileApi")
 const fileViewer = require("./apis/fileViewer")
 const themeApi = require("./apis/themes")
+const helpApi = require("./apis/help")
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
 var session = require('express-session')
@@ -40,7 +41,8 @@ app.use('/api',
 app.use('/api/res',
     CRUDapi,
     fileApi,
-    themeApi);
+    themeApi,
+    helpApi);
 
 
 

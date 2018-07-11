@@ -11,6 +11,16 @@ app.controller('layerController', [
             $scope.modal("file-upload");
         }
 
+
+        $scope.help = {};
+
+        $scope.sendMessage = () => {
+            $scope.Do("POST", "help", $scope.help, (data) => {
+                if (data)
+                    swal("Success", "message sent!", "success");
+            });
+        }
+
         $scope.deleteFile = (file, action) => {
             swal({
                     title: "Are you sure?",
@@ -21,13 +31,7 @@ app.controller('layerController', [
                 })
                 .then((willDelete) => {
                     if (willDelete) {
-                        $scope.Do("DELETE", `file/${file}`, {}, (data) => {
-                            if (data)
-                                swal("Resource deleted.", {
-                                    icon: "success",
-                                });
-                            else action(file);
-                        })
+                        action(file);
                     }
                 });
 
@@ -173,7 +177,7 @@ function randomString(length) {
 }
 
 function InitSearchAutocomplete() {
-    
+
 }
 
 function serialize(obj, prefix) {
