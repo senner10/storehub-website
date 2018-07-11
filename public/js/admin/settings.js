@@ -49,7 +49,18 @@ app.controller('apps', [
         }
 
         $scope.upgrade = (id) => {
-            
+            if(!$scope.customer_id){
+                swal("", "Please enter your payment information to upgrade your account.", "warning");
+                return;
+            }
+            $scope.Do("GET", `upgrade/${id}`, {}, (data)=> {
+                if(data){
+                    swal("Success", "Your account subscription was upgraded", "success")
+                    $scope.plan_id =  id; 
+                } else {
+                    swal("Error", "Please try again.", "error")
+                }
+            })
         }
 
         $scope.uninstall = (id) => {

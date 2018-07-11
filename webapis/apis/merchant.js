@@ -66,19 +66,19 @@ router.get("/app/:action/:id", (req, res) => {
 
             if (req.session.apps.indexOf(req.params.id) == -1) {
                 req.session.apps.push(req.params.id);
-                updateUserApps(req,res);
+                updateUserApps(req, res);
                 return;
             }
-            
+
             res.status(500).json({});
-            
+
             break;
         default:
 
             var index = req.session.apps.indexOf(req.params.id);
             if (index != -1) {
                 req.session.apps.splice(index, 1);
-                updateUserApps(req,res)
+                updateUserApps(req, res)
                 return;
             }
             res.status(500).json({ "error": "app not found." });
@@ -88,6 +88,24 @@ router.get("/app/:action/:id", (req, res) => {
 
 
 router.get("/upgrade/:plan", (req, res) => {
+    var plan = req.params.plan;
+
+    if (plan != req.session.plan) {
+        req.session.plan = plan;
+
+        user.findOneAndUpdate({ _id: req.owner }, { $set: { plan_id: plan } },
+            (err, usr) => {
+                if (err) {
+                    res.status(500).send(err);
+                    return;
+                }
+                res.json({})
+
+            })
+
+    } else {
+        res.status(500).json();
+    }
 
 });
 
@@ -104,12 +122,17 @@ router.get("/apps", (req, res) => {
 
         if (!usr.plan_id) usr.plan_id = "Essential";
 
-        res.json({ apps: usr.apps, plan_id: usr.plan_id });
+        res.json({
+            apps: usr.apps,
+            plan_id: usr.plan_id,
+            exp: usr.expirationTime,
+            customer_id: usr.customer_id
+        });
     });
 
 });
 
-function updateUserApps(req,res) {
+function updateUserApps(req, res) {
     user.findOneAndUpdate({ _id: req.owner }, { $set: { apps: req.session.apps } }, (err, usr) => {
         if (err) {
             res.status(500).send(err);
