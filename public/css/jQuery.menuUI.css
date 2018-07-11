@@ -111,7 +111,7 @@ nav.sidebar,
         height: 100%;
         margin-left: -160px;
         float: left;
-        z-index: 8000;
+        z-index: 80;
         margin-bottom: 0px;
     }
 

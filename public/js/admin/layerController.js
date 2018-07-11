@@ -11,11 +11,7 @@ app.controller('layerController', [
             $scope.modal("file-upload");
         }
 
-        $scope.options = [
-            {name : "Account settings" , modal: "account-modal"},
-            {name : "Update password" , modal: "password-modal"},
-            {name : "Logout" , modal: "logout"}
-        ];
+
 
         $scope.help = {};
 
@@ -24,6 +20,142 @@ app.controller('layerController', [
                 if (data)
                     swal("Success", "message sent!", "success");
             });
+        }
+
+        $scope.deleteAccount = () => {
+            swal({
+                    title: "Are you sure?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $http({
+                            method: "GET",
+                            url: "/api/delete_account",
+                            headers: {},
+                        }).then(function successCallback(response) {
+                            window.location = "/";
+                        }, function errorCallback(response) {
+                            swal("Error", "Please try again", "error");
+                        })
+                    }
+                });
+        }
+
+        $scope.updatePassword = () => {
+            if (!$scope.password) {
+                swal("", "Please fill out the form prior to submission.", "warning");
+                return;
+            }
+            var password = sha256($scope.password.password).toUpperCase(),
+                new_password = sha256($scope.password.new_password).toUpperCase();
+
+            $http({
+                method: "POST",
+                data: { password, new_password },
+                url: "/api/update_password",
+                headers: {},
+            }).then(function successCallback(response) {
+                swal("Success", "Your password was updated!", "success");
+                $scope.password = {};
+            }, function errorCallback(response) {
+                swal("Error", "Please verify the current password entered.", "error");
+            })
+        }
+
+        window.LoadAlerts = () => {
+            var ua = $(".user-alerts")
+            ua.html("");
+
+            ua.append("<p class='text-center'>No alerts at the moment.</p>");
+        }
+
+        window.closeSearch = () => {
+            $(".poptarget").popover('toggle');
+        }
+
+        $scope.buildCache = (type) => {
+
+            $scope.Do("GET", type, {}, (data) => {
+                if (!data) return;
+
+                for (var o = 0; o < data.length; o++) {
+                    var item = data[o];
+                    item.resType = type;
+                    $scope.dbCache.push(item);
+                }
+
+                $scope.matchResults();
+            });
+
+        }
+
+        $scope.findResults = () => {
+
+            if (!$scope.dbCache) {
+                $scope.dbCache = [];
+                var resTypes = ["locations", "images", "events", "apis", "products"];
+                for (var i = resTypes.length - 1; i >= 0; i--) {
+                    var type = resTypes[i];
+                    $scope.buildCache(type);
+                }
+            } else {
+                $scope.matchResults();
+            }
+
+        }
+
+        $scope.matchResults = () => {
+            var targ = $(".search-auto");
+
+            $(".remove", targ).remove();
+            var found = 0;
+            for (var i = $scope.dbCache.length - 1; i >= 0; i--) {
+                var item = $scope.dbCache[i];
+                var selector = `[data-key="${item._id}"]`;
+                item.name = item.name.toLowerCase();
+                if ($(selector, targ).length == 0) {
+
+                    if (item.name && item.name.includes($scope.search)) {
+                        item.type = item.resType == "apis" ? "websites" : item.resType;
+                        targ.append(`<div data-key="${item._id}" style="height:40px;" class="list-group-item"><a href="#/${item.resType}/${item._id}"><h5>${item.name} <small>${item.type}</small></h5></a></div>`);
+                        found++;
+                    }
+
+                } else {
+
+                    if (!item.name.includes($scope.search)) {
+                        $(selector, targ).remove();
+                    } else found++;
+                }
+            }
+            if(found == 0){
+                var search = $scope.search;
+                targ.append(`<p class="text-center remove">No results found for query <strong>${search}</strong> </p>`);
+            }
+        }
+
+        $scope.showAutoComplete = () => {
+            $(".poptarget").popover('show');
+        }
+
+        window.LoadUser = () => {
+            //user-control
+            var uc = $(".user-controls"),
+                options = [
+                    { name: "Account settings", modal: "account-modal" },
+                    { name: "Update password", modal: "password-modal" },
+                    { name: "Logout", modal: "logout" }
+                ];
+            uc.html("");
+
+            for (var i = 0; i < options.length; i++) {
+                var option = options[i];
+                uc.append($(`<button onclick="modal('${option.modal}')" style="margin-top:10px;" class="btn btn-block btn-sm">${option.name}</button>`));
+            }
         }
 
         $scope.deleteFile = (file, action) => {
@@ -105,12 +237,14 @@ app.controller('layerController', [
         }
 
         $scope.modal = (id) => {
-            if(id == "logout"){
-                $scope.logout();
+            if (id == "logout") {
+                window.logout();
                 return;
             }
             $(`#${id}`).modal('toggle');
         }
+
+        window.modal = $scope.modal;
 
         $scope.back = () => {
             window.history.back();
@@ -126,6 +260,13 @@ app.controller('layerController', [
             })
         }
 
+        $scope.getToolbarAlerts = () => {
+            $scope.Do("GET", "alerts", {}, (data) => {
+                if (data)
+                    $scope.toolbarAlerts = data;
+            });
+        }
+
         Ape.Request("GET", "/api/is_loggedin", {}, (data) => {
             if (!data) {
                 window.location = "/login.html";
@@ -136,7 +277,6 @@ app.controller('layerController', [
 
             // initialize toolbar jquery plugins
             pasync(() => {
-                InitSearchAutocomplete();
                 $("a[data-placement].alerts").popover({});
                 $("a[data-placement].account").popover({});
             });
@@ -154,13 +294,15 @@ app.controller('layerController', [
             });
             $scope.Do = Ape.Request;
             $scope.Ape = Ape;
+
+            $scope.getToolbarAlerts();
         })
 
     }
 ]);
 
 window.pasync = (fn) => {
-    setTimeout(fn, 1100);
+    setTimeout(fn, 800);
 }
 
 
@@ -185,9 +327,7 @@ function randomString(length) {
     return str;
 }
 
-function InitSearchAutocomplete() {
 
-}
 
 function serialize(obj, prefix) {
     var str = [],

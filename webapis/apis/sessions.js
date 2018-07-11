@@ -34,8 +34,11 @@ router.post('/join', (req, res) => {
     })
 })
 
+router.get('/delete_account', (req, res) => {
+
+});
+
 router.post('/reset_password', (req, res) => {
-    //
     var new_password = randomstring.generate(6);
     User.findOneAndUpdate({ email: req.body.email }, { $set: { password: new_password } }).exec(function(err, bear) {
         if (err)
@@ -60,7 +63,7 @@ router.post('/update_password', (req, res) => {
 
 router.get('/is_loggedin', function(req, res) {
     if (req.session.token) {
-        res.json({ token: req.session.token, id: req.session.userid,name : req.session.userName })
+        res.json({ token: req.session.token, id: req.session.userid, name: req.session.userName })
     } else res.status(401).json({ "error": "User is not signed in." });
 });
 
@@ -92,7 +95,7 @@ var GenerateToken = (bear, sess, res) => {
     sess.userid = bear._id;
     sess.token = token;
     sess.userName = bear.name;
-    res.json({ token: token,name : bear.name , id: sess.userid });
+    res.json({ token: token, name: bear.name, id: sess.userid });
 }
 
 

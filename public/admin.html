@@ -99,18 +99,60 @@
                                 <li class="vpf">
                                     Welcome back {{ name }}
                                 </li>
-                                <li class="vpf easy-autocomplete">
-                                    <input type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
+                                <li class="vpf easy-autocomplete search-parent">
+                                    <input ng-focus="showAutoComplete()" ng-change="findResults()" type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
+                                    <div class="poptarget" style="position: relative;top:-10px;" data-toggle="popover" data-trigger="manual" data-placement="bottom" title="<a href='javascript:closeSearch();'>&times close</a>" data-html="true" data-content="<div class='search-auto list-group'><p class='remove text-center'>Start typing to show suggestions</p></div>"></div>
                                 </li>
                                 <li class="vpf">
-                                    <a data-toggle="popover" title="Alerts" data-html="true" class="alerts" data-content="<script></script>" data-placement="bottom">Alerts <span style="    line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">4</span> </a>
+                                    <a data-toggle="popover" title="Alerts" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top:-1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">{{ toolbarAlerts.length }}</span> </a>
                                 </li>
-                                <li> <a data-toggle="popover" data-html="true" title="Account" class="account" data-content="<script></script>" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
+                                <li> <a data-toggle="popover" data-html="true" title="Account" class="account" data-content="<script>LoadUser();</script><div class='user-controls'></div>" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </nav>
+            <!-- Modal -->
+            <div class="modal fade" id="account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Manage account</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>Update payment information</label>
+                            <h3>Delete account</h3>
+                            <p class="field-help">By deleting your account you will permanently lose your data on StoreHub</p>
+                            <button ng-click="deleteAccount()" class="field-help btn btn-danger btn-block">Delete </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Update password</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form ng-submit="updatePassword()">
+                                <input type="password" ng-model="password.password" placeholder="Current password">
+                                <input type="password" ng-model="password.new_password" placeholder="New password">
+                                <button class="btn" type="submit">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Modal -->
             <div class="modal modal-xl fade" id="file-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
@@ -162,8 +204,8 @@
         </div>
     </div>
     <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/sha256.js"></script>
     <script type="text/javascript" src="/js/colorpicker.js"></script>
-
     <script type="text/javascript" src="/js/taggd.js"></script>
     <script type="text/javascript" src="/js/easy-autocomplete.js"></script>
     <script src="/js/maplace.min.js"></script>

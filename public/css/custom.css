@@ -19,6 +19,16 @@
     min-width: 100px;
 }
 
+.search-parent .popover-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-parent .popover-title {
+    height: 34px;
+    padding-top: 0px;
+}
+
 .button-bar {}
 
 .storehub button {
