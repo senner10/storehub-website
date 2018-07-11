@@ -4,9 +4,8 @@ app.controller('NewResource', [
     function($scope, $routeParams) {
         $scope.resName = $routeParams.type.substring(0, $routeParams.type.length - 1);
         $scope.data = {};
-
+        $scope.emptyCache();
         $scope.create = () => {
-
 
 
             $scope.Do("POST", $routeParams.type, $scope.data, (data) => {

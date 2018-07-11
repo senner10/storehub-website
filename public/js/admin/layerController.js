@@ -108,6 +108,10 @@ app.controller('layerController', [
 
         }
 
+        $scope.emptyCache = () => {
+            $scope.dbCache = false;
+        };
+
         $scope.matchResults = () => {
             var targ = $(".search-auto");
 
@@ -224,6 +228,7 @@ app.controller('layerController', [
 
         $scope.update = (res, id, changes) => {
 
+            $scope.emptyCache();
             $scope.Do("PUT", `${res}/${id}`, changes, (data) => {
                 if (data)
                     swal("Resource updated.", {
