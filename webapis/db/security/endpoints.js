@@ -1,7 +1,25 @@
 const jwt = require('jsonwebtoken');
 const JWTKey = "shhh";
-const NoAccess = {"error" : "unauthorized request."};
+const NoAccess = { "error": "unauthorized request." };
 
+
+var appPermissions = [{
+        id: "gm",
+        collection: "locations"
+    },
+    {
+        id: "cme",
+        collection: "products"
+    },
+    {
+        id: "re",
+        collection: "events"
+    },
+    {
+        id: "spl",
+        collection: "images"
+    }
+];
 
 var VerifyRequest = (req) => {
     //req.header(name)
@@ -17,6 +35,15 @@ var VerifyRequest = (req) => {
         jwttoken = req.session.token;
     }
 
+    var apps = req.session.apps;
+    for (var i = appPermissions.length - 1; i >= 0; i--) {
+        var app = appPermissions[i];
+
+
+        if (req.originalUrl.includes(app.collection) && apps.indexOf(app.id) == -1) {
+            return false;
+        }
+    }
 
     try {
         var decoded = jwt.verify(jwttoken, JWTKey);

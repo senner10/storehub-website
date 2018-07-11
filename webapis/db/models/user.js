@@ -5,8 +5,10 @@ base.add({
     email : {type: String, required: true, unique: true},
     password : String,
     apps : Array,
-    expirationTime : Number,
-    stripe_token : String
+    expiration_time : Number,
+    stripe_token : String,
+    plan_id : String,
+    customer_id : String
 });
 
 var model = mongoose.model('User', base);

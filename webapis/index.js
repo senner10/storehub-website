@@ -5,6 +5,7 @@ const sessions = require("./apis/sessions")
 const fileApi = require("./apis/fileApi")
 const fileViewer = require("./apis/fileViewer")
 const themeApi = require("./apis/themes")
+const merchantApi = require("./apis/merchant")
 const helpApi = require("./apis/help")
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose')
@@ -36,13 +37,16 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({ limit: "20mb" }));
 
 app.use('/api',
-    sessions);
+    sessions
+    );
 
 app.use('/api/res',
     CRUDapi,
     fileApi,
     themeApi,
-    helpApi);
+    helpApi,
+    merchantApi
+    );
 
 
 

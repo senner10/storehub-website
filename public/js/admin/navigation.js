@@ -1,7 +1,10 @@
 $(document).ready(function() {
-    var json = {
-        brand: 'Menu UI',
-        menu: [{
+
+});
+
+function BuildNav(apps) {
+
+    var menu = [ {
                 id: '#/',
                 value: 'Home',
                 icon: 'glyphicon glyphicon-home',
@@ -13,6 +16,7 @@ $(document).ready(function() {
                 value: 'Locations',
                 icon: 'glyphicon glyphicon-flag',
                 action: 'click',
+                aid : 'gm',
                 disable: false,
                 submenu: [
                     { id: '#/new/locations', value: 'Add new location', action: 'click' },
@@ -24,6 +28,7 @@ $(document).ready(function() {
                 value: 'Shoppable images',
                 icon: 'glyphicon glyphicon-tags',
                 action: 'click',
+                aid : 'spl',
                 disable: false,
                 submenu: [
                     { id: '#/new/images', value: 'Add new image', action: 'click' },
@@ -35,6 +40,7 @@ $(document).ready(function() {
                 value: 'Products',
                 icon: 'glyphicon glyphicon-barcode',
                 action: 'click',
+                aid : "cme",
                 disable: false,
                 submenu: [
                     { id: '#/new/products', value: 'Add new Product', action: 'click' },
@@ -43,9 +49,10 @@ $(document).ready(function() {
             },
             {
                 id: '',
-                value: 'Events',
+                value: 'Retail events',
                 icon: 'glyphicon glyphicon-calendar',
                 action: 'click',
+                aid : "re",
                 disable: false,
                 submenu: [
                     { id: '#/new/events', value: 'Add new event', action: 'click' },
@@ -74,8 +81,19 @@ $(document).ready(function() {
                     { id: '#/stripe_settings', value: 'Merchant settings', show: true, action: 'click' },
                     { id: '#/help', value: 'Help', show: true, action: 'click' }
                 ]
-            }
-        ]
+            }]
+
+    for (var i = menu.length - 1; i >= 0; i--) {
+        var item = menu[i];
+        if(item.aid && apps.indexOf(item.aid) == -1){
+            menu.splice(i,1);
+        }
+    }
+
+    var json = {
+        brand: 'Menu UI',
+        menu: menu
+        
     };
     var clickAction = function(id) {
         if (id == "") return;
@@ -83,4 +101,4 @@ $(document).ready(function() {
         window.location = id;
     }
     $("#menuUI").menuUI(json, clickAction);
-});
+}

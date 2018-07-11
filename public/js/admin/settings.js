@@ -2,6 +2,68 @@ app.controller('apps', [
     '$scope',
     function($scope, ) {
 
+        $scope.plans = {
+            Essential: {
+                description: "",
+                rate: ""
+            },
+            Basic: {
+                description: "",
+                rate: ""
+            },
+            Professional: {
+                description: "",
+                rate: ""
+            },
+            Enterprise: {
+                description: "",
+                rate: ""
+            }
+        };
+
+        $scope.planMaxs = {
+            Essential: 3,
+            Basic: 5,
+            Professional: 7,
+            Enterprise: 7
+        }
+
+        $scope.appList = [
+            { name: "Geolocation marketing", description: "", icon: "glyphicon glyphicon-flag", id: "gm" },
+            { name: "Shop the look", description: "", icon: "glyphicon glyphicon-tags", id: "spl" },
+            { name: "Retail events", description: "", icon: "glyphicon glyphicon-calendar", id: "re" },
+            { name: "Commerce", description: "", icon: "glyphicon glyphicon-barcode", id: "cme" }
+        ];
+
+        $scope.hasApp = (id) => {
+            if (!$scope.apps) return false;
+            return $scope.apps.indexOf(id) != -1;
+        }
+
+        $scope.install = (id) => {
+            $scope.Do("GET", `app/install/${id}`, {}, (data) => {
+                if (data) {
+                    swal("Success", "App installed, refresh the page to apply changes.", "success")
+                    $scope.apps.push(id);
+                } else {
+                    swal("Error installing app", "You may need to upgrade your plan to add more apps.", "error");
+                }
+            })
+        }
+
+
+
+        $scope.uninstall = (id) => {
+            $scope.Do("GET", `app/uninstall/${id}`, {}, (data) => {
+                if (data) {
+                    swal("Success", "App uninstalled, refresh the page to apply changes.", "success")
+                    var index = $scope.apps.indexOf(id);
+                    $scope.apps.splice(index, 1);
+                } else {
+                    swal("Error uninstalling app", "Please try again.", "error");
+                }
+            })
+        }
 
     }
 ]);
@@ -73,6 +135,10 @@ app.controller('stripe_controller', [
     '$scope',
     function($scope, ) {
 
+        $scope.Do("GET", "merchant_token", {}, (data) => {
+            if (data) $scope.merchantData = true;
+            $scope.ready = true;
+        })
 
     }
 ]);

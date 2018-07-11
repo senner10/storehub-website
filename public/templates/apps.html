@@ -1,25 +1,41 @@
 <div class="row" style="margin-top:4em">
-    <button ng-click="modal('app-place')" style="margin-left: 13px;" class="pull-right btn abutton ">Billing</button>
-
+    <button ng-click="modal('app-modal')" style="margin-left: 13px;" class="pull-right btn abutton ">Billing</button>
     <h3>Apps</h3>
     <hr>
-    <div class='row'>
-        <div class="col-sm-4">
+    <div class='row' ng-if="ready">
+        <div ng-repeat="app in appList" class="col-sm-4">
             <div class="panel panel-default">
-                <div class="panel-heading"> <img style="width: 40px;
-    margin-right: 15px;
-    border-radius: 50%;" src="https://placehold.it/300x300"> App name</div>
+                <div class="panel-heading"> <i style="padding: 10px;border:1px #ededed solid;border-radius:3px;background: #ededed; margin-right: 1em;" class="{{ app.icon }}"></i> {{ app.name }}</div>
                 <div class="panel-body ">
                     <div class="row">
-                    	<p><strong>Usage:</strong> <br/>
-                    	</p>
                         <p><strong>Description:</strong>
-                            
+                        {{ app.description }}
                         </p>
-                        <button class="btn abutton btn-sm">Install</button>
-                        <button class="btn abutton btn-sm">Uninstall</button>
+                        <button ng-if="!hasApp(app.id)" ng-click="install(app.id)" class="btn abutton btn-sm">Install</button>
+                        <button ng-if="hasApp(app.id)" ng-click="uninstall(app.id)" class="btn abutton btn-sm">Uninstall</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div class="modal  fade" id="app-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">StoreHub plan</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Plan : <small>{{ plan_id }}</small></h3>
+                <p><strong>Description</strong> {{ plans[plan_id].description }}
+                <br>
+                {{ plans[plan_id].rate }}</p>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

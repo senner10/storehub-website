@@ -136,7 +136,7 @@ app.controller('layerController', [
                     } else found++;
                 }
             }
-            if(found == 0){
+            if (found == 0) {
                 var search = $scope.search;
                 targ.append(`<p class="text-center remove">No results found for query <strong>${search}</strong> </p>`);
             }
@@ -217,7 +217,7 @@ app.controller('layerController', [
                             if (data)
                                 swal("Resource deleted.", {
                                     icon: "success",
-                                }), $scope.back();
+                                }), $scope.emptyCache(), $scope.back();
                             else swal("Resource could not be removed, please try again.", {
                                 icon: "error",
                             });
@@ -272,6 +272,21 @@ app.controller('layerController', [
             });
         }
 
+
+        $scope.getUserApps = () => {
+            $scope.Do("GET", "apps", {}, (data) => {
+                $scope.ready = true;
+                $scope.apps = data.apps;
+                $scope.plan_id = data.plan_id;
+                $scope.customer_id = data.customer_id;
+                if($scope.apps.length == 0){
+                    swal("Welcome", "It seems as if you have no apps installed. We will redirect you to pick which apps you'd like.", "success")
+                    window.location = "#/apps";
+                }
+                BuildNav($scope.apps);
+            })
+        }
+
         Ape.Request("GET", "/api/is_loggedin", {}, (data) => {
             if (!data) {
                 window.location = "/login.html";
@@ -301,6 +316,7 @@ app.controller('layerController', [
             $scope.Ape = Ape;
 
             $scope.getToolbarAlerts();
+            $scope.getUserApps();
         })
 
     }

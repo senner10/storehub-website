@@ -101,7 +101,7 @@
                                 </li>
                                 <li class="vpf easy-autocomplete search-parent">
                                     <input ng-focus="showAutoComplete()" ng-change="findResults()" type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
-                                    <div class="poptarget" style="position: relative;top:-10px;" data-toggle="popover" data-trigger="manual" data-placement="bottom" title="<a href='javascript:closeSearch();'>&times close</a>" data-html="true" data-content="<div class='search-auto list-group'><p class='remove text-center'>Start typing to show suggestions</p></div>"></div>
+                                    <div class="poptarget" style="position: relative;top:-10px;" data-toggle="popover" data-trigger="manual" data-placement="bottom" title="<a class='text-right' href='javascript:closeSearch();'>&times close</a>" data-html="true" data-content="<div class='search-auto list-group'><p class='remove text-center'>Start typing to show suggestions</p></div>"></div>
                                 </li>
                                 <li class="vpf">
                                     <a data-toggle="popover" title="Alerts" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top:-1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">{{ toolbarAlerts.length }}</span> </a>

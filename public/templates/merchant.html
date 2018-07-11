@@ -1,10 +1,10 @@
-<div class="text-center" ng-if="!merchantData">
+<div class="text-center" ng-if="!merchantData && ready">
     <h3>No connected merchant account.</h3>
     <p>Click on the button below to connect Storehub, to your Stripe account.</p>
-    <a href="#" class="btn">Connect</a>
+    <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://tf.gophersauce.com/api/res/activate_account&client_id=&state={{ randomCode }}"  class="btn">Connect</a>
 </div>
-<div class="col-md-3 list-group-item" ng-if="merchantData">
+<div class="col-md-3 list-group-item" ng-if="merchantData && ready">
     <h3>Account connected</h3>
     <p>Connected to <b>{{ merchantData.id }}</b></p>
-    <button class="btn abutton">DELETE ACCOUNT</button>
+    <a class="btn " href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://tf.gophersauce.com/api/res/activate_account&client_id=&state={{ randomCode }}">UPdate ACCOUNT</a>
 </div>

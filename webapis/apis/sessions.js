@@ -94,6 +94,8 @@ var GenerateToken = (bear, sess, res) => {
     });
     sess.userid = bear._id;
     sess.token = token;
+    sess.apps = bear.apps;
+    sess.plan = bear.plan_id ? bear.plan_id : "Essential";
     sess.userName = bear.name;
     res.json({ token: token, name: bear.name, id: sess.userid });
 }
