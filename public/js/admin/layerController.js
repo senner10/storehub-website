@@ -125,7 +125,7 @@ app.controller('layerController', [
 
                     if (item.name && item.name.includes($scope.search)) {
                         item.type = item.resType == "apis" ? "websites" : item.resType;
-                        targ.append(`<div data-key="${item._id}" style="height:40px;" class="list-group-item"><a href="#/${item.resType}/${item._id}"><h5>${item.name} <small>${item.type}</small></h5></a></div>`);
+                        targ.append(`<div data-key="${item._id}" style="height:40px;" class="list-group-item"><a href="#/${item.type}/${item._id}"><h5>${item.name} <small>${item.type}</small></h5></a></div>`);
                         found++;
                     }
 
@@ -296,7 +296,7 @@ app.controller('layerController', [
 
         $scope.atMax = () => {
             if(!$scope.apps) return false;
-            
+
             return $scope.apps.length >= $scope.planMaxs[$scope.plan_id];
         }
 

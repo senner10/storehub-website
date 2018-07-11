@@ -89,11 +89,27 @@ router.get("/app/:action/:id", (req, res) => {
 
 router.get("/upgrade/:plan", (req, res) => {
     var plan = req.params.plan;
+    var currentMax = planMaxs[req.session.plan];
+    var newMax = planMaxs[plan];
 
     if (plan != req.session.plan) {
         req.session.plan = plan;
 
-        user.findOneAndUpdate({ _id: req.owner }, { $set: { plan_id: plan } },
+
+        var new_apps = [];
+        count = 0;
+        if (newMax < currentMax) {
+            for (var i = req.session.apps.length - 1; i >= 0; i--) {
+                new_apps.push(req.session.apps[i])
+                count++;
+                if (count == newMax) {
+                    break;
+                }
+            }
+
+        }
+
+        user.findOneAndUpdate({ _id: req.owner }, { $set: { plan_id: plan, apps: new_apps } },
             (err, usr) => {
                 if (err) {
                     res.status(500).send(err);
