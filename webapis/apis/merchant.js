@@ -30,9 +30,9 @@ router.get("/activate_account", (req, res) => {
 
         User.findOneAndUpdate({ _id: req.owner }, { $set: { stripe_token: data.stripe_user_id } },
             (err, dta) => {
-                if (err) res.redirect("/admin.html?error=Error%20updating%20account!#/stripe_settings")
+                if (err) res.redirect("/admin.html?success=Error%20updating%20account!#/stripe_settings")
                 else {
-                    res.redirect("/?error=Merchant%20account%20information%20saved!#/stripe_settings")
+                    res.redirect("/admin.html?error=Merchant%20account%20information%20saved!#/stripe_settings")
                 }
             })
 
@@ -108,6 +108,8 @@ router.get("/upgrade/:plan", (req, res) => {
             }
 
         }
+
+        req.session.apps = new_apps;
 
         user.findOneAndUpdate({ _id: req.owner }, { $set: { plan_id: plan, apps: new_apps } },
             (err, usr) => {

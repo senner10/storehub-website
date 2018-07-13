@@ -103,8 +103,8 @@
                                     <input ng-focus="showAutoComplete()" ng-change="findResults()" type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
                                     <div class="poptarget" style="position: relative;top:-10px;" data-toggle="popover" data-trigger="manual" data-placement="bottom" title="<a class='text-right' href='javascript:closeSearch();'>&times close</a>" data-html="true" data-content="<div class='search-auto list-group'><p class='remove text-center'>Start typing to show suggestions</p></div>"></div>
                                 </li>
-                                <li class="vpf">
-                                    <a data-toggle="popover" title="Alerts" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top:-1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;" class="badge">{{ toolbarAlerts.length }}</span> </a>
+                                <li class="vpf search-parent">
+                                    <a data-toggle="popover" title="<a class='text-right' style='display:block;' href='javascript:clearAlerts();'>&times clear</a>" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top: -1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;text-align: center;padding-left: 8px;" class="badge">{{ toolbarAlerts.length }}</span> </a>
                                 </li>
                                 <li> <a data-toggle="popover" data-html="true" title="Account" class="account" data-content="<script>LoadUser();</script><div class='user-controls'></div>" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
                             </ul>
@@ -189,7 +189,7 @@
         <nav id="menuUI"></nav>
         <div class="main container-fluid">
             <div class="alerList">
-                <div ng-repeat="alert in alerts track by $index" style="margin-top:2.8em;" class="alert alert-default alert-dismissible fade in" role="alert">
+                <div ng-repeat="alert in alerts track by $index" style="margin-top:2.8em;" class="alert alert-default alert-dismissible fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
                     <h4>{{ alert.name }}</h4>
                     <hr>
@@ -199,9 +199,18 @@
                     </p>
                 </div>
             </div>
-           
             <div class="col-xs-12" ng-if="ready" ng-view>
             </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <div id="alert-template" class="alert alert-info alert-dismissible fade in" role="alert">
+            
+            <h5></h5>
+            <p class="description"> </p>
+            <p>
+                <a type="button"  href="" class="btn">Open</a>
+            </p>
         </div>
     </div>
     <script src="js/jquery.min.js"></script>

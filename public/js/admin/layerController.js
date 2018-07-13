@@ -70,7 +70,44 @@ app.controller('layerController', [
             var ua = $(".user-alerts")
             ua.html("");
 
-            ua.append("<p class='text-center'>No alerts at the moment.</p>");
+            $scope.toolbarAlerts = [
+                { _id: "000", name: "Your event has x RSVPs", description: "Your event x has 200 attendees", link: "link" },
+                { _id: "000", name: "Your event has x RSVPs", description: "Your event x has 200 attendees", link: "link" }
+            ];
+
+            if ($scope.toolbarAlerts.length == 0)
+                ua.append("<p class='text-center'>No alerts at the moment.</p>");
+            else {
+
+                var alertTemplate = $("#alert-template");
+                for (var i = $scope.toolbarAlerts.length - 1; i >= 0; i--) {
+                    var alert = $scope.toolbarAlerts[i],
+                        dv = alertTemplate.clone();
+
+                    $("h5", dv).html(alert.name);
+
+                    $(".description", dv).html(alert.description);
+
+                    if (!alert.link) {
+                        $("a.btn").remove();
+                    } else {
+                        $("a.btn").attr("href", alert.link);
+                    }
+
+                    dv.css('display', 'block');
+                    dv.attr("data-id", alert._id);
+
+
+
+                
+
+
+                    ua.append(dv);
+
+
+
+                }
+            }
         }
 
         window.closeSearch = () => {
@@ -160,6 +197,17 @@ app.controller('layerController', [
                 var option = options[i];
                 uc.append($(`<button onclick="modal('${option.modal}')" style="margin-top:10px;" class="btn btn-block btn-sm">${option.name}</button>`));
             }
+        }
+
+        window.clearAlerts = () => {
+            $(".user-alerts").html("");
+            for (var i = $scope.toolbarAlerts.length - 1; i >= 0; i--) {
+                var alert = $scope.toolbarAlerts[i];
+                $scope.Do("DELETE", `alerts/${alert._id}`, {}, (data) => {
+                    $scope.toolbarAlerts = [];
+                })
+            }
+
         }
 
         $scope.deleteFile = (file, action) => {
@@ -279,7 +327,7 @@ app.controller('layerController', [
                 $scope.apps = data.apps;
                 $scope.plan_id = data.plan_id;
                 $scope.customer_id = data.customer_id;
-                if($scope.apps.length == 0){
+                if ($scope.apps.length == 0) {
                     swal("Welcome", "It seems as if you have no apps installed. We will redirect you to pick which apps you'd like.", "success")
                     window.location = "#/apps";
                 }
@@ -295,7 +343,7 @@ app.controller('layerController', [
         }
 
         $scope.atMax = () => {
-            if(!$scope.apps) return false;
+            if (!$scope.apps) return false;
 
             return $scope.apps.length >= $scope.planMaxs[$scope.plan_id];
         }
