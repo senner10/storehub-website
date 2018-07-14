@@ -88,7 +88,7 @@ app.controller('themes', [
             if (data) {
                 $scope.theme = data.theme;
                 if (!$scope.theme)
-                    $scope.theme = { headerBackgroundColor: "rgb(255,255,255)" };
+                    $scope.theme = { headerBackgroundColor: "rgb(255,255,255)",buttonBackgroundColor:"rgb(255,255,255)" };
 
                 pasync(() => {
                     $(".colorTarget").each((i, picker) => {
@@ -124,6 +124,7 @@ app.controller('themes', [
             $scope.getColorSettings();
 
             pasync(() => {
+
                 $scope.Do("PUT", "theme", $scope.theme, (data) => {
                     if (data) {
                         swal("Success", "Theme setting saved!", "success");

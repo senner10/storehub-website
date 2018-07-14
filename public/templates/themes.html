@@ -7,6 +7,7 @@
             <li role="presentation" class="active"><a href="#tstyles" aria-controls="tstyles" role="tab" data-toggle="tab">Text style</a></li>
             <li role="presentation"><a href="#tcolors" aria-controls="tcolors" role="tab" data-toggle="tab">Text colors</a></li>
             <li role="presentation"><a href="#ccolors" aria-controls="ccolors" role="tab" data-toggle="tab">Component colors</a></li>
+            <li role="presentation"><a href="#bstyles" aria-controls="bstyles" role="tab" data-toggle="tab">Button styles</a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -32,9 +33,26 @@
                     </div>
                     <div class="colorTarget">
                         <span class="preview">&nbsp;</span>
-                        <input type="text" ng-model="theme.paragraphColor" placeholder="Paragraph text color">
-                        <span class="field-help">Paragraph text color</span>
+                        <input type="text" ng-model="theme.paragraphColor" placeholder="Component text color">
+                        <span class="field-help">Component text color</span>
                     </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="bstyles">
+                <div class="col-md-6">
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.buttonBackgroundColor" placeholder="Button background color">
+                        <span class="field-help">Background color</span>
+                    </div>
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.buttonBorderColor" placeholder="Border color">
+                        <span class="field-help">Border color</span>
+                    </div>
+                    <label>{{ theme.buttonRadius }}%</label>
+                    <input type="range" step="1" min="0" max="50" ng-model="theme.buttonRadius">
+                    <span class="field-help">Button border radius</span>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="ccolors">
@@ -64,17 +82,17 @@
             <div class="modal-body" style="font-family:{{ theme.fontFamily  }} !important;">
                 <label>Button</label>
                 <div class="storehub">
-                    <button style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border-color:{{ theme.paragraphColor }};"> Add to cart (10)</button>
+                    <button style="color:{{ theme.paragraphColor }};background-color:{{ theme.buttonBackgroundColor }};font-size: {{ theme.paragraphSize }}px;border-color:{{ theme.buttonBorderColor }};border-radius: {{ theme.buttonRadius}}%"> Add to cart (10)</button>
                 </div>
                 <label>Panel</label>
-                <div  class="storehub-panel" style="border-color:{{ theme.paragraphColor }}">
+                <div class="storehub-panel" style="border-color:{{ theme.paragraphColor }}">
                     <div style="background-color: {{ theme.headerBackgroundColor }}" class="header">
                         <h2 style="color:{{ theme.headerColor }};font-size:{{ theme.headerSize }}px">Header</h2></div>
                     <div class="panel" style="background-color: {{ theme.panelBackgroundColor }}">
                         <p style="color:{{ theme.paragraphColor }};">Sample text</p>
                         <div class="storehub">
-                            <input type="text" placeholder="Text prompt" 
-                            style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border:1px solid {{ theme.paragraphColor }};background-color: #fff;"><br>
+                            <input type="text" placeholder="Text prompt" style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border:1px solid {{ theme.paragraphColor }};background-color: #fff;">
+                            <br>
                             <button style="border-color:{{ theme.paragraphColor }};color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px">Call to action</button>
                         </div>
                     </div>
