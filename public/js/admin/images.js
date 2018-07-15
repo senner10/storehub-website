@@ -29,7 +29,7 @@ app.controller('images', [
             var options = {
                 placement: "left auto",
                 html: true,
-                content: `<p style="color:${theme.paragraphColor}" class="text-center">${comment}</p><h3 style="color:${theme.paragraphColor}" class="text-center">$ ${item.price}</h3><p class="text-center storehub"><button style="margin-bottom:1px;color:${theme.paragraphColor};border:1px solid ${theme.paragraphColor}">${cta}</button> </p>`,
+                content: `<p style="color:${theme.paragraphColor}" class="text-center">${comment}</p><h3 style="color:${theme.paragraphColor}" class="text-center">$ ${item.price}</h3><p class="text-center storehub"><button style="margin-bottom:1px;color:${theme.paragraphColor};border:1px solid ${theme.buttonBorderColor};background-color: ${theme.buttonBackgroundColor}">${cta}</button> </p>`,
                 viewport: "body",
                 title: `<span style="color:${theme.paragraphColor}">${item.name}</span>`
             };
@@ -191,6 +191,7 @@ app.controller('images', [
                         var id = $scope.item.meta.index[i];
                         var position = $scope.item.meta.items[id].position;
                         $(".image-tag-wrapper.enabled").append(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">+</div>`);
+                        $scope.updateSize(id);
                     }
 
             });

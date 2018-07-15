@@ -23,7 +23,8 @@ function LoadScript(src, onload) {
 
 function AddStoreButton() {
     var baseStyles = '.storehub button{padding:3px 10px;height:30px;border:1px solid #333;border-radius:10px;font-family:inherit!important}.storehub button:focus{border:1px solid #333}.storehub input{background:#f5f5f5;border:1px solid #333;width:initial!important;height:50px;min-width:400px;padding-left:20px;font-weight:500;margin-bottom:24px;border-radius:0 !important;}.storehub-panel{overflow:hidden;border:1px solid;}.storehub-panel .header,.storehub-panel .panel{padding:10px;border-radius:0;margin:0;font-family:inherit!important}';
-    var storehubData, theme, position;
+    var storehubData, theme, position, productCache = {},
+        popoverMap = {};
 
     AddStyle(baseStyles);
 
@@ -333,7 +334,9 @@ function AddStoreButton() {
         $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="/css/remodal.css" />');
         $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="/css/remodal-default-theme.css" />');
         $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="/css/font-awesome.min.css" />');
+        $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="/css/taggd.css" />');
         LoadScript("/js/remodal.min.js");
+        LoadScript("/js/bs.popover.js");
 
         var btn = $('<div class="storehub"><button class="widget" > <img style="float: left;position: relative;left: -5px;" src="/img/icon.png" width="25" /> Show locations</buttton></div>');
 
@@ -350,11 +353,31 @@ function AddStoreButton() {
         $("body").append(btn);
         getLocation();
         parseProducts();
+        parseImages();
     }
 
     function parseProducts() {
         $(".storehub[data-type='product']").each((i, product) => {
             fetchProduct($(product).data("id"), $(product))
+        })
+    }
+
+    function parseImages() {
+        $(".storehub[data-type='image']").each((i, image) => {
+            fetchImage($(image).data("id"), $(image))
+        })
+    }
+
+    function fetchImage(id, tag) {
+        var tooltipStyle = '.storehub .popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.42857143;text-align:left;white-space:normal;background-color:#fff;-webkit-background-clip:padding-box;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);border-radius:6px;-webkit-box-shadow:0 5px 10px rgba(0,0,0,.2);box-shadow:0 5px 10px rgba(0,0,0,.2)}.storehub .popover.top{margin-top:-10px}.storehub .popover.right{margin-left:10px}.storehub .popover.bottom{margin-top:10px}.storehub .popover.left{margin-left:-10px}.storehub .popover-title{padding:8px 14px;margin:0;font-size:14px;background-color:#f7f7f7;border-bottom:1px solid #ebebeb;border-radius:5px 5px 0 0}.storehub .popover-content{padding:9px 14px}.storehub .popover>.arrow,.storehub .popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:transparent;border-style:solid}.storehub .popover>.arrow{border-width:11px}.storehub .popover>.arrow:after{content:"";border-width:10px}.storehub .popover.top>.arrow{bottom:-11px;left:50%;margin-left:-11px;border-top-color:#999;border-top-color:rgba(0,0,0,.25);border-bottom-width:0}.popover.top>.arrow:after{bottom:1px;margin-left:-10px;content:" ";border-top-color:#fff;border-bottom-width:0}.storehub .popover.right>.arrow{top:50%;left:-11px;margin-top:-11px;border-right-color:#999;border-right-color:rgba(0,0,0,.25);border-left-width:0}.storehub .popover.right>.arrow:after{bottom:-10px;left:1px;content:" ";border-right-color:#fff;border-left-width:0}.storehub .popover.bottom>.arrow{top:-11px;left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,.25)}.storehub .popover.bottom>.arrow:after{top:1px;margin-left:-10px;content:" ";border-top-width:0;border-bottom-color:#fff}.storehub .popover.left>.arrow{top:50%;right:-11px;margin-top:-11px;border-right-width:0;border-left-color:#999;border-left-color:rgba(0,0,0,.25)}.storehub .popover.left>.arrow:after{right:1px;bottom:-10px;content:" ";border-right-width:0;border-left-color:#fff} .storehub .text-center { text-align:center;}';
+
+        AddStyle(tooltipStyle);
+
+        $.ajax({
+            url: `/api/user_image/${id}`,
+            success: (response) => {
+                buildImage(response, tag)
+            }
         })
     }
 
@@ -367,6 +390,97 @@ function AddStoreButton() {
         })
     }
 
+    function buildImage(image, tag) {
+        var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;"> <div class="image-tag-wrapper enabled"><img src="/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
+
+        var description = $(`<h2>${image.name}</h2><p>${image.meta.index.length} product${image.meta.index.length != 1 ? "s" : "" } in image </p>`)
+
+        if (image.meta && image.meta.index)
+            for (var i = image.meta.index.length - 1; i >= 0; i--) {
+                var id = image.meta.index[i];
+                var p = image.meta.items[id];
+
+                var position = p.position;
+                var elem = $(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">+</div>`);
+
+
+
+                $.ajax({
+                    url: `/api/user_product/${p._id}`,
+                    success: (response) => {
+                        productCache[id] = response;
+                    }
+                })
+
+                elem.click(() => {
+
+                    item = productCache[id]
+
+
+                    if (!item)
+                        return;
+
+
+                    var comment = item.comment ? item.comment : "Comments",
+                        cta = item.cta ? item.cta : "CALL TO ACTION"
+
+                    var options = {
+                        placement: "left auto",
+                        html: true,
+                        content: `<p  class="text-center">${comment}</p><h3  class="text-center">$ ${item.price}</h3><p class=" storehub" ><button onclick="window.location='${item.url}'" >${cta}</button> </p>`,
+                        viewport: "body",
+                        title: `<span >${item.name}</span>`
+                    };
+
+
+                    var target = `[data-id="${id}"]`;
+                    if (!popoverMap[id]) {
+                        popoverMap[id] = true;
+                        $(target).popover(options);
+                        $(target).popover('show');
+                    }
+                    pulse(id);
+                })
+                generateStyle(elem, image.meta.items[id].size);
+                $(".image-tag-wrapper.enabled", wrapper).append(elem);
+            }
+
+
+
+        tag.append(wrapper);
+        tag.append(description);
+    }
+
+    function pulse(id) {
+        var elem = $(`[data-id="${id}"]`);
+
+        var top = parseInt(elem.css("top")) - 2,
+            left = parseInt(elem.css("left")) - 2,
+            elemWidth = parseInt(elem.css("width")) + 25;
+        var image = $("<img />").attr("style", `width: 55px;position:absolute;top:${top}px; width: ${elemWidth}px;left:${left}px`)
+            .attr("src", "/img/ripple.gif");
+
+        $(".image-tag-wrapper.enabled").append(image);
+
+        setTimeout(() => {
+            image.remove();
+        }, 2500);
+
+
+    }
+
+    function generateStyle(tag, size) {
+        var lineHeight = size - 5;
+
+        size = `${size}px`;
+
+        tag.css("width", parseInt(size) - 15 + "px")
+            .css("height", size)
+            .css("line-height", `${lineHeight}px`);
+
+
+    }
+
     function buildProduct(data, tag) {
         var product = $(`<div><h2>${data.name}</h2> <hr> <div class="float-column scrolldiv" style="margin-right:25px; width:calc(50% - 25px)"> </div><div class="float-column two"> <p style="line-height: 22px;"> </p></div><div style="clear:both"></div></div>`);
 
@@ -375,14 +489,21 @@ function AddStoreButton() {
             $(".float-column.scrolldiv", product).append(`<img src="/file/${image}" />`);
         }
 
-        if (product.category)
-            $(".float-column.two", product).append(` <strong>Category</strong> / ${product.category} <br>`)
+        if (data.price)
+            $(".float-column.two", product).append(` <strong>Price</strong> / $ ${data.price.toFixed(2)} <br>`)
 
-        if (product.sub_category)
-            $(".float-column.two", product).append(` <strong>Sub category</strong> / ${product.sub_category} <br>`)
+        if (data.category)
+            $(".float-column.two", product).append(` <strong>Category</strong> / ${data.category} <br>`)
 
-        if (product.description) {
-            $(".float-column.two", product).append(` <strong>Description</strong> / ${product.description} <br><a class="expander">View more</a>`)
+        if (data.sku)
+            $(".float-column.two", product).append(` <strong>SKU</strong> / ${data.sku} <br>`)
+
+
+        if (data.sub_category)
+            $(".float-column.two", product).append(` <strong>Sub category</strong> / ${data.sub_category} <br>`)
+
+        if (data.description) {
+            $(".float-column.two", product).append(` <strong>Description</strong> / ${data.description} <br><a class="expander">View more</a>`)
         }
 
         $(".float-column.two", product).append(`<p class="storehub" style="margin:0;"><button class="add-wishlist">+Wishlist</button></p>`)
