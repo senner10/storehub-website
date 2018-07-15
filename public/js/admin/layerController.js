@@ -437,6 +437,7 @@ function uploadFile(file, cb) {
             try {
                 cb(JSON.parse(xhr.responseText));
             } catch (e) {
+                console.log(e);
                 console.log("Invalid JSON");
                 cb({ error: xhr.responseText == "" ? "Server wrote no response" : xhr.responseText })
             }

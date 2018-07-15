@@ -8,7 +8,7 @@ app.controller('events', [
             (data) => {
                 if (data) {
                     data.start_date = data.start_date ? new Date(data.start_date) : new Date();
-                    data.end_date = data.end_date ?  new Date(data.end_date) : new Date();
+                    data.end_date = data.end_date ? new Date(data.end_date) : new Date();
                     $scope.item = data;
                 } else {
                     //redirect to 404
@@ -25,6 +25,9 @@ app.controller('events', [
             });
 
         $scope.addImage = (data) => {
+            if (!$scope.item.images)
+                $scope.item.images = [];
+
             $scope.item.images.push(data._id);
             $scope.update('events', $scope.item._id, $scope.item);
             $scope.$apply();

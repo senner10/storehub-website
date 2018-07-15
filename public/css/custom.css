@@ -160,6 +160,12 @@ pre {
     font-size: 12px;
 }
 
+body > #gmap {
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+}
+
 .list-group-item h4,
 .list-group-item button {
     margin-bottom: 10px;
