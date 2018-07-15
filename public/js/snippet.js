@@ -22,7 +22,7 @@ function LoadScript(src, onload) {
 
 
 function AddStoreButton() {
-    var baseStyles = '.storehub button{padding:3px 10px;height:30px;border:1px solid #333;border-radius:10px;font-family:inherit!important}.storehub button:focus{border:1px solid #333}.storehub input{background:#f5f5f5;border:none;width:initial!important;height:50px;min-width:400px;padding-left:20px;font-weight:500;margin-bottom:24px;border-radius:0}.storehub-panel{overflow:hidden;border:1px solid;}.storehub-panel .header,.storehub-panel .panel{padding:10px;border-radius:0;margin:0;font-family:inherit!important}';
+    var baseStyles = '.storehub button{padding:3px 10px;height:30px;border:1px solid #333;border-radius:10px;font-family:inherit!important}.storehub button:focus{border:1px solid #333}.storehub input{background:#f5f5f5;border:1px solid #333;width:initial!important;height:50px;min-width:400px;padding-left:20px;font-weight:500;margin-bottom:24px;border-radius:0 !important;}.storehub-panel{overflow:hidden;border:1px solid;}.storehub-panel .header,.storehub-panel .panel{padding:10px;border-radius:0;margin:0;font-family:inherit!important}';
     var storehubData, theme, position;
 
     AddStyle(baseStyles);
@@ -43,7 +43,6 @@ function AddStoreButton() {
         storehubData = response;
         $.ajax({
             url: `/api/user_theme/${storehubData.w.owner}`,
-            headers: { "token": storeToken },
             contentType: "application/json",
             success: (response) => {
                 theme = response.theme;
@@ -56,8 +55,9 @@ function AddStoreButton() {
     }
 
     var StoreHubPanel = (title, content) => {
-
-        return $(`<div class="storehub"><div class="storehub-panel" > <div class="header"><h2>${title}</h2></div> <div class="panel"> ${content} </div> </div> </div>`);
+        var panel = $(`<div class="storehub"><div class="storehub-panel" > <div class="header"><h2>${title}</h2></div> <div class="panel"> </div> </div> </div>`)
+        $(".panel", panel).append(content);
+        return panel;
     }
 
     var ShowModal = (content) => {
@@ -183,17 +183,116 @@ function AddStoreButton() {
             }
         }
 
-        if($(".list-element", locationElements).length == 0) {
-        	locationElements.append("<p style='text-align:center;'>No nearby stores found.</p>");
+        if ($(".list-element", locationElements).length == 0) {
+            locationElements.append("<p style='text-align:center;'>No nearby stores found.</p>");
         }
 
         $(".remodal-wrapper .panel").append(locationElements);
     }
 
+    var checkEvents = () => {
+        $.ajax({
+            url: `/api/user_events/${storehubData.w.owner}`,
+            contentType: "application/json",
+            success: (response) => {
+                parseEvents(response);
+            },
+            error: () => {
+                console.log("Please contact your developer, the snippet failed to authenticate.")
+            }
+        })
+    }
+
+    var parseEvents = (events) => {
+
+        for (var i = events.length - 1; i >= 0; i--) {
+            var event = events[i];
+            if (!window.localStorage[event._id]) {
+                window.localStorage[event._id] = true;
+                findEventLocation(event);
+            }
+        }
+    }
+
+    var findEventLocation = (event) => {
+        for (var i = storehubData.locations.length - 1; i >= 0; i--) {
+            var location = storehubData.locations[i];
+            if (location.location) {
+                var lat = location.location.geometry.location.lat,
+                    lon = location.location.geometry.location.lng;
+
+                var dist = calcCrow(position.latitude, position.longitude, lat, lon);
+
+                if ((!location.useFence && dist < location.range) || inFence(location)) {
+                    showEvent(event);
+                }
+
+            }
+        }
+    }
+
+    var showEvent = (event) => {
+        var content = $('<div/>'),
+            rsvp = $(`<button class="form">Save</button>`);
+
+        content.append('<div class="scrolldiv"> </div>')
+        content.append(`<p >${event.description ? event.description : ""}</p>`)
+
+        if (event.rsvp) {
+            content.append('<p><strong>You must RSVP to attend.</strong></p>');
+        }
+        content.append(`<p>Add your email to get event updates.</p><input class="form" type="text" placeholder="email" /><br>`);
+
+        content.append(rsvp);
+
+        rsvp.click(() => {
+
+
+            var data = {
+                owner: storehubData.w.owner,
+                email: $("input", content).val()
+            }
+
+            var removeLoader = () => {
+                $(".loader", content).remove();
+            }
+            removeLoader();
+            content.append("<p class='loader'><i class='fa fa-spin fa-cog'></i> One moment... </p>")
+            $.ajax({
+                url: "/api/save_email",
+                type: "POST",
+                data: data,
+                success: () => {
+                    removeLoader();
+                    $(".form", content).remove();
+                    content.append("<p class='loader'>Thank you, your email is saved. closing window.</p>")
+                    setInterval(() => {
+                        $(".remodal-close").click();
+                    }, 2100);
+
+                },
+                error: () => {
+                    removeLoader();
+                    content.append("<p class='loader'>Error, please try again.</p>")
+
+                }
+            })
+        })
+
+        for (var i = event.images.length - 1; i >= 0; i--) {
+            var image = event.images[i]
+            $(".scrolldiv", content).append(`<img src="/file/${image}" />`)
+        }
+
+        var panel = StoreHubPanel(event.name, content)
+        ShowModal(panel);
+
+    }
+
 
     var inFence = (location) => {
         var polygon = [];
-        if(!position) return false;
+        if (!position) return false;
 
         for (var i = location.meta.geofence.length - 1; i >= 0; i--) {
             var point = location.meta.geofence[i];
@@ -226,7 +325,7 @@ function AddStoreButton() {
 
     var addButton = () => {
 
-        var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; }.storehub p, .storehub .social , .storehub button, .storehub { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;position:fixed;top:60px;right:-91px;-webkit-transition:right 1s;transition:right 1s}.storehub .widget:hover{right:-2px} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid #ccc;margin: 0 0 24px 0;width: 100%;} `;
+        var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; }.storehub p, .storehub .social , .storehub button, .storehub { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social, .storehub input { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;position:fixed;top:60px;right:-91px;-webkit-transition:right 1s;transition:right 1s}.storehub .widget:hover{right:-2px} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid #ccc;margin: 0 0 24px 0;width: 100%;} `;
 
         AddStyle(userStyles);
 
@@ -261,6 +360,7 @@ function AddStoreButton() {
     function savePosition(p) {
         position = p.coords;
         $(".storehub .widget").css('display', 'block');
+        checkEvents();
     }
 
 

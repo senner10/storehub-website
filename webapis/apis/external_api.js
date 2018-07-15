@@ -10,7 +10,6 @@ var website = require("../db/models/website"),
     theme = require("../db/models/theme")
 
 
-
 router.get("/get_locations", (req, res) => {
 
     var ip = (req.headers['x-forwarded-for'] ||
@@ -46,17 +45,37 @@ router.get("/get_locations", (req, res) => {
 
 })
 
-router.get("/user_theme/:id", (req, res) => {
 
-    theme.findOne({ owner: req.params.id }, (err, t) => {
-        if (err) {
-            res.status(500).send(err)
-            return
-        }
-        res.json(t);
+router.get("/user_events/:id", (req, res) => {
+
+    event.find({ owner: req.params.id }, (err, evs) => {
+        sendResponse(err, evs, res);
     })
 
 })
+
+router.post("/save_email", (req, res) => {
+    var e = new email(req.body)
+    e.save((err) => {
+        sendResponse(err, e, res);
+    })
+})
+
+router.get("/user_theme/:id", (req, res) => {
+
+    theme.findOne({ owner: req.params.id }, (err, t) => {
+        sendResponse(err, t, res);
+    })
+
+})
+
+function sendResponse(err, data, res) {
+    if (err) {
+        res.status(500).send(err)
+        return
+    }
+    res.json(data);
+}
 
 
 
