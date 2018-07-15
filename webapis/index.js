@@ -7,7 +7,8 @@ const fileViewer = require("./apis/fileViewer")
 const themeApi = require("./apis/themes")
 const merchantApi = require("./apis/merchant")
 const helpApi = require("./apis/help")
-const bodyParser = require('body-parser');
+const externalApi = require("./apis/external_api")
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 var session = require('express-session')
 
@@ -37,8 +38,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({ limit: "20mb" }));
 
 app.use('/api',
-    sessions
-    );
+    sessions,
+    externalApi
+);
 
 app.use('/api/res',
     CRUDapi,
@@ -46,7 +48,7 @@ app.use('/api/res',
     themeApi,
     helpApi,
     merchantApi
-    );
+);
 
 
 

@@ -52,9 +52,9 @@
                         <label>Add this tag to your website</label>
                         <pre><code>
 &lt;script&gt;
-    var storeToken = {{ prev.website }}
+    var storeToken = "{{ prev.website }}"
 &lt;/script&gt;
-&lt;script src="http://storehub.com/js/snippet.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="http://storehub.com/js/snippet.js" defer type="text/javascript"&gt;&lt;/script&gt;
                             </code></pre>
                     </div>
                 </div>
@@ -79,9 +79,9 @@
                         <label>Code for {{ item.name }}</label>
                         <pre><code>
 &lt;script&gt;
-    var storeToken = {{ item._id }},{{ item.secret }}
+    var storeToken = "{{ item._id }},{{ item.secret }}"
 &lt;/script&gt;
-&lt;script src="http://storehub.com/js/snippet.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;script src="http://storehub.com/js/snippet.js" defer type="text/javascript"&gt;&lt;/script&gt;
                     </code></pre>
                     </div>
                 </div>
