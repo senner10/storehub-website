@@ -349,6 +349,45 @@ function AddStoreButton() {
 
         $("body").append(btn);
         getLocation();
+        parseProducts();
+    }
+
+    function parseProducts() {
+        $(".storehub[data-type='product']").each((i, product) => {
+            fetchProduct($(product).data("id"), $(product))
+        })
+    }
+
+    function fetchProduct(id, tag) {
+        $.ajax({
+            url: `/api/user_product/${id}`,
+            success: (response) => {
+                buildProduct(response, tag)
+            }
+        })
+    }
+
+    function buildProduct(data, tag) {
+        var product = $(`<div><h2>${data.name}</h2> <hr> <div class="float-column scrolldiv" style="margin-right:25px; width:calc(50% - 25px)"> </div><div class="float-column two"> <p style="line-height: 22px;"> </p></div><div style="clear:both"></div></div>`);
+
+        for (var i = data.images.length - 1; i >= 0; i--) {
+            var image = data.images[i];
+            $(".float-column.scrolldiv", product).append(`<img src="/file/${image}" />`);
+        }
+
+        if (product.category)
+            $(".float-column.two", product).append(` <strong>Category</strong> / ${product.category} <br>`)
+
+        if (product.sub_category)
+            $(".float-column.two", product).append(` <strong>Sub category</strong> / ${product.sub_category} <br>`)
+
+        if (product.description) {
+            $(".float-column.two", product).append(` <strong>Description</strong> / ${product.description} <br><a class="expander">View more</a>`)
+        }
+
+        $(".float-column.two", product).append(`<p class="storehub" style="margin:0;"><button class="add-wishlist">+Wishlist</button></p>`)
+
+        tag.append(product);
     }
 
     function getLocation() {

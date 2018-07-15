@@ -61,6 +61,12 @@ router.post("/save_email", (req, res) => {
     })
 })
 
+router.get("/user_product/:id", (req, res) => {
+    product.findOne({ _id: req.params.id }, (err, p) => {
+        sendResponse(err, p, res);
+    })
+})
+
 router.get("/user_theme/:id", (req, res) => {
 
     theme.findOne({ owner: req.params.id }, (err, t) => {
