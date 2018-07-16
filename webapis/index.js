@@ -7,6 +7,7 @@ const fileViewer = require("./apis/fileViewer")
 const themeApi = require("./apis/themes")
 const merchantApi = require("./apis/merchant")
 const helpApi = require("./apis/help")
+const analyticsApi = require("./apis/analytics")
 const externalApi = require("./apis/external_api")
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -47,7 +48,8 @@ app.use('/api/res',
     fileApi,
     themeApi,
     helpApi,
-    merchantApi
+    merchantApi,
+    analyticsApi
 );
 
 

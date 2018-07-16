@@ -579,35 +579,7 @@ function BuildStoreHub() {
                         }
                     })
 
-                    elem.click(() => {
-
-                        item = productCache[id]
-                        if (!item)
-                            return;
-                        var comment = item.comment ? item.comment : "Comments",
-                            cta = item.cta ? item.cta : "CALL TO ACTION"
-
-                        var options = {
-                            placement: "left auto",
-                            html: true,
-                            content: `<p  class="text-center">${comment}</p><h3  class="text-center">$ ${item.price}</h3><p class=" storehub" ><button onclick="window.location='${item.url}'" >${cta}</button> </p>`,
-                            viewport: "body",
-                            title: `<p class="text-center" style="margin:0;">${item.name}</p>`
-                        };
-
-                        saveMetric(image._id, 1);
-
-                        var target = `[data-id="${id}"]`;
-                        if (!popoverMap[id]) {
-                            popoverMap[id] = true;
-                            $(target).popover(options);
-                            $(target).popover('show');
-                        }
-                        pulse(id);
-                    })
-                    generateStyle(elem, image.meta.items[id].size);
-                    $(".image-tag-wrapper.enabled", wrapper).append(elem);
-                    pulse(id);
+                    buildCircle(id, elem, wrapper, image);
                 }
 
 
@@ -615,6 +587,38 @@ function BuildStoreHub() {
             tag.append(wrapper);
             tag.append(description);
             pulseAll(image);
+        }
+
+        function buildCircle(id, elem, wrapper, image) {
+            elem.click(() => {
+
+                item = productCache[id]
+                if (!item)
+                    return;
+                var comment = item.comment ? item.comment : "Comments",
+                    cta = item.cta ? item.cta : "CALL TO ACTION"
+
+                var options = {
+                    placement: "left auto",
+                    html: true,
+                    content: `<p  class="text-center">${comment}</p><h3  class="text-center">$ ${item.price}</h3><p class=" storehub" ><button onclick="window.location='${item.url}'" >${cta}</button> </p>`,
+                    viewport: "body",
+                    title: `<p class="text-center" style="margin:0;">${item.name}</p>`
+                };
+
+                saveMetric(image._id, 1);
+
+                var target = `[data-id="${id}"]`;
+                if (!popoverMap[id]) {
+                    popoverMap[id] = true;
+                    $(target).popover(options);
+                    $(target).popover('show');
+                }
+                pulse(id);
+            })
+            generateStyle(elem, image.meta.items[id].size);
+            $(".image-tag-wrapper.enabled", wrapper).append(elem);
+            pulse(id);
         }
 
         function pulseAll(image) {

@@ -11,18 +11,19 @@
                             Displayed Data <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
-                            <li><input type="checkbox"> Name</li>
+                            <li ng-repeat="item in displayedItems">
+                                <input ng-change="buildChart()" type="checkbox" ng-model="item.show"> {{ item.name }}
+                            </li>
                         </ul>
                     </div>
-                       <div class="btn-group">
-                        <button  ng-if="currentapp != 'n'" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Filters <span class="caret"></span>
-                        </button>
+                    <div class="btn-group">
                         <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
                             Start :
                             <input type="date" ng-model="filter.start" placeholder="Start date" style=" height: 40px;"> End :
                             <input type="date" ng-model="filter.end" style=" height: 40px; " placeholder="End date">
-                            <p><button class="btn">Search</button></p>
+                            <p>
+                                <button class="btn">Search</button>
+                            </p>
                         </ul>
                     </div>
                     <div class="btn-group">
@@ -35,7 +36,6 @@
                             </li>
                         </ul>
                     </div>
-                 
                 </div>
                 <h3 class="panel-title">{{ appStat[currentapp].name }}</h3>
             </div>

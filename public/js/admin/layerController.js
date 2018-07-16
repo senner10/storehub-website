@@ -114,7 +114,10 @@ app.controller('layerController', [
             $(".poptarget").popover('toggle');
         }
 
-        $scope.buildCache = (type, noMatch) => {
+        $scope.getCache = () => {
+            return $scope.dbCache;
+        }
+        $scope.buildCache = (type, noMatch, appType) => {
 
             $scope.Do("GET", type, {}, (data) => {
                 if (!data) return;
@@ -122,6 +125,7 @@ app.controller('layerController', [
                 for (var o = 0; o < data.length; o++) {
                     var item = data[o];
                     item.resType = type;
+                    item.appType = appType;
                     $scope.dbCache.push(item);
                 }
                 if (noMatch)
@@ -142,10 +146,15 @@ app.controller('layerController', [
 
         $scope.newItemCache = (noMatch) => {
             $scope.dbCache = [];
-            var resTypes = ["locations", "images", "events", "apis", "products"];
+            var resTypes = ["apis", "locations", "images", "events", "products"];
+            var appTypes = { locations: "gm", images: "spl", events: "re", products: "cme" };
+
             for (var i = resTypes.length - 1; i >= 0; i--) {
                 var type = resTypes[i];
-                $scope.buildCache(type, noMatch);
+
+                var appType = appTypes[type];
+
+                $scope.buildCache(type, noMatch, appType);
             }
         }
 
