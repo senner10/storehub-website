@@ -67,6 +67,15 @@ router.get("/user_product/:id", (req, res) => {
     })
 })
 
+
+router.get("/user_products/:ids", (req, res) => {
+    var ids = req.params.ids.split(",");
+
+    product.find({ _id: { $in : ids } }, (err, p) => {
+        sendResponse(err, p, res);
+    })
+})
+
 router.get("/user_image/:id", (req, res) => {
     image.findOne({ _id: req.params.id }, (err, i) => {
         sendResponse(err, i, res);

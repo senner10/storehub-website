@@ -59,19 +59,18 @@
                     </div>
                 </div>
                 <div ng-if="resName == 'image'">
-                    <label>Preview</label><br>
+                    <label>Preview</label>
+                    <br>
                     <img src="https://placehold.it/320x400">
                     <h3>Name</h3>
                     <p class="field-help">5 items in photo</p>
-
-                     <div ng-repeat="item in previewSet">
+                    <div ng-repeat="item in previewSet">
                         <br>
                         <label>Code for {{ item.name }}</label>
                         <pre><code>
 &lt;div data-id="{{ item._id }}" class="storehub" data-type="image" &gt;&lt;/div&gt;
                     </code></pre>
                     </div>
-
                 </div>
                 <div ng-if="resName == 'api'">
                     <div ng-repeat="item in previewSet">
@@ -87,29 +86,26 @@
                 </div>
                 <div ng-if="resName == 'product'">
                     <label>Preview:</label>
-                    <div class="list-group-item">
-                        <h2> Product name</h2>
+                    <div style="font-family:{{ theme.fontFamily  }} !important;" class="list-group-item">
+                        <h2 style="color:{{ theme.paragraphColor }};font-size: {{ theme.headerSize }}px"> Product name</h2>
                         <hr>
                         <div class="row">
                             <div class="col-md-4">
                                 <img src="https://placehold.it/400x400">
                             </div>
-                            <div class="col-md-8">
-                                <p style="line-height: 22px;">
+                            <div class="col-md-8 storehub">
+                                <p style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;line-height:{{ theme.paragraphSize + 4 }}px;">
                                     <strong>Category</strong> / category name
                                     <br>
                                     <strong>Sub category</strong> / sub category name
-                                    <br>
+                                    <br style="border-color:{{ theme.buttonBorderColor }}">
                                     <strong>Description</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet placerat est. Nullam vitae cursus lorem. Praesent nec lectus at leo euismod pretium. Aenean rutrum massa quis metus molestie, posuere egestas elit cursus...
                                     <br>
-                                    <a>View more</a>
+                                    <a style="color:{{ theme.paragraphColor }}">View more</a><br/>
+                                    <button style="border-color:{{ theme.buttonBorderColor }};background-color: {{ theme.buttonBackgroundColor }};color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border-radius: {{ theme.buttonRadius}}%;">+Wishlist</button>
                                 </p>
                             </div>
                         </div>
-                        <p class="storehub" style="margin:0;">
-                            <button>Add to cart</button>
-                            <button>+Wishlist</button>
-                        </p>
                     </div>
                     <div ng-repeat="item in previewSet">
                         <br>
