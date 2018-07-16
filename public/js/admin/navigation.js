@@ -1,7 +1,3 @@
-$(document).ready(function() {
-
-});
-
 function BuildNav(apps) {
 
     var menu = [{
@@ -104,9 +100,24 @@ function BuildNav(apps) {
 
     };
     var clickAction = function(id) {
+        console.log(id);
         if (id == "") return;
-
         window.location = id;
+        $(".nav-open").removeClass("nav-open");
     }
     $("#menuUI").menuUI(json, clickAction);
+
+    var width = parseInt($("html").css("width"));
+
+    if (width <= 768) {
+        var menu = $("#menuUI .nav.navbar-nav");
+        $("#menuUI .nav.navbar-nav").appendTo($(".nav-bar .menu").parent())
+        $(".nav-bar a[id]").click((e) => {
+
+            e.preventDefault();
+            clickAction ( $(e.target).attr("id"));
+
+        })
+    }
+
 }
