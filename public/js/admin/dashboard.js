@@ -93,7 +93,7 @@ app.controller('Dashboard', [
 
                             $scope.chartData.datasets.push({
                                 label: `${item.name} clicks`,
-                                borderColor: colorArray[ colorArray.length - counter],
+                                borderColor: colorArray[colorArray.length - counter],
                                 data: data.sets[1],
                             })
 
@@ -104,6 +104,9 @@ app.controller('Dashboard', [
                     }, 200, item);
                 else counter--;
 
+                if (counter == 0) {
+                    $(".panel-body").html("<p>No data found at the moment.</p>");
+                }
 
             }
         }

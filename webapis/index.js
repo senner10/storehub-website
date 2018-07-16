@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
+const https = require('https');
 const port = process.env.PORT ? process.env.PORT : "3000";
+const fs = require('fs');
 const sessions = require("./apis/sessions")
 const fileApi = require("./apis/fileApi")
 const fileViewer = require("./apis/fileViewer")
@@ -13,8 +15,25 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 var session = require('express-session')
 
+// Certificate
+const privateKey = fs.readFileSync('./server.key', 'utf8');
+const certificate = fs.readFileSync('./server.crt', 'utf8');
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+};
+
+
 const CRUDapi = require("./db/api_connector")
     .BuildApiRouter();
+
+const allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,token');
+    next();
+};
 
 app.use(session({
     secret: 'keyboard cat',
@@ -27,6 +46,7 @@ app.use(session({
 // Serve static website
 app.use(
     "/",
+    allowCrossDomain,
     express.static('../public'),
     fileViewer
 );
@@ -39,6 +59,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({ limit: "20mb" }));
 
 app.use('/api',
+    allowCrossDomain,
     sessions,
     externalApi
 );
@@ -54,8 +75,10 @@ app.use('/api/res',
 
 
 
+// Starting both http & https servers
+const httpsServer = https.createServer(credentials, app);
 
 
-app.listen(parseInt(port),
-    () => console.log(`listening on port ${port}!`)
-)
+httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+});
