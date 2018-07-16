@@ -85,6 +85,7 @@ function BuildNav(apps) {
             submenu: [
                 { id: '#/themes', value: 'Colors', action: 'click' },
                 { id: '#/stripe_settings', value: 'Merchant settings', show: true, action: 'click' },
+                { id: '#/mailchimp', value: 'Mailchimp', show: true, action: 'click' },
                 { id: '#/help', value: 'Help', show: true, action: 'click' }
             ]
         }

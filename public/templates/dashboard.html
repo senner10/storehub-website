@@ -1,14 +1,46 @@
-<h3>Dashboard</h3>
-<hr>
+<h3 ng-if="currentapp == 'n'">Dashboard</h3>
+<hr ng-if="currentapp == 'n'">
 <div class="row">
-    <div class="col-sm-6">
-        <div class="panel panel-success">
+    <div class="col-sm-12">
+        <div class="panel panel-success" style="min-height: 450px;">
             <div class="panel-heading">
-            <a ng-click="" class="pull-right"><i class="glyphicon glyphicon-chevron-up"></i></a>
-                <h3 class="panel-title">App name</h3>
+                <div class="pull-right">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <button type="button" ng-if="currentapp != 'n'" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Displayed Data <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            <li><input type="checkbox"> Name</li>
+                        </ul>
+                    </div>
+                       <div class="btn-group">
+                        <button  ng-if="currentapp != 'n'" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Filters <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            Start :
+                            <input type="date" ng-model="filter.start" placeholder="Start date" style=" height: 40px;"> End :
+                            <input type="date" ng-model="filter.end" style=" height: 40px; " placeholder="End date">
+                            <p><button class="btn">Search</button></p>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select app <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            <li ng-repeat="app in apps" ng-if="appStat[app]">
+                                <button ng-click="setApp(app)" style="margin-bottom: 2px;" class="btn-block  btn btn-sm">{{ appStat[app].name }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                 
+                </div>
+                <h3 class="panel-title">{{ appStat[currentapp].name }}</h3>
             </div>
             <div class="panel-body">
-                Panel content
+                <p class="text-center" style="padding-top:22px;"><b>Click on the button above to display customer statistics.</b></p>
             </div>
         </div>
     </div>

@@ -99,7 +99,7 @@ app.controller('layerController', [
 
 
 
-                
+
 
 
                     ua.append(dv);
@@ -114,7 +114,7 @@ app.controller('layerController', [
             $(".poptarget").popover('toggle');
         }
 
-        $scope.buildCache = (type) => {
+        $scope.buildCache = (type, noMatch) => {
 
             $scope.Do("GET", type, {}, (data) => {
                 if (!data) return;
@@ -124,8 +124,8 @@ app.controller('layerController', [
                     item.resType = type;
                     $scope.dbCache.push(item);
                 }
-
-                $scope.matchResults();
+                if (noMatch)
+                    $scope.matchResults();
             });
 
         }
@@ -133,16 +133,20 @@ app.controller('layerController', [
         $scope.findResults = () => {
 
             if (!$scope.dbCache) {
-                $scope.dbCache = [];
-                var resTypes = ["locations", "images", "events", "apis", "products"];
-                for (var i = resTypes.length - 1; i >= 0; i--) {
-                    var type = resTypes[i];
-                    $scope.buildCache(type);
-                }
+                $scope.newItemCache();
             } else {
                 $scope.matchResults();
             }
 
+        }
+
+        $scope.newItemCache = (noMatch) => {
+            $scope.dbCache = [];
+            var resTypes = ["locations", "images", "events", "apis", "products"];
+            for (var i = resTypes.length - 1; i >= 0; i--) {
+                var type = resTypes[i];
+                $scope.buildCache(type, noMatch);
+            }
         }
 
         $scope.emptyCache = () => {

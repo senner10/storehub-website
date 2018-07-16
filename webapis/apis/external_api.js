@@ -3,7 +3,7 @@ var router = express.Router()
 var website = require("../db/models/website"),
     event = require("../db/models/event"),
     image = require("../db/models/image"),
-    analytic = require("../db/models/analytic"),
+    analytics = require("../db/models/analytic"),
     location = require("../db/models/location"),
     email = require("../db/models/email"),
     product = require("../db/models/product"),
@@ -68,10 +68,33 @@ router.get("/user_product/:id", (req, res) => {
 })
 
 
+router.get("/stat/:id/:type", (req, res) => {
+
+    var product = req.params.id,
+        type = parseInt(req.params.type);
+
+    var d = new Date();
+    var date = new Date(d.toDateString());
+
+    var stat = { $inc: { counter: 1 } }
+
+    analytics.update({
+        type,
+        product,
+        date
+    }, stat, { upsert: true }, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    })
+
+    res.json({});
+})
+
 router.get("/user_products/:ids", (req, res) => {
     var ids = req.params.ids.split(",");
 
-    product.find({ _id: { $in : ids } }, (err, p) => {
+    product.find({ _id: { $in: ids } }, (err, p) => {
         sendResponse(err, p, res);
     })
 })

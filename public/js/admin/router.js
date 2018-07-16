@@ -1,7 +1,8 @@
 app.config(function($routeProvider, $locationProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: '/templates/dashboard.html'
+            templateUrl: '/templates/dashboard.html',
+            controller : 'Dashboard'
         })
         .when('/new/:type', {
             templateUrl: '/templates/new.html',

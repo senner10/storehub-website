@@ -9,6 +9,6 @@ base.add({
     date : Date
 });
 
-var model = mongoose.model('Analytic', base);
+var model = mongoose.model('metric', base);
 
 module.exports = model;

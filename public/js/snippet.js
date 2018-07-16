@@ -93,6 +93,8 @@ function BuildStoreHub() {
         var generateLocationContent = (location) => {
             var content = $('<div/>');
 
+            saveMetric(location._id, 1);
+
             var lat = location.location.geometry.location.lat,
                 lon = location.location.geometry.location.lng;
 
@@ -205,8 +207,10 @@ function BuildStoreHub() {
                         locationElements.css('display', "none");
                         return false;
                     })
-                    if ((!location.useFence && dist < location.range) || inFence(location))
+                    if ((!location.useFence && dist < location.range) || inFence(location)) {
+                        saveMetric(location._id, 0);
                         locationElements.append(locationRow)
+                    }
                 }
             }
 
@@ -269,6 +273,9 @@ function BuildStoreHub() {
         }
 
         var showEvent = (event) => {
+
+            saveMetric(event._id, 0);
+
             var content = $('<div/>'),
                 rsvp = $(`<button class="form">Save</button>`);
 
@@ -284,10 +291,12 @@ function BuildStoreHub() {
 
             rsvp.click(() => {
 
+                saveMetric(event._id, 1);
 
                 var data = {
                     owner: storehubData.w.owner,
-                    email: $("input", content).val()
+                    email: $("input", content).val(),
+                    event: event._id
                 }
 
                 var removeLoader = () => {
@@ -500,6 +509,15 @@ function BuildStoreHub() {
             saveWishlist();
         }
 
+        function saveMetric(id, type) {
+            $.ajax({
+                url: `/api/stat/${id}/${type}`,
+                success: (response) => {
+                    console.log("Metric saved");
+                }
+            });
+        }
+
         function parseProducts() {
             $(".storehub[data-type='product']").each((i, product) => {
                 fetchProduct($(product).data("id"), $(product))
@@ -538,6 +556,8 @@ function BuildStoreHub() {
         function buildImage(image, tag) {
             var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;"> <div class="image-tag-wrapper enabled"><img src="/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
 
+            saveMetric(image._id, 0);
+
             tag.html("");
 
             var description = $(`<h2>${image.name}</h2><p>${image.meta.index.length} product${image.meta.index.length != 1 ? "s" : "" } in image </p>`)
@@ -555,7 +575,7 @@ function BuildStoreHub() {
                     $.ajax({
                         url: `/api/user_product/${p._id}`,
                         success: (response) => {
-                            productCache[id] = response;
+                            productCache[id] = Object.assign(p, response);
                         }
                     })
 
@@ -575,6 +595,7 @@ function BuildStoreHub() {
                             title: `<p class="text-center" style="margin:0;">${item.name}</p>`
                         };
 
+                        saveMetric(image._id, 1);
 
                         var target = `[data-id="${id}"]`;
                         if (!popoverMap[id]) {
@@ -637,6 +658,7 @@ function BuildStoreHub() {
             var product = $(`<div><h2 style="font-size:${theme.headerSize}px">${data.name}</h2> <hr> <div class="float-column scrolldiv" style="margin-right:25px; width:calc(50% - 25px)"> </div><div class="float-column two"> <p style="line-height: 22px;"> </p></div><div style="clear:both"></div></div>`);
 
             tag.html("");
+            saveMetric(data._id, 0);
 
             for (var i = data.images.length - 1; i >= 0; i--) {
                 var image = data.images[i];
@@ -646,18 +668,44 @@ function BuildStoreHub() {
             if (data.price)
                 $(".float-column.two", product).append(` <strong>Price</strong> / $ ${data.price.toFixed(2)} <br>`)
 
-            if (data.category)
-                $(".float-column.two", product).append(` <strong>Category</strong> / ${data.category} <br>`)
 
             if (data.sku)
                 $(".float-column.two", product).append(` <strong>SKU</strong> / ${data.sku} <br>`)
+
+            if (data.category)
+                $(".float-column.two", product).append(` <strong>Category</strong> / ${data.category} <br>`)
+
+
 
 
             if (data.sub_category)
                 $(".float-column.two", product).append(` <strong>Sub category</strong> / ${data.sub_category} <br>`)
 
             if (data.description) {
-                $(".float-column.two", product).append(` <strong>Description</strong> / ${data.description} <br><a class="expander">View more</a>`)
+                data.description = data.description.replace("\n", "<br/>");
+                console.log(data.description);
+                $(".float-column.two", product).append(` <strong>Description</strong> / ${data.description.substring(0, 200)} <span style="display:none;" class="add-desc">${data.description.substring(200, 2000)}</span><br>`)
+
+                if (data.description.length > 200) {
+
+
+
+                    $(".float-column.two", product).append($('<a class="expander">View more</a>')
+                        .click((e) => {
+
+                            e.preventDefault();
+                            var btn = $(e.target);
+
+                            if (btn.html().includes("more")) {
+                                $(".add-desc", product).css("display", "initial");
+                                btn.html("View less")
+                            } else {
+                                $(".add-desc", product).css("display", "none");
+                                btn.html("View more");
+                            }
+
+                        }))
+                }
             }
 
             $(".float-column.two", product).append(`<p class="storehub" style="margin:0;"><button class="add-wishlist">+Wishlist</button></p>`)
@@ -671,6 +719,8 @@ function BuildStoreHub() {
             tag.append(product);
 
             $(".add-wishlist", product).click((e) => {
+                saveMetric(data._id, 1);
+
                 if (wishlist.indexOf(data._id) == -1)
                     addToWishlist(data._id);
                 else removeFromWishlist(data._id);
