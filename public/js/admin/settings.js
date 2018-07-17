@@ -1,6 +1,6 @@
 app.controller('apps', [
     '$scope',
-    function($scope, ) {
+    function($scope) {
 
         $scope.plans = {
             Essential: {
@@ -21,9 +21,9 @@ app.controller('apps', [
             }
         };
 
-        $scope.plansIndex =Object.keys($scope.plans);
+        $scope.plansIndex = Object.keys($scope.plans);
 
-        
+
 
         $scope.appList = [
             { name: "Geolocation marketing", description: "", icon: "glyphicon glyphicon-flag", id: "gm" },
@@ -49,14 +49,14 @@ app.controller('apps', [
         }
 
         $scope.upgrade = (id) => {
-            if(!$scope.customer_id){
+            if (!$scope.customer_id) {
                 swal("", "Please enter your payment information to upgrade your account.", "warning");
                 return;
             }
-            $scope.Do("GET", `upgrade/${id}`, {}, (data)=> {
-                if(data){
+            $scope.Do("GET", `upgrade/${id}`, {}, (data) => {
+                if (data) {
                     swal("Success", "Your account subscription was upgraded", "success")
-                    $scope.plan_id =  id; 
+                    $scope.plan_id = id;
                 } else {
                     swal("Error", "Please try again.", "error")
                 }
@@ -79,16 +79,44 @@ app.controller('apps', [
 ]);
 
 
+app.controller('mailchimp', [
+    '$scope',
+    function($scope) {
+        $scope.saveMailChimp = () => {
+            var id = $scope.mc._id
+            $scope.Do("PUT", `mailchimps/${id}`, $scope.mc, (data) => {
+                if(data){
+                    swal("Success", "Mailchimp settings saved!", "success");
+                }
+            });
+        }
+
+        $scope.Do("GET", "mailchimps", {}, (data) => {
+            if(!data || data.length == 0){
+
+                $scope.Do("POST", "mailchimps", {}, (data) => {
+                    if(data){
+                        $scope.mc = data;
+                    }
+                })
+                return;
+            }
+
+            $scope.mc = data[0];
+        })
+    }
+]);
+
 app.controller('themes', [
     '$scope',
-    function($scope, ) {
+    function($scope) {
         $scope.theme = {};
 
         $scope.Do("GET", "theme", {}, (data) => {
             if (data) {
                 $scope.theme = data.theme;
                 if (!$scope.theme)
-                    $scope.theme = { headerBackgroundColor: "rgb(255,255,255)",buttonBackgroundColor:"rgb(255,255,255)" };
+                    $scope.theme = { headerBackgroundColor: "rgb(255,255,255)", buttonBackgroundColor: "rgb(255,255,255)" };
 
                 pasync(() => {
                     $(".colorTarget").each((i, picker) => {
@@ -144,7 +172,7 @@ app.controller('themes', [
 
 app.controller('stripe_controller', [
     '$scope',
-    function($scope, ) {
+    function($scope) {
 
         $scope.Do("GET", "merchant_token", {}, (data) => {
             if (data) $scope.merchantData = true;

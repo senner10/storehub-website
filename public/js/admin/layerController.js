@@ -393,6 +393,17 @@ app.controller('layerController', [
             $scope.getUserApps();
         })
 
+        //CHECK FOR QUERIES
+        var success = getUrlParameter("success"),
+        error = getUrlParameter("error");
+
+        if(success){
+            swal("Success", success, "success");
+        }
+
+        if(error){
+            swal("error", error, "error");
+        }
     }
 ]);
 
@@ -406,6 +417,13 @@ var selected_files;
 function handleFiles(files) {
     selected_files = files;
 }
+
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
 
 
 function randomString(length) {

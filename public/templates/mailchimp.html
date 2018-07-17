@@ -1,0 +1,7 @@
+<div class="col-md-7" ng-if="ready && mc">
+    <h3>Mailchimp settings</h3>
+    <hr>
+    <p ng-if="!mc.apiKey">Add your mailchimp API key to save RSVP'd emails to mailchimp</p>
+    <input type="text" placeholder="Mailchimp API key" ng-model="mc.apiKey">
+    <button ng-click="saveMailChimp()" class="btn">Save</button>
+</div>

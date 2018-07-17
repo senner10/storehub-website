@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const https = require('https');
-const port = process.env.PORT ? process.env.PORT : "3000";
+const port = process.env.PORT ? process.env.PORT : "443";
 const fs = require('fs');
 const sessions = require("./apis/sessions")
 const fileApi = require("./apis/fileApi")
@@ -74,11 +74,9 @@ app.use('/api/res',
 );
 
 
-
-// Starting both http & https servers
 const httpsServer = https.createServer(credentials, app);
 
 
-httpsServer.listen(443, () => {
+httpsServer.listen(parseInt(port), () => {
     console.log('HTTPS Server running on port 443');
 });

@@ -7,6 +7,7 @@ var location = require("./models/location")
 var product = require("./models/product")
 var website = require("./models/website")
 var alert = require("./models/alert")
+var mailchimp = require("./models/mailchimp")
 
 
 var db = mongoose.connect('mongodb://localhost/test');
@@ -17,7 +18,8 @@ var models = [
     location,
     product,
     website,
-    alert
+    alert,
+    mailchimp
 ];
 
 
