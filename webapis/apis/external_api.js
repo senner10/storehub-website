@@ -73,6 +73,11 @@ router.post("/save_email", (req, res) => {
                     return;
                 }
 
+                if (!mc) {
+                    saveEmail(req,res);
+                    return;
+                }
+
                 var m = new Mailchimp(mc.apiKey);
 
                 if (!e.meta || !e.meta.mailchimp) {
@@ -97,7 +102,7 @@ router.post("/save_email", (req, res) => {
                         }
                     }
 
-                    mailchimp.request({
+                    m.request({
                         method: 'post',
                         path: '/lists',
                         body: list
@@ -198,12 +203,12 @@ function sendResponse(err, data, res) {
 
 function storeEmail(req, res, e, m) {
 
-    mailchimp.request({
+    m.request({
         method: 'post',
         path: `/lists/${e.meta.mailchimp}/members`,
         body: {
-            email_address : req.body.email,
-            status : "subscribed"
+            email_address: req.body.email,
+            status: "subscribed"
         }
     }, (err, result) => {
         if (err) {
@@ -211,10 +216,15 @@ function storeEmail(req, res, e, m) {
             sendResponse(err, {}, res);
             return;
         }
-        var e = new email(req.body)
-        e.save((err) => {
-            sendResponse(err, e, res);
-        })
+        saveEmail(req,res);
+
+    })
+}
+
+function saveEmail(req, res) {
+    var e = new email(req.body)
+    e.save((err) => {
+        sendResponse(err, e, res);
     })
 }
 
