@@ -70,11 +70,6 @@ app.controller('layerController', [
             var ua = $(".user-alerts")
             ua.html("");
 
-            $scope.toolbarAlerts = [
-                { _id: "000", name: "Your event has x RSVPs", description: "Your event x has 200 attendees", link: "link" },
-                { _id: "000", name: "Your event has x RSVPs", description: "Your event x has 200 attendees", link: "link" }
-            ];
-
             if ($scope.toolbarAlerts.length == 0)
                 ua.append("<p class='text-center'>No alerts at the moment.</p>");
             else {

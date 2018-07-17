@@ -10,6 +10,7 @@ var alert = require("./db/models/alert"),
 var checkExit = () => {
     if (jobCount == 0) {
         console.log("Quiting");
+        mongoose.disconnect();
         process.exit(0);
     }
 }
@@ -27,7 +28,6 @@ var checkExpiredAccounts = () => {
             var u = users[i];
             alertOutstandingAccount(u);
         }
-        checkExit();
     })
 }
 

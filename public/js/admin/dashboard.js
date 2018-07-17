@@ -81,7 +81,9 @@ app.controller('Dashboard', [
                 if (item.show)
                     setTimeout((item) => {
                         $scope.Do("POST", `stats/${item._id}`, $scope.filter, (data) => {
-                            if (!$scope.chartData.labels) {
+                            if (!$scope.chartData.labels ||
+                                $scope.chartData.labels.length < data.labels.length) {
+
                                 $scope.chartData.labels = data.labels;
                             }
                             counter--;

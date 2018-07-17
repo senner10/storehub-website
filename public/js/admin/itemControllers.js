@@ -49,6 +49,11 @@ app.controller('List', [
             return arr.join(",");
         }
 
+        $scope.localTime = (date) => {
+            var d = new Date(date)
+            return d.toLocaleString();
+        }
+
         $scope.resetSearch();
 
         $scope.selectedCount = () => {

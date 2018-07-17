@@ -36,12 +36,13 @@ router.post("/stats/:id", (req, res) => {
 
         var response = { sets: [], labels: [] }
 
-        for (var i = data.length - 1; i >= 0; i--) {
-            var a = data[i],
-                date = (a.date + "").split("00:")[0];
-            if (response.labels.indexOf(date) == -1) {
-                response.labels.push(date);
-            }
+        var t = (new Date()).getTime();
+
+        for (var i = 0; i < 7; i++) {
+            var d = new Date(t - (i * (84600 * 1000)));
+            var dateParts = (d + "").split(" ").splice(0,4);
+            var label = dateParts.join(" ") + " ";
+            response.labels.push(label);
         }
 
         response.sets.push([])
@@ -56,6 +57,8 @@ router.post("/stats/:id", (req, res) => {
             response.sets[1].push(metricAction)
 
         }
+
+        response.labels = response.labels.reverse();
 
         res.json(response);
     })
