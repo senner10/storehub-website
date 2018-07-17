@@ -39,7 +39,7 @@
                     <div class="">
                         <h6>Make sure to embed script tag first, click the button below to get it.</h6>
                         <hr>
-                        <a href="javascript: $('#preview-modal').modal('trigger');window.location='#/list/apis'" class="btn">Get script tag</a>
+                        <button onclick="$('#preview-modal .close').click();window.location='#/list/apis'" class="btn">Get script tag</button>
                     </div>
                 </div>
                 <div ng-if="resName == 'image'">
