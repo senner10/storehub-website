@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const https = require('https');
+const http = require('http');
 const port = process.env.PORT ? process.env.PORT : "443";
 const fs = require('fs');
 const sessions = require("./apis/sessions")
@@ -73,9 +74,16 @@ app.use('/api/res',
     analyticsApi
 );
 
+var appRedirector = express();
 
+appRedirector.use((req, res, next) => {
+    res.status(301).redirect("https://storehub.gophersauce.com")
+})
+
+const httpServer = http.createServer(appRedirector);
 const httpsServer = https.createServer(credentials, app);
 
+httpServer.listen(80, () => console.log("Up on port 80"));
 
 httpsServer.listen(parseInt(port), () => {
     console.log('HTTPS Server running on port 443');
