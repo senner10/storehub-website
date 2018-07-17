@@ -18,9 +18,9 @@
         <a href="#/new/{{ resName }}s" class="btn">New</a>
     </div>
     <div class="list-group">
-        <div class="list-group-item col-lg-3" ng-repeat="item in items">
+        <div class="list-group-item col-lg-3" ng-if="item.name.includes(getSearchText())" ng-repeat="item in items">
             <div ng-if="resName == 'product' && item.images && item.images.length > 0" class="text-center list-image">
-                <img  src="/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
+                <img src="/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
             </div>
             <input type="checkbox" class="full-checkbox" ng-model="selectMap[item._id]">
             <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>

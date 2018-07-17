@@ -49,6 +49,8 @@ app.controller('List', [
             return arr.join(",");
         }
 
+        $scope.resetSearch();
+
         $scope.selectedCount = () => {
             var keys = Object.keys($scope.selectMap),
                 active = 0;

@@ -192,6 +192,14 @@ app.controller('layerController', [
             }
         }
 
+        $scope.getSearchText = () => {
+            return $scope.search ? $scope.search : "";
+        }
+
+        $scope.resetSearch = () => {
+            $scope.search = "";
+        }
+
         $scope.showAutoComplete = () => {
             $(".poptarget").popover('show');
         }
