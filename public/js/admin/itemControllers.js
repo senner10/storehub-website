@@ -41,6 +41,14 @@ app.controller('List', [
         $scope.selectMap = {},
             $scope.prev = {};
 
+        $scope.getString = (set) => {
+            var arr = [];
+            for (var i = set.length - 1; i >= 0; i--) {
+                arr.push(set[i]._id);
+            }
+            return arr.join(",");
+        }
+
         $scope.selectedCount = () => {
             var keys = Object.keys($scope.selectMap),
                 active = 0;

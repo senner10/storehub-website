@@ -36,12 +36,11 @@
             </div>
             <div class="modal-body" style="min-height: 400px;">
                 <div ng-if="resName != 'api'">
-                    <div class="" >
+                    <div class="">
                         <h6>Make sure to embed script tag first, click the button below to get it.</h6>
                         <hr>
                         <a href="javascript: $('#preview-modal').modal('trigger');window.location='#/list/apis'" class="btn">Get script tag</a>
                     </div>
-                   
                 </div>
                 <div ng-if="resName == 'image'">
                     <label>Preview</label>
@@ -49,7 +48,14 @@
                     <img src="https://placehold.it/320x400">
                     <h3>Name</h3>
                     <p class="field-help">5 items in photo</p>
-                    <div ng-repeat="item in previewSet">
+                    <div ng-if="previewSet.length > 1">
+                        <br>
+                        <label>Code for selected items (items will be shown in grid mode.)</label>
+                        <pre><code>
+&lt;div data-id="{{ getString(previewSet) }}" data-type="image" class="storehub" &gt;&lt;/div&gt;
+                    </code></pre>
+                    </div>
+                    <div ng-if="previewSet.length == 1" ng-repeat="item in previewSet">
                         <br>
                         <label>Code for {{ item.name }}</label>
                         <pre><code>
@@ -93,7 +99,14 @@
                             </div>
                         </div>
                     </div>
-                    <div ng-repeat="item in previewSet">
+                    <div ng-if="previewSet.length > 1">
+                        <br>
+                        <label>Code for selected items (items will be shown in grid mode.)</label>
+                        <pre><code>
+&lt;div data-id="{{ getString(previewSet) }}" data-type="product" class="storehub" &gt;&lt;/div&gt;
+                    </code></pre>
+                    </div>
+                    <div ng-if="previewSet.length == 1" ng-repeat="item in previewSet">
                         <br>
                         <label>Code for {{ item.name }}</label>
                         <pre><code>
