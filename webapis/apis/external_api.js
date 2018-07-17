@@ -8,7 +8,8 @@ var website = require("../db/models/website"),
     location = require("../db/models/location"),
     email = require("../db/models/email"),
     product = require("../db/models/product"),
-    theme = require("../db/models/theme")
+    theme = require("../db/models/theme"),
+    mailchimp = require("../db/models/mailchimp")
 
 
 router.get("/get_locations", (req, res) => {
@@ -56,10 +57,83 @@ router.get("/user_events/:id", (req, res) => {
 })
 
 router.post("/save_email", (req, res) => {
-    var e = new email(req.body)
-    e.save((err) => {
-        sendResponse(err, e, res);
-    })
+
+
+    event.findOne({ _id: req.body.event }, (err, e) => {
+        if (err) {
+            res.status(500).send(err)
+            return;
+        }
+
+        mailchimp
+            .findOne({ owner: e.owner })
+            .exec((err, mc) => {
+                if (err) {
+                    res.status(500).send(err)
+                    return;
+                }
+
+                var m = new Mailchimp(mc.apiKey);
+
+                if (!e.meta || !e.meta.mailchimp) {
+
+                    var list = {
+                        name: `${e.name} list`,
+                        contact: "help@storehub.com",
+                        permission_reminder: `You RSVP'd to event ${e.name}`,
+                        campaign_defaults: {
+                            from_name: mc.fromName,
+                            from_email: mc.fromEmail,
+                            subject: `New update on event ${e.name}`,
+                            language: "English"
+                        },
+                        contact: {
+                            company: "Storehub",
+                            address1: "",
+                            city: "",
+                            state: "",
+                            zip: "",
+                            country: ""
+                        }
+                    }
+
+                    mailchimp.request({
+                        method: 'post',
+                        path: '/lists',
+                        body: list
+                    }, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+
+                        if (!e.meta) {
+                            e.meta = {};
+                        }
+
+                        e.meta.mailchimp = result.id;
+
+                        event.findOneAndUpdate({ _id: e._id }, {
+                                $set: { meta: e.meta }
+                            },
+                            (err) => {
+
+                                if (err) {
+                                    console.log(err);
+                                }
+                                storeEmail(req, res, e, m)
+                            }
+                        )
+                    })
+
+                } else {
+                    storeEmail(req, res, e, m);
+                }
+            })
+
+    });
+
+
 })
 
 router.get("/user_product/:id", (req, res) => {
@@ -122,6 +196,27 @@ function sendResponse(err, data, res) {
     res.json(data);
 }
 
+function storeEmail(req, res, e, m) {
+
+    mailchimp.request({
+        method: 'post',
+        path: `/lists/${e.meta.mailchimp}/members`,
+        body: {
+            email_address : req.body.email,
+            status : "subscribed"
+        }
+    }, (err, result) => {
+        if (err) {
+            console.log(err);
+            sendResponse(err, {}, res);
+            return;
+        }
+        var e = new email(req.body)
+        e.save((err) => {
+            sendResponse(err, e, res);
+        })
+    })
+}
 
 
 module.exports = router;

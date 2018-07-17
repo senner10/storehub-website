@@ -7,6 +7,7 @@ const fs = require('fs');
 const sessions = require("./apis/sessions")
 const fileApi = require("./apis/fileApi")
 const fileViewer = require("./apis/fileViewer")
+const emailExporter = require("./apis/emailExporter")
 const themeApi = require("./apis/themes")
 const merchantApi = require("./apis/merchant")
 const helpApi = require("./apis/help")
@@ -68,6 +69,7 @@ app.use('/api',
 app.use('/api/res',
     CRUDapi,
     fileApi,
+    emailExporter,
     themeApi,
     helpApi,
     merchantApi,

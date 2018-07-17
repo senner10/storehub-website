@@ -8,6 +8,7 @@
         <button class="abutton col-xs-2" ng-click="back()">Back</button>
         <button class="abutton col-xs-2" ng-click="update('events', item._id, item)">Update</button>
         <button class="abutton col-xs-2" ng-click="delete('events', item._id)">Delete</button>
+         <a class="abutton col-xs-2 " href="/api/res/export_emails/{{ item._id }}/{{item.name}}" style="width:120px;" >export emails</a>
     </div>
     <input type="text" placeholder="Name" ng-model="item.name">
     <span class="field-help">Displayed event name</span>
