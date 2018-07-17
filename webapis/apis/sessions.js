@@ -11,6 +11,8 @@ var mail = require('mail').Mail({
     port: 587
 });
 
+var month = ((84600 * 1000) * 7) *
+
 router.get('/logout', (req, res) => {
 
     delete req.session.token;
@@ -27,13 +29,14 @@ router.post('/join', (req, res) => {
     var plan_id = req.body.plan_id;
 
     var newo = new User();
-
     var sess = req.session;
+    var d = (new Date()).getTime();
 
     newo.name = name;
     newo.email = username;
     newo.password = password;
     newo.plan_id = plan_id;
+    newo.expiration_time = d + month;
 
     newo.save(function(err) {
         if (err) {
@@ -44,7 +47,10 @@ router.post('/join', (req, res) => {
 })
 
 router.get('/delete_account', (req, res) => {
-
+    
+    delete req.session.token;
+    
+    
 });
 
 router.post('/reset_password', (req, res) => {

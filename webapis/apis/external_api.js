@@ -1,5 +1,6 @@
 const express = require('express')
 var router = express.Router()
+var Mailchimp = require('mailchimp-api-v3')
 var website = require("../db/models/website"),
     event = require("../db/models/event"),
     image = require("../db/models/image"),
