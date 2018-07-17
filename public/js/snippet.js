@@ -31,7 +31,9 @@ function BuildStoreHub() {
             wishlist,
             position,
             productCache = {},
-            popoverMap = {};
+            popoverMap = {},
+            proximityCache = [],
+            proximityCursor = 0;
 
         try {
             wishlist = window.localStorage.storehubWishlist ? window.localStorage.storehubWishlist.split(",") : [];
@@ -209,10 +211,55 @@ function BuildStoreHub() {
                     })
                     if ((!location.useFence && dist < location.range) || inFence(location)) {
                         saveMetric(location._id, 0);
-                        locationElements.append(locationRow)
+
                     }
+                    proximityCache.push({ elem: locationRow, dist })
+
+
                 }
             }
+
+            proximityCache.sort(
+                function(a, b) {
+                    return b.dist - a.dist
+                }
+            );
+
+            for (var i = proximityCache.length - 1; i >= 0; i--) {
+                proximityCursor++;
+                var location = proximityCache[i]
+                locationElements.append(location.elem);
+
+                if (proximityCursor == 2) {
+                    break;
+                }
+            }
+
+            var loadMore = $("<p class='text-center'><button>Load more</button><p>")
+
+            $("button", loadMore).click((e) => {
+                var localCursor = 0;
+                for (var i = proximityCache.length - 1; i >= 0; i--) {
+                    localCursor++;
+
+                    if (proximityCursor == proximityCache.length) {
+                        $(e.target).html("No more results");
+                        break;
+                    }
+
+                    if (localCursor > proximityCursor) {
+                        var location = proximityCache[i];
+                        locationElements.append(location.elem);
+                        proximityCursor++;
+                        if (localCursor == 4) {
+                            break;
+                        }
+                    }
+                }
+
+            })
+
+            $(".storehub-panel").append(loadMore);
 
             if ($(".list-element", locationElements).length == 0) {
                 locationElements.append("<p style='text-align:center;'>No nearby stores found.</p>");

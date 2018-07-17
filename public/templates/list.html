@@ -36,27 +36,12 @@
             </div>
             <div class="modal-body" style="min-height: 400px;">
                 <div ng-if="resName != 'api'">
-                    <div class="text-center" ng-if="websites.length == 0">
-                        <h6>You currently have no websites listed.</h6>
+                    <div class="" >
+                        <h6>Make sure to embed script tag first, click the button below to get it.</h6>
                         <hr>
-                        <a href="javascript: $('#preview-modal').modal('trigger');window.location='#/new/apis'" class="btn">New</a>
+                        <a href="javascript: $('#preview-modal').modal('trigger');window.location='#/list/apis'" class="btn">Get script tag</a>
                     </div>
-                    <div ng-if="websites.length > 0">
-                        <label>Select a website to add this resource to.</label>
-                        <select ng-model="prev.website">
-                            <option value="">Select a website</option>
-                            <option ng-repeat="website in websites" value="{{ website._id }},{{ website.secret }}">{{ website.name }}</option>
-                        </select>
-                    </div>
-                    <div ng-if="prev.website">
-                        <label>Add this tag to your website</label>
-                        <pre><code>
-&lt;script&gt;
-    var storeToken = "{{ prev.website }}"
-&lt;/script&gt;
-&lt;script src="https://storehub.gophersauce.com/js/snippet.js" defer type="text/javascript"&gt;&lt;/script&gt;
-                            </code></pre>
-                    </div>
+                   
                 </div>
                 <div ng-if="resName == 'image'">
                     <label>Preview</label>
