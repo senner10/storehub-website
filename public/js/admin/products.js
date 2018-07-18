@@ -59,21 +59,25 @@ app.controller('products', [
 
                     var categories = [];
                     var subCategories = [];
+                    var eCache = { c: [], sc: [] };
 
                     for (var i = data.length - 1; i >= 0; i--) {
                         var item = data[i],
                             subEntry = { name: item.sub_category },
                             entry = { name: item.category };
 
+                        var indexCategory = eCache.c.indexOf(item.category);
+                        var indexSubCategory = eCache.sc.indexOf(item.sub_category);
 
-                        var indexCategory = categories.indexOf(item.category);
-                        var indexSubCategory = subCategories.indexOf(item.sub_category);
-
-                        if (indexCategory == -1 && entry.name != "")
+                        if (indexCategory == -1 && entry.name != ""){
+                            eCache.c.push(item.category);
                             categories.push(entry);
+                        }
 
-                        if (indexSubCategory == -1 && subEntry.name != "")
+                        if (indexSubCategory == -1 && subEntry.name != ""){
+                            eCache.sc.push(item.sub_category)
                             subCategories.push(subEntry);
+                        }
 
                     }
 

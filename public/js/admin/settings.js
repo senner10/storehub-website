@@ -85,17 +85,17 @@ app.controller('mailchimp', [
         $scope.saveMailChimp = () => {
             var id = $scope.mc._id
             $scope.Do("PUT", `mailchimps/${id}`, $scope.mc, (data) => {
-                if(data){
+                if (data) {
                     swal("Success", "Mailchimp settings saved!", "success");
                 }
             });
         }
 
         $scope.Do("GET", "mailchimps", {}, (data) => {
-            if(!data || data.length == 0){
+            if (!data || data.length == 0) {
 
                 $scope.Do("POST", "mailchimps", {}, (data) => {
-                    if(data){
+                    if (data) {
                         $scope.mc = data;
                     }
                 })
@@ -116,7 +116,11 @@ app.controller('themes', [
             if (data) {
                 $scope.theme = data.theme;
                 if (!$scope.theme)
-                    $scope.theme = { headerBackgroundColor: "rgb(255,255,255)", buttonBackgroundColor: "rgb(255,255,255)" };
+                    $scope.theme = {
+                        panelBackgroundColor: "rgb(255,255,255)",
+                        headerBackgroundColor: "rgb(255,255,255)",
+                        buttonBackgroundColor: "rgb(255,255,255)"
+                    };
 
                 pasync(() => {
                     $(".colorTarget").each((i, picker) => {
