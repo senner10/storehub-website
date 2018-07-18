@@ -15,6 +15,12 @@ app.controller('Dashboard', [
     function($scope, ) {
 
         $scope.currentapp = "n";
+        $scope.toggleMap = {};
+
+        $scope.toggle = (label) => {
+            $scope.toggleMap[label] = $scope.toggleMap[label] ?
+             false : true ;
+        }
 
         $scope.appStat = {
             gm: {
@@ -38,6 +44,11 @@ app.controller('Dashboard', [
         var week = (84600 * 1000) * 7;
 
         $scope.displayedItems = [];
+
+        $scope.getValueForDate = (date, index) => {
+            var indexLabel = $scope.chartData.labels.indexOf(date);
+            return $scope.chartData.datasets[index].data[indexLabel];
+        }
 
 
 
@@ -115,6 +126,17 @@ app.controller('Dashboard', [
 
         $scope.initChart = () => {
             pasync(() => {
+                var width = parseInt($("html").css("width"));
+
+                if (width <= 768) {
+
+                    $scope.showList = true;
+                    $(".panel-body").html("");
+
+                    $scope.$apply();
+                    return;
+                }
+
                 $(".panel-body").html('<canvas id="storeChart" height="120"></canvas>')
 
                 var ctx = document.getElementById("storeChart").getContext('2d');

@@ -88,6 +88,11 @@
     .abutton {
         width: 130px !important;
     }
+    .navbar.navbar-default.sidebar {
+        height: 10px;
+        min-height: initial;
+        margin:0;
+    }
 }
 
 

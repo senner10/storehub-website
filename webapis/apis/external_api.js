@@ -74,7 +74,7 @@ router.post("/save_email", (req, res) => {
                 }
 
                 if (!mc) {
-                    saveEmail(req,res);
+                    saveEmail(req, res);
                     return;
                 }
 
@@ -210,18 +210,19 @@ function storeEmail(req, res, e, m) {
             email_address: req.body.email,
             status: "subscribed"
         }
-    }, (err, result) => {
+    }, (err) => {
         if (err) {
             console.log(err);
             sendResponse(err, {}, res);
             return;
         }
-        saveEmail(req,res);
+        saveEmail(req, res);
 
     })
 }
 
 function saveEmail(req, res) {
+    req.body.created_at = new Date();
     var e = new email(req.body)
     e.save((err) => {
         sendResponse(err, e, res);

@@ -8,7 +8,6 @@ function aggForDate(set, date, type) {
     for (var i = set.length - 1; i >= 0; i--) {
         var a = set[i],
             compDate = (a.date + "").split("00:")[0];
-
         if (a.type == type && date == compDate) {
             res += a.counter;
         }
