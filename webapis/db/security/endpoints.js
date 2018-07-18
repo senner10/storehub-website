@@ -21,6 +21,19 @@ var appPermissions = [{
     }
 ];
 
+var CheckAppPermission = (req) => {
+    var apps = req.session.apps;
+    for (var i = appPermissions.length - 1; i >= 0; i--) {
+        var app = appPermissions[i];
+
+
+        if (req.originalUrl.includes(app.collection) && apps.indexOf(app.id) == -1) {
+            return false;
+        }
+    }
+    return true;
+}
+
 var VerifyRequest = (req) => {
     //req.header(name)
     if (req.method == "OPTIONS") {
@@ -35,15 +48,6 @@ var VerifyRequest = (req) => {
         jwttoken = req.session.token;
     }
 
-    var apps = req.session.apps;
-    for (var i = appPermissions.length - 1; i >= 0; i--) {
-        var app = appPermissions[i];
-
-
-        if (req.originalUrl.includes(app.collection) && apps.indexOf(app.id) == -1) {
-            return false;
-        }
-    }
 
     try {
         var decoded = jwt.verify(jwttoken, JWTKey);
@@ -67,7 +71,12 @@ var VerifyRequest = (req) => {
 var Authenticator = (req, res, next) => {
 
     if (VerifyRequest(req)) {
-        next() // pass control to the next handler
+        if (CheckAppPermission(req)) {
+            next() // pass control to the next handler
+            return;
+        }
+
+        res.status(401).json({"error" : "unauthorized to use app."})
     } else {
         res.status(401).json(NoAccess);
     }

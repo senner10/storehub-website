@@ -22,10 +22,12 @@
             <div ng-if="resName == 'product' && item.images && item.images.length > 0" class="text-center list-image">
                 <img src="/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
             </div>
+            <div>
             <input type="checkbox" class="full-checkbox" ng-model="selectMap[item._id]">
             <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>
-            <p>Created : {{ localTime(item.created_at) }} </p>
+            <p style="margin-bottom: 4px;">Created : {{ localTime(item.created_at) }} </p>
             <a href="#/{{ resName == 'api' ?  'website' : resName }}s/{{item._id}}">edit</a>
+            </div>
         </div>
     </div>
 </div>

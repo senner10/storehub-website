@@ -385,8 +385,11 @@ app.controller('layerController', [
                 start: () => {
 
                 },
-                end: () => {
-
+                end: (response, res) => {
+                   if(response.error && !response.error.includes("app") && res.status == 401 ){
+                        alert("Your session expired, please login again.")
+                        window.location = "/login.html";
+                   }
                 }
             });
             $scope.Do = Ape.Request;
