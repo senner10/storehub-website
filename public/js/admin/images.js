@@ -19,6 +19,10 @@ app.controller('images', [
 
         }
 
+        $scope.togglePanel = () => {
+            $scope.panelOpen = $scope.panelOpen ? false : true;
+        }
+
         $scope.preview = (product) => {
             var p = $scope.item.meta.items[product],
                 comment = p.comment ? p.comment : "Comments",

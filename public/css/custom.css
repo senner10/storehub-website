@@ -77,6 +77,9 @@
 }
 
 
+.sticky-panel-toggle {
+    display: none;
+}
 
 
 
@@ -98,6 +101,19 @@
         margin-bottom: 1.5em;
         margin-top: 2em;
     }
+    .sticky-panel {
+        display: none;
+    }
+
+    .sticky-panel-toggle {
+        display: block;
+    }
+}
+
+
+
+.force-display {
+    display: block !important;
 }
 
 .list-group-item.col-lg-3 {

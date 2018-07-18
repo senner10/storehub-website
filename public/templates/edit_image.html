@@ -16,6 +16,7 @@
     <label>Image</label>
     <br />
     <button class="abutton btn" ng-click="uploadFile(addImage)">Upload image</button>
+    <button class="abutton btn sticky-panel-toggle" ng-click="togglePanel()">Edit tags</button>
     <div style="padding-top: 1.0em;" ng-if="item.meta.image" class="text-center">
         <div class="scrollmenu " style="text-align:left;overflow-y: auto;max-height:1000px;">
             <p>Click on the image below to tag an item to it.</p>
@@ -28,7 +29,8 @@
         </div>
     </div>
 </div>
-<div ng-if="item && !showitems && item.meta.index.length >  0" class="col-sm-4 sticky-panel">
+<div ng-if="item && !showitems && item.meta.index.length >  0" ng-class="{'force-display': panelOpen}" class="col-sm-4 sticky-panel">
+    <button class="abutton btn sticky-panel-toggle" style="width:100% !important;" ng-click="togglePanel()">Close</button>
     <label>Items in image</label>
     <div class="list-group">
         <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">
@@ -64,7 +66,7 @@
         </div>
     </div>
 </div>
-<div ng-if="item && showitems" class="col-sm-4 sticky-panel">
+<div ng-if="item && showitems" class="col-sm-4 force-display sticky-panel">
     <button class="btn btn-sm btn-block" ng-click="hideitems()">CANCEL</button>
     <input type="text" ng-model="filterName" placeholder="Filter products by name">
     <div class="text-center" ng-if="items.length == 0">
