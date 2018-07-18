@@ -15,6 +15,91 @@ app.controller('layerController', [
 
         $scope.help = {};
 
+        $scope.$on('$routeChangeSuccess', function() {
+
+            if ($scope.tutorial && $scope.tutorial.current != 0)
+                pasync(window.nextTip)
+        });
+
+        $scope.itutorials = guides;
+
+        $scope.getTutorial = () => {
+            return $scope.tutorial;
+        }
+        window.getTutorial = $scope.getTutorial;
+
+        $scope.startTutorial = (tutorial) => {
+
+            window.location = tutorial.index;
+
+            pasync(window.nextTip)
+
+            $scope.tutorial = Object.assign({}, tutorial);
+            $scope.modal("help-modal");
+            swal("", "Tutorial has started, keep an eye out for popovers", "warning");
+        }
+
+        window.exitTutorial = () => {
+            var index = $scope.tutorial.current;
+
+            var prev = index != 0 ? index - 1 : 0;
+            $(`[data-help="${prev}"]`).popover('destroy');
+
+            $scope.tutorial = false;
+            $scope.$apply();
+        }
+
+        window.nextTip = () => {
+
+            if (!$scope.tutorial)
+                return;
+
+            var index = $scope.tutorial.current,
+                length = $scope.tutorial.tips.length;
+
+            if (index != 0) {
+                var prev = index - 1;
+                $(`[data-help="${prev}"]`).popover('destroy');
+            }
+
+            if (index == $scope.tutorial.tips.length) {
+                var name = $scope.tutorial.name;
+                swal("Success", `You completed the guide ${name}`, "success")
+
+                $scope.tutorial = false;
+                pasync(() => $scope.$apply());
+                return;
+            }
+
+
+
+            var tip =
+                $scope.tutorial.tips[index];
+
+            var options = {
+                placement: tip.placement ? tip.placement : "auto bottom",
+                html: true,
+                content: `<p>${tip.text}<br>${index + 1}/${length}</p><p><button class="btn btn-sm" type="button" onclick="exitTutorial()">Quit</button> <button type="button" style="display:${tip.hide ? 'none' : 'initial'}" class="btn btn-sm" onclick="nextTip()">Next</button></p>`,
+                viewport: "body",
+                title: tip.title,
+                trigger : "manual"
+            };
+
+            var target = $(`[data-help="${index}"]`);
+
+            if (target.length == 0) {
+                window.exitTutorial();
+                return;
+            }
+
+            target.popover(options);
+            target.popover('show');
+
+            $scope.tutorial.current++;
+
+        }
+
+
         $scope.sendMessage = () => {
             $scope.Do("POST", "help", $scope.help, (data) => {
                 if (data)
@@ -165,7 +250,10 @@ app.controller('layerController', [
             for (var i = $scope.dbCache.length - 1; i >= 0; i--) {
                 var item = $scope.dbCache[i];
                 var selector = `[data-key="${item._id}"]`;
-                item.name = item.name.toLowerCase();
+                if (item.name)
+                    item.name = item.name.toLowerCase();
+                else item.name = "";
+
                 if ($(selector, targ).length == 0) {
 
                     if (item.name && item.name.includes($scope.search)) {
@@ -386,10 +474,15 @@ app.controller('layerController', [
 
                 },
                 end: (response, res) => {
-                   if(response.error && !response.error.includes("app") && res.status == 401 ){
+                    if (response.error && !response.error.includes("app") && res.status == 401) {
                         alert("Your session expired, please login again.")
                         window.location = "/login.html";
-                   }
+                    }
+
+                    if (response.error && response.error.includes("app") && res.status == 401) {
+                        swal("App not installed", "The app you are trying to use is not installed", "warning")
+                        window.location = "#/apps";
+                    }
                 }
             });
             $scope.Do = Ape.Request;
@@ -401,13 +494,13 @@ app.controller('layerController', [
 
         //CHECK FOR QUERIES
         var success = getUrlParameter("success"),
-        error = getUrlParameter("error");
+            error = getUrlParameter("error");
 
-        if(success){
+        if (success) {
             swal("Success", success, "success");
         }
 
-        if(error){
+        if (error) {
             swal("error", error, "error");
         }
     }
@@ -473,6 +566,8 @@ function uploadFile(file, cb) {
             var success = (xhr.status == 200)
             try {
                 cb(JSON.parse(xhr.responseText));
+                if (window.getTutorial())
+                    window.nextTip();
             } catch (e) {
                 console.log(e);
                 console.log("Invalid JSON");
@@ -488,4 +583,3 @@ function uploadFile(file, cb) {
 
 
 }
-

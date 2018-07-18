@@ -3,8 +3,8 @@
 <h3>Create a new {{ resName == "api" ? "Website" : resName  }}</h3>
 	<hr>
 	<form ng-submit="create()">
-	<input type="text" class="validate-required field-error" ng-model="data.name" placeholder="{{ resName == 'api' ? 'Website' : resName  }} Name">
-	<button class="abutton btn" type="submit">Add</button>
+	<input required data-help="0" type="text" class="validate-required field-error" ng-model="data.name" placeholder="{{ resName == 'api' ? 'Website' : resName  }} Name">
+	<button class="abutton btn" data-help="1" type="submit">Add</button>
 	</form>
 
 </div>

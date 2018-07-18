@@ -1,12 +1,12 @@
 <div ng-if="item" class="col-sm-8 image-viewer">
     <ol class="breadcrumb">
         <li><a href="#">Home</a></li>
-        <li><a href="#/list/images">Images</a></li>
+        <li><a href="#/list/images" data-help="5">Images</a></li>
         <li class="active"> {{ item.name }}</li>
     </ol>
     <div class="row">
         <button class="abutton col-xs-2" ng-click="back()">Back</button>
-        <button class="abutton col-xs-2" ng-click="update('images', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" data-help="4" ng-click="update('images', item._id, item)">Update</button>
         <button class="abutton col-xs-2" ng-click="delete('images', item._id)">Delete</button>
     </div>
     <hr>
@@ -15,8 +15,9 @@
     <br>
     <label>Image</label>
     <br />
-    <button class="abutton btn" ng-click="uploadFile(addImage)">Upload image</button>
+    <button class="abutton btn" data-help="2" ng-click="uploadFile(addImage)">Upload image</button>
     <button class="abutton btn sticky-panel-toggle" ng-click="togglePanel()">Edit tags</button>
+    <div data-help="3"></div>
     <div style="padding-top: 1.0em;" ng-if="item.meta.image" class="text-center">
         <div class="scrollmenu " style="text-align:left;overflow-y: auto;max-height:1000px;">
             <p>Click on the image below to tag an item to it.</p>
@@ -30,7 +31,7 @@
     </div>
 </div>
 <div ng-if="item && !showitems && item.meta.index.length >  0" ng-class="{'force-display': panelOpen}" class="col-sm-4 sticky-panel">
-    <button class="abutton btn sticky-panel-toggle" style="width:100% !important;" ng-click="togglePanel()">Close</button>
+    <button class="abutton btn sticky-panel-toggle" ng-click="togglePanel()">Close</button>
     <label>Items in image</label>
     <div class="list-group">
         <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">

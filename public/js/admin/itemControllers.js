@@ -41,6 +41,8 @@ app.controller('List', [
         $scope.selectMap = {},
             $scope.prev = {};
 
+        $scope.tutorial = Object.assign({}, $scope.getTutorial());
+
         $scope.getString = (set) => {
             var arr = [];
             for (var i = set.length - 1; i >= 0; i--) {
@@ -140,6 +142,7 @@ app.controller('List', [
         }
 
         $scope.html = () => {
+            window.nextTip();
             $scope.previewSet = [];
             var keys = Object.keys($scope.selectMap);
             for (var i = keys.length - 1; i >= 0; i--) {
@@ -150,6 +153,13 @@ app.controller('List', [
                 }
             }
             $scope.modal('preview-modal');
+        }
+
+        $scope.nextTip = () =>{
+            if(!$scope.usedTip){
+                $scope.usedTip = true;
+                pasync(window.nextTip);
+            }
         }
 
         $scope.capitalizeFirstLetter = (string) => {

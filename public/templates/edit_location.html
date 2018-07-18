@@ -12,7 +12,8 @@
     <hr>
     <input type="text" placeholder="Name" ng-model="item.name">
     <span class="field-help">Displayed location name</span>
-    <input type="text" placeholder="Address" id="location-address" ng-model="item.address">
+
+    <input data-help="2" type="text" placeholder="Address" id="location-address" ng-model="item.address">
     <br/>
     <div ng-if="!item.location">
         <p>To set location based targetting, please use the field above to set an address.</p>
@@ -26,7 +27,7 @@
             </div>
         </div>
         <p ng-if="!item.useFence">
-            <input type="number" ng-model="item.range" min="0" placeholder="Range in miles">
+            <input type="number" data-help="3" ng-model="item.range" min="0" placeholder="Range in miles">
             <span class="field-help">Maximum number of miles your customer should be prior to alert.</span>
         </p>
         <p ng-if="item.useFence">
@@ -39,8 +40,9 @@
 <div ng-if="item" class="col-sm-6">
     <label>Images</label>
     <br />
-    <button ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
+    <button ng-click="uploadFile(addImage)" data-help="4" class="abutton btn col-md-12">Upload images</button>
     <br>
+      <button class="btn abutton col-md-12" data-help="5" ng-click="verifyHoursArray();modal('hour-modal')"> Manage hours</button>
     <div ng-if="item.images.length > 0">
         <label>Manage images</label>
         <div class="scrollmenu">
@@ -59,7 +61,7 @@
     <label>Contact information</label>
     <input type="text" ng-model="item.meta.phone" placeholder="Phone number">
     <input type="text" ng-model="item.meta.email" placeholder="Email address">
-    <button class="btn abutton" ng-click="verifyHoursArray();modal('hour-modal')"> Manage hours</button>
+  
 </div>
 <!-- modals -->
 <!-- Modal -->
@@ -67,7 +69,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" style="width:100% !important;" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Manage store perks</h4>
             </div>
             <div class="modal-body">

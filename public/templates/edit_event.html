@@ -1,20 +1,20 @@
 <div ng-if="item" class="col-sm-6">
     <ol class="breadcrumb">
         <li><a href="#">Home</a></li>
-        <li><a href="#/list/events">Events</a></li>
+        <li><a href="#/list/events" >Events</a></li>
         <li class="active"> {{ item.name }}</li>
     </ol>
     <div class="row">
         <button class="abutton col-xs-2" ng-click="back()">Back</button>
-        <button class="abutton col-xs-2" ng-click="update('events', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" data-help="7" ng-click="update('events', item._id, item)">Update</button>
         <button class="abutton col-xs-2" ng-click="delete('events', item._id)">Delete</button>
-         <a class="abutton col-xs-2 " href="/api/res/export_emails/{{ item._id }}/{{item.name}}" style="width:120px;" >export emails</a>
+         <a class="abutton col-xs-2 " data-help="8" href="/api/res/export_emails/{{ item._id }}/{{item.name}}" style="width:120px;" >export emails</a>
     </div>
     <input type="text" placeholder="Name" ng-model="item.name">
     <span class="field-help">Displayed event name</span>
-    <input type="date" ng-model="item.start_date">
+    <input data-help="2" type="date" ng-model="item.start_date">
     <span class="field-help">Start date of event</span>
-    <input type="date" ng-model="item.end_date">
+    <input data-help="3" type="date" ng-model="item.end_date">
     <span class="field-help">End date of event</span>
     <br>
     <input type="checkbox" ng-model="item.rsvp"> <label>Guests must RSVP prior to event.</label>
@@ -22,7 +22,7 @@
 <div ng-if="item" class="col-sm-6">
     <label>Images</label>
     <br />
-    <button ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
+    <button data-help="4" ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
     <br>
     <div ng-if="item.images.length > 0">
         <label>Manage images</label>
@@ -36,10 +36,10 @@
         <div style="height:120px;"></div>
     </div>
     <br/>
-     <button ng-click="modal('store-modal')" class="btn">Set location availability</button>
+     <button ng-click="modal('store-modal')" data-help="6" class="btn">Set location availability</button>
     <br/>
     <label>Description</label>
-    <textarea style="height: 200px;" placeholder="TYPE HERE" ng-model="item.description"></textarea>
+    <textarea data-help="5" style="height: 200px;" placeholder="TYPE HERE" ng-model="item.description"></textarea>
     <div class="modal  fade" id="store-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

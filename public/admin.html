@@ -19,6 +19,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
     <script src="/js/sweet-alert.js"></script>
     <script type="text/javascript" src="/js/admin/app.js"></script>
+    <script type="text/javascript" src="/js/admin/guides.js"></script>
     <script type="text/javascript" src="/js/admin/layerController.js"></script>
     <script type="text/javascript" src="/js/admin/router.js"></script>
     <script type="text/javascript" src="/js/admin/itemControllers.js"></script>
@@ -108,6 +109,9 @@
                                     <a data-toggle="popover" title="<a class='text-right' style='display:block;' href='javascript:clearAlerts();'>&times clear</a>" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top: -1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;text-align: center;padding-left: 8px;" class="badge">{{ toolbarAlerts.length }}</span> </a>
                                 </li>
                                 <li> <a data-toggle="popover" data-html="true" title="Account" class="account" data-content="<script>LoadUser();</script><div class='user-controls'></div>" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
+                                <li>
+                                    <a ng-click="modal('help-modal')">Guides</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -126,6 +130,32 @@
                             <h3>Delete account</h3>
                             <p class="field-help">By deleting your account you will permanently lose your data on StoreHub</p>
                             <button ng-click="deleteAccount()" class="field-help btn btn-danger btn-block">Delete </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Guides</h4>
+                        </div>
+                        <div ng-if="tutorial" class="modal-body">
+                            <h2>You have an ongoing tutorial</h2>
+                            <hr>
+                            <p>Complete it or quit it to start another one.</p>
+                        </div>
+                        <div ng-if="!tutorial" class="modal-body">
+                            <hr>
+                            <p>Here is a set of interactive Storehub guides.</p>
+                            <div ng-repeat="tutorial in itutorials">
+                                <a ng-click="startTutorial(tutorial)">{{ tutorial.name }}</a>
+                                <br/>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -187,7 +217,6 @@
                 </div>
             </div>
         </div>
-        
         <nav id="menuUI"></nav>
         <div class="main container-fluid">
             <div class="alerList">

@@ -69,12 +69,12 @@ app.controller('products', [
                         var indexCategory = eCache.c.indexOf(item.category);
                         var indexSubCategory = eCache.sc.indexOf(item.sub_category);
 
-                        if (indexCategory == -1 && entry.name != ""){
+                        if (indexCategory == -1 && entry.name && entry.name != "") {
                             eCache.c.push(item.category);
                             categories.push(entry);
                         }
 
-                        if (indexSubCategory == -1 && subEntry.name != ""){
+                        if (indexSubCategory == -1 && subEntry.name && subEntry.name != "") {
                             eCache.sc.push(item.sub_category)
                             subCategories.push(subEntry);
                         }

@@ -1,5 +1,13 @@
 /****** PLACE YOUR CUSTOM STYLES HERE ******/
 
+a[ng-click], .nav-bar a[data-toggle] {
+    cursor: pointer;
+}
+
+.popover .btn-sm {
+    margin:0;
+}
+
 .main .col-xs-12.ng-enter {
     transform: translateX(-500px);
     opacity: 0;
@@ -81,7 +89,14 @@
     display: none;
 }
 
+.col-xs-12.ng-scope br {
+    display: block !important;
+}
 
+.abutton.col-md-12 {
+    width:100% !important;
+}
+ 
 
 @media only screen and (max-width: 768px) {
     #storeChart {
@@ -107,6 +122,9 @@
 
     .sticky-panel-toggle {
         display: block;
+    }
+    .col-xs-12.ng-scope  > .col-sm-12 {
+        margin-top: 2em;
     }
 }
 

@@ -25,6 +25,8 @@ app.controller('locations', [
         $scope.addImage = (data) => {
             $scope.item.images.push(data._id);
             $scope.update('locations', $scope.item._id, $scope.item);
+
+           
             $scope.$apply();
         }
 
@@ -71,6 +73,8 @@ app.controller('locations', [
                             $scope.$apply();
                             $scope.update('locations', $scope.item._id, $scope.item);
                             $scope.setupFence();
+
+                            window.nextTip();
 
                             pasync(() => { window.location = `#/locations/${data._id}` });
 

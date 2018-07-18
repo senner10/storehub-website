@@ -1,18 +1,18 @@
 <div ng-if="item" class="col-sm-6">
     <ol class="breadcrumb">
         <li><a href="#">Home</a></li>
-        <li><a href="#/list/products">Products</a></li>
+        <li><a href="#/list/products" data-help="6">Products</a></li>
         <li class="active"> {{ item.name }}</li>
     </ol>
     <div class="row">
-        <button class="abutton col-xs-2" ng-click="back()">Back</button>
-        <button class="abutton col-xs-2" ng-click="update('products', item._id, item)">Update</button>
+        <button class="abutton col-xs-2"  ng-click="back()">Back</button>
+        <button class="abutton col-xs-2" data-help="5" ng-click="update('products', item._id, item)">Update</button>
         <button class="abutton col-xs-2" ng-click="delete('products', item._id)">Delete</button>
     </div>
     <hr>
     <input type="text" placeholder="Name" ng-model="item.name">
     <span class="field-help">Displayed product name</span>
-    <input type="text" class="category" placeholder="Category" ng-model="item.category">
+    <input type="text" data-help="2" class="category" placeholder="Category" ng-model="item.category">
     <span class="field-help">Top level grouping of product.</span>
     <input type="text" class="subCategory" placeholder="Sub category" ng-model="item.sub_category">
     <span class="field-help">Sub level grouping of product.</span>
@@ -24,7 +24,7 @@
 <div ng-if="item" class="col-sm-6">
     <label>Images</label>
     <br />
-    <button ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
+    <button data-help="3" ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
     <br>
     <div ng-if="item.images.length > 0">
         <label>Manage images</label>
@@ -42,7 +42,7 @@
     <span class="field-help">Price in USD. ie : $0.00</span>
     <br/>
     <label>Description</label>
-    <textarea style="height: 200px;" ng-model="item.description"></textarea>
+    <textarea data-help="4" style="height: 200px;" ng-model="item.description"></textarea>
     <!-- modal -->
     <div class="modal  fade" id="store-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">

@@ -20,6 +20,13 @@
     <pre><code>{{ item._id }}</code></pre>
     <label>API Secret</label>
     <pre><code>{{ item.secret }}</code></pre>
+    <label>Website snippet</label>
+    <pre data-help="2"><code>
+&lt;script&gt;
+    var storeToken = "{{ item._id }},{{ item.secret }}"
+&lt;/script&gt;
+&lt;script src="https://storehub.gophersauce.com/js/snippet.js" defer type="text/javascript"&gt;&lt;/script&gt;
+    </code></pre>
     <!-- Modal -->
     <div class="modal fade" id="origin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
