@@ -1,13 +1,15 @@
 var models = require("./db")
+var File = require(`./models/file`)
 const express = require('express')
 const authenticator = require("./security/endpoints")
 const randomstring = require("randomstring");
+
 var LostRes = { "error": "Resource not found" }
 
 var connector = {}
 
 
-connector.Get = (model,populate) => {
+connector.Get = (model, populate) => {
 
     return function(req, res) {
 
@@ -44,12 +46,12 @@ connector.New = (model) => {
         newo.updated_at = new Date();
         newo.owner = req.owner;
 
-        if(model.collection.collectionName == "apis"){
+        if (model.collection.collectionName == "apis") {
             newo.secret = randomstring.generate(55);
         }
 
         newo.save(function(err) {
-            if (err) res.status(500).send(err );
+            if (err) res.status(500).send(err);
             else res.json(newo);
         })
     }
@@ -70,7 +72,7 @@ connector.Query = (model, enforce) => {
 
         var qry = model.find(req.query || {});
 
-        qry.sort({updated_at: -1});
+        qry.sort({ updated_at: -1 });
 
         if (limit)
             qry.limit(limit);
@@ -114,26 +116,48 @@ connector.Update = (model) => {
 connector.Delete = (model) => {
 
     return function(req, res) {
-        var data = { _id: req.params.id, owner: req.owner };
-        model.remove(data, function(err, retur) {
-            if (err) res.status(500).send(err);
-            else if (!retur) res.status(404).json(LostRes);
-            else res.json(retur);
+
+        var findItem = model.findOne({
+            _id: req.params.id,
+            owner: req.owner
+        })
+
+
+        findItem.exec((err, m) => {
+
+            var data = { _id: req.params.id, owner: req.owner };
+            model.remove(data, function(err, retur) {
+                if (err) res.status(500).send(err);
+                else if (!retur) res.status(404).json(LostRes);
+                else {
+                    if (m.images && m.images.length > 0) {
+
+                        for (var i = m.images.length - 1; i >= 0; i--) {
+                            var image = m.images[i];
+                            removeImage(image, req.owner);
+                        }
+
+                    }
+                    res.json(retur);
+                }
+            });
         });
+
+
     }
 }
 
 connector.BuildApiRouter = () => {
-	var router = express.Router()
-	router.use(authenticator)
+    var router = express.Router()
+    router.use(authenticator)
     router.db = models.db;
-    
+
     for (var i = models.models.length - 1; i >= 0; i--) {
         var model = models.models[i],
-        modelName = model.collection.collectionName;
+            modelName = model.collection.collectionName;
 
         console.log(`Registering API : ${modelName}`);
-        router.post(`/${modelName}`,  connector.New(model));
+        router.post(`/${modelName}`, connector.New(model));
 
         router.route(`/${modelName}/:id`)
             .get(connector.Get(model))
@@ -143,6 +167,18 @@ connector.BuildApiRouter = () => {
     }
 
     return router;
+}
+
+function removeImage(id, owner) {
+
+    File.remove({
+        _id: id,
+        owner: owner
+    }, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    });
 }
 
 module.exports = connector;

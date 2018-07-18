@@ -78,7 +78,7 @@ var gatherEventPerformance = (e) => {
                 meta: e.meta
             }
         },
-        function(err, e) {
+        function(err) {
             if (err) {
                 console.log(err);
             }

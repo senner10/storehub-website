@@ -828,7 +828,7 @@ function BuildStoreHub() {
                     } else {
                         btn.html("Remove from wishlist");
                     }
-                }, 2500, btn, data._id)
+                }, 600, btn, data._id)
 
             });
         }

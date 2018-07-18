@@ -381,7 +381,7 @@ app.controller('layerController', [
             $scope.id = data.id;
             Ape.Init({
                 base: "/api/res/",
-                headers: {}, // {"JWT-TOKEN" : data.token },
+                headers: {},
                 start: () => {
 
                 },

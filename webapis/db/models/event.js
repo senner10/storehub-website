@@ -11,7 +11,8 @@ base.add({
     description: String,
     meta: Mixed,
     rsvp : Boolean,
-    images : Array
+    images : Array,
+    list_id : String // mailchimp list id
 });
 
 var model = mongoose.model('Event', base);

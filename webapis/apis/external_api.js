@@ -80,7 +80,7 @@ router.post("/save_email", (req, res) => {
 
                 var m = new Mailchimp(mc.apiKey);
 
-                if (!e.meta || !e.meta.mailchimp) {
+                if (!e.list_id) {
 
                     var list = {
                         name: `${e.name} list`,
@@ -112,14 +112,11 @@ router.post("/save_email", (req, res) => {
                             return;
                         }
 
-                        if (!e.meta) {
-                            e.meta = {};
-                        }
 
-                        e.meta.mailchimp = result.id;
+                        e.list_id = result.id;
 
                         event.findOneAndUpdate({ _id: e._id }, {
-                                $set: { meta: e.meta }
+                                $set: { list_id : e.list_id }
                             },
                             (err) => {
 
@@ -205,7 +202,7 @@ function storeEmail(req, res, e, m) {
 
     m.request({
         method: 'post',
-        path: `/lists/${e.meta.mailchimp}/members`,
+        path: `/lists/${e.list_id}/members`,
         body: {
             email_address: req.body.email,
             status: "subscribed"
