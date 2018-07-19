@@ -467,7 +467,7 @@ function BuildStoreHub() {
             var b = $($(".storehub button.widget")[0]);
 
             var currentRight = parseInt(b.css("right"))
-            currentRight += 4;
+            currentRight += 25;
             var newRight = `${currentRight}px`;
             $("button.widget").css("right", newRight)
 
