@@ -435,7 +435,7 @@ function BuildStoreHub() {
             var wishlistBtn = $('<div class="storehub"><button style="font-size:12px;display: block; width: 121px;top: 100px;" class="widget wishlist" > <i style="float: left; position: relative;left: 0px;top: 2px;font-size: 20px;" class="fa fa-plus"/> Show wishlist</buttton></div>');
 
 
-            LoadScript("https://storehub.gophersauce.com/js/jquery.visible.js", ensureButtonVisibility)
+
 
 
 
@@ -873,6 +873,7 @@ function BuildStoreHub() {
 
         function savePosition(p) {
             position = p.coords;
+            LoadScript("https://storehub.gophersauce.com/js/jquery.visible.js", ensureButtonVisibility)
             $(".storehub .widget").css('display', 'block');
             checkEvents();
         }
