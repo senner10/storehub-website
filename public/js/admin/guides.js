@@ -1,5 +1,5 @@
 var guides = [{
-    name: "1. Add a website to StoreHub",
+    name: "1. Add a website to StoreHub.",
     index: "#/new/apis",
     tips: [{
         title: "Give your website a name",
@@ -41,7 +41,7 @@ var guides = [{
     }],
     current: 0
 }, {
-    name: "3. Add a product to StoreHub",
+    name: "3. Add a product to StoreHub.",
     index: "#/new/products",
     tips: [{
         title: "Give your product a name",
