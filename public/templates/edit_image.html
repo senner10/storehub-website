@@ -47,14 +47,14 @@
                     <div class="col-lg-6">
                         <input type="text" ng-model="item.meta.items[product].cta" placeholder="Call to action">
                     </div>
-                     <div class="col-lg-12">
+                    <div class="col-lg-12">
                         <input type="text" ng-model="item.meta.items[product].url" placeholder="URL">
                     </div>
                     <div class="col-md-12">
                         <textarea ng-model="item.meta.items[product].comment" placeholder="Comments"></textarea>
                     </div>
                     <div class="col-md-12">
-
+                        <button class=" btn btn-sm abutton" ng-click="editColors(product)">Edit tag</button>
                         <br>
                         <button class=" btn btn-sm abutton" ng-click="preview(product)">Toggle preview</button>
                     </div>
@@ -79,6 +79,35 @@
         <div class="list-group-item" ng-if="( !filterName || product.name.contains(filterName) ) && !item.meta.items[product._id]" ng-repeat="product in items">
             <button ng-click="selectProduct(product)" class="pull-right btn">SELECT</button>
             <h6>{{ product.name }}</h6>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="width:100% !important;" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Update tag settings</h4>
+            </div>
+            <div class="modal-body">
+                <div class="colorTarget">
+                    <span class="preview">&nbsp;</span>
+                    <input type="text" ng-model="imageTag.backgroundColor" placeholder="Background color">
+                    <span class="field-help">Background color of tagged image</span>
+                </div>
+                <div class="colorTarget">
+                    <span class="preview">&nbsp;</span>
+                    <input type="text" ng-model="imageTag.textColor" placeholder="Text color">
+                    <span class="field-help">Font color of tag text</span>
+                </div>
+                <input type="text" placeholder="Text" ng-model="imageTag.text">
+                <span class="field-help">Text inside tag.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="margin:0;" class="btn btn-default" ng-click="saveTagStyle()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>

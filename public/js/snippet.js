@@ -418,7 +418,7 @@ function BuildStoreHub() {
 
         var addButton = () => {
 
-            var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; }.storehub p, .storehub .social , .storehub button, .storehub { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social, .storehub input { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;position:fixed;top:60px;right:-91px;-webkit-transition:right 1s;transition:right 1s}.storehub .widget:hover{right:-2px} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storehub .row::after { clear:both;  } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub .row > .float-column { max-width: initial; width:calc(33.33333% - 20px);padding: 10px; } .storehub .row > .double { width:calc(50% - 20px); }  .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid ${theme.buttonBorderColor};margin: 0 0 24px 0;width: 100%;max-width:500px;} @media only screen and (max-width: 800px) { .float-column { width:100% !important; }  }`;
+            var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; }.storehub p, .storehub .social , .storehub button, .storehub { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social, .storehub input { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;position:fixed;top:60px;right:-127px;width:160px !important;-webkit-transition:right 1s;transition:right 1s}.storehub .widget:hover{right:-2px !important;} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storeub .row {     flex-wrap: initial;margin: 0 !important;display: block; } .storehub .row::after { clear:both;  } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub .row > .float-column { max-width: initial; width:calc(33.33333% - 20px);padding: 10px; } .storehub .row > .double { width:calc(50% - 20px); }  .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid ${theme.buttonBorderColor};margin: 0 0 24px 0;width: 100%;max-width:500px;} @media only screen and (max-width: 800px) { .float-column { width:100% !important; }  }`;
 
             AddStyle(userStyles);
 
@@ -427,12 +427,15 @@ function BuildStoreHub() {
             $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/remodal-default-theme.css" />');
             $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/font-awesome.min.css" />');
             $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/taggd.css" />');
-            LoadScript("/js/remodal.min.js");
-            LoadScript("/js/bs.popover.js");
+            LoadScript("https://storehub.gophersauce.com/js/remodal.min.js");
+            LoadScript("https://storehub.gophersauce.com/js/bs.popover.js");
 
             var btn = $('<div class="storehub"><button class="widget" > <img style="float: left;position: relative;left: -5px;" src="https://storehub.gophersauce.com/img/icon.png" width="25" /> Show locations</buttton></div>');
 
             var wishlistBtn = $('<div class="storehub"><button style="font-size:12px;display: block; width: 121px;top: 100px;" class="widget wishlist" > <i style="float: left; position: relative;left: 0px;top: 2px;font-size: 20px;" class="fa fa-plus"/> Show wishlist</buttton></div>');
+
+
+            LoadScript("https://storehub.gophersauce.com/js/jquery.visible.js", ensureButtonVisibility)
 
 
 
@@ -457,6 +460,27 @@ function BuildStoreHub() {
             getLocation();
             parseProducts();
             parseImages();
+        }
+
+        function ensureButtonVisibility() {
+
+            var b = $($(".storehub button.widget")[0]);
+
+            var currentRight = parseInt(b.css("right"))
+            currentRight += 20;
+            var newRight = `${currentRight}px`;
+            $("button.widget").css("right", newRight)
+
+            if (!b.visible(true)) {
+                setTimeout(() =>
+                    ensureButtonVisibility(), 1900);
+            } else {
+                var bw = $("button.widget");
+                var current = bw.css("right");
+                var tempStyle = `.storehub button.widget { right : ${current}px; }`
+
+                bw.css("right", "")
+            }
         }
 
 
@@ -661,6 +685,13 @@ function BuildStoreHub() {
                     var position = p.position;
                     var elem = $(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">+</div>`);
 
+                    if (p.backgroundColor) {
+                        elem.css({
+                            "background-color": p.backgroundColor,
+                            "border-color": p.backgroundColor,
+                            "color": p.textColor
+                        }).html(p.text);
+                    }
 
 
                     $.ajax({

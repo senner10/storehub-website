@@ -19,6 +19,64 @@ app.controller('images', [
 
         }
 
+        $scope.saveTagStyle = () => {
+
+            var colorTargets = $(".colorTarget");
+            var id = $scope.imageTagId;
+            $scope.imageTag.backgroundColor = $(".preview", colorTargets[0]).css("backgroundColor");
+            $scope.imageTag.textColor = $(".preview", colorTargets[1]).css("background-color");
+
+            var tag = $(`[data-id="${id}"]`)
+
+            tag.css({
+                "background-color": $scope.imageTag.backgroundColor,
+                "border-color": $scope.imageTag.backgroundColor,
+                "color": $scope.imageTag.textColor
+            })
+
+            tag.html($scope.imageTag.text);
+
+            $scope.modal("tag-modal");
+        }
+
+
+
+        $scope.editColors = (product) => {
+            $scope.imageTag = $scope.item.meta.items[product];
+            $scope.imageTagId = product;
+            var tag = $(`[data-id="${product}"]`);
+            $scope.imageTag.backgroundColor = $scope.imageTag.backgroundColor ?
+                $scope.imageTag.backgroundColor : tag.css("background-color");
+
+            $scope.imageTag.textColor = $scope.imageTag.textColor ?
+                $scope.imageTag.textColor : tag.css("color");
+
+            $scope.imageTag.text = $scope.imageTag.text ? $scope.imageTag.text : "+";
+
+
+            $scope.modal("tag-modal");
+
+            if (!$scope.initColor) {
+                $scope.initColor = true;
+
+                pasync(() => {
+                    $(".colorTarget").each((i, picker) => {
+                        $(picker).colorPickerByGiro({
+                            preview: $(".preview", picker),
+                            format: 'rgb',
+                            value: $("input", picker).val()
+                        });
+
+
+                    })
+                });
+            } else {
+                var colorTargets = $(".colorTarget");
+                $(colorTargets[0]).colorPickerByGiro('setValue', $scope.imageTag.backgroundColor);
+                $(colorTargets[1]).colorPickerByGiro('setValue', $scope.imageTag.textColor);
+            }
+        }
+
         $scope.togglePanel = () => {
             $scope.panelOpen = $scope.panelOpen ? false : true;
         }
@@ -194,7 +252,17 @@ app.controller('images', [
                     for (var i = $scope.item.meta.index.length - 1; i >= 0; i--) {
                         var id = $scope.item.meta.index[i];
                         var position = $scope.item.meta.items[id].position;
-                        $(".image-tag-wrapper.enabled").append(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">+</div>`);
+                        var item = $scope.item.meta.items[id];
+
+                        var tagDiv = $(`<div data-id="${id}" class="tagdiv" style="top: ${position.top}; left: ${position.left};">+</div>`);
+                        if (item.backgroundColor) {
+                            tagDiv.css({
+                                "background-color": item.backgroundColor,
+                                "border-color": item.backgroundColor,
+                                "color": item.textColor
+                            }).html(item.text);
+                        }
+                        $(".image-tag-wrapper.enabled").append(tagDiv);
                         $scope.updateSize(id);
                     }
 
@@ -210,7 +278,7 @@ app.controller('images', [
         });
 
         $scope.Do("GET", "theme", {}, (data) => {
-            if(data){
+            if (data) {
                 $scope.theme = data;
             }
         });
