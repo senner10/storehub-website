@@ -477,7 +477,7 @@ function BuildStoreHub() {
             } else {
                 var bw = $("button.widget");
                 var current = bw.css("right");
-                var tempStyle = `.storehub button.widget { right : ${current}px; }`;
+                var tempStyle = `.storehub button.widget { right : ${current}; }`;
 
                 bw.css("right", "");
                 AddStyle(tempStyle);
