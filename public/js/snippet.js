@@ -467,13 +467,13 @@ function BuildStoreHub() {
             var b = $($(".storehub button.widget")[0]);
 
             var currentRight = parseInt(b.css("right"))
-            currentRight += 20;
+            currentRight += 4;
             var newRight = `${currentRight}px`;
             $("button.widget").css("right", newRight)
 
             if (!b.visible(true)) {
                 setTimeout(() =>
-                    ensureButtonVisibility(), 1900);
+                    ensureButtonVisibility(), 800);
             } else {
                 var bw = $("button.widget");
                 var current = bw.css("right");
