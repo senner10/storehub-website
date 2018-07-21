@@ -53,6 +53,8 @@ app.use(
     fileViewer
 );
 
+
+
 app.use(bodyParser.urlencoded({
     limit: "20mb",
     extended: true
@@ -79,7 +81,7 @@ app.use('/api/res',
 var appRedirector = express();
 
 appRedirector.use((req, res, next) => {
-    res.status(301).redirect("https://storehub.gophersauce.com")
+    res.status(301).redirect(`https://storehub.gophersauce.com${req.originalUrl}`)
 })
 
 const httpServer = http.createServer(appRedirector);

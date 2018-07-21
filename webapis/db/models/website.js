@@ -4,7 +4,8 @@ var Mixed = mongoose.Schema.Types.Mixed;
 
 base.add({
     origins: Mixed,
-    secret : String
+    secret : String,
+    hideButtons : Boolean
 });
 
 var model = mongoose.model('api', base);

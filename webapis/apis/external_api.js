@@ -9,7 +9,8 @@ var website = require("../db/models/website"),
     email = require("../db/models/email"),
     product = require("../db/models/product"),
     theme = require("../db/models/theme"),
-    mailchimp = require("../db/models/mailchimp")
+    mailchimp = require("../db/models/mailchimp"),
+    unauthorized = { "error": "unauthorized access." }
 
 
 router.get("/get_locations", (req, res) => {
@@ -20,6 +21,8 @@ router.get("/get_locations", (req, res) => {
         req.connection.socket.remoteAddress).split(",")[0];
 
     var tokens = req.headers.token.split(",");
+    var origin = req.headers.origin;
+
     website.findOne({ _id: tokens[0], secret: tokens[1] }, (err, w) => {
 
         if (err) {
@@ -28,8 +31,15 @@ router.get("/get_locations", (req, res) => {
         }
 
         if (!w) {
-            res.status(401).json({ "error": "unauthorized access." })
+            res.status(401).json(unauthorized)
             return
+        }
+
+        if (w.origin && w.origin.hosts && w.origin.hosts.length > 0) {
+            if (!allowedOrigin(origin, w.origin.hosts)) {
+                res.status(401).json(unauthorized)
+                return;
+            }
         }
 
 
@@ -116,7 +126,7 @@ router.post("/save_email", (req, res) => {
                         e.list_id = result.id;
 
                         event.findOneAndUpdate({ _id: e._id }, {
-                                $set: { list_id : e.list_id }
+                                $set: { list_id: e.list_id }
                             },
                             (err) => {
 
@@ -224,6 +234,20 @@ function saveEmail(req, res) {
     e.save((err) => {
         sendResponse(err, e, res);
     })
+}
+
+function allowedOrigin(origin, hosts) {
+    var allowed = false;
+
+    for (var i = hosts.length - 1; i >= 0; i--) {
+        var host = hosts[i];
+        if (origin.includes(host)) {
+            allowed = true;
+            break;
+        }
+    }
+
+    return allowed;
 }
 
 

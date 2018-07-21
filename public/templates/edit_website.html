@@ -14,6 +14,24 @@
     <span class="field-help">Displayed website name</span>
     <br/>
     <button ng-click="modal('origin-modal')" class="btn">Manage allowed domain names.</button>
+
+    <hr>
+    <input type="checkbox" ng-model="item.hideButtons"> Hide sidebar buttons
+    <div ng-if="item.hideButtons">
+        <p><i class="glyphicon glyphicon-bell"></i> In order to use StoreHub, you must add these snippets to your website :</p>
+        <label>Location display button</label>
+        <pre>
+            <code>
+&lt;div class="storehub" data-type="locations-button" &gt; &lt;/div&gt;
+            </code>
+        </pre>
+        <label>Wishlist button</label>
+        <pre>
+            <code>
+&lt;div class="storehub" data-type="wishlist-button" &gt; &lt;/div&gt;
+            </code>
+        </pre>
+    </div>
 </div>
 <div ng-if="item" class="col-sm-6">
     <label>API Key</label>

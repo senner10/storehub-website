@@ -8,6 +8,7 @@
             <li role="presentation"><a href="#tcolors" aria-controls="tcolors" role="tab" data-toggle="tab">Text colors</a></li>
             <li role="presentation"><a href="#ccolors" aria-controls="ccolors" role="tab" data-toggle="tab">Component colors</a></li>
             <li role="presentation"><a href="#bstyles" aria-controls="bstyles" role="tab" data-toggle="tab">Button styles</a></li>
+            <li role="presentation"><a href="#pstyles" aria-controls="pstyles" role="tab" data-toggle="tab">Popup styles</a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -36,6 +37,23 @@
                         <input type="text" ng-model="theme.paragraphColor" placeholder="Component text color">
                         <span class="field-help">Component text color</span>
                     </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="pstyles">
+                <div class="col-md-6">
+                    <label>{{ theme.popupRadius }}%</label>
+                    <input type="range" step="1" min="0" max="50" ng-model="theme.popupRadius">
+                    <span class="field-help">Panel border radius</span>
+
+                      <input type="number" ng-model="theme.popupPadding" placeholder="Popup padding">
+                    <span class="field-help">Popup padding (in pixeks)</span>
+
+                      <input type="number" ng-model="theme.popupWidth" placeholder="Popup width">
+                    <span class="field-help">Popup width (in pixels)</span>
+
+                      <input type="number" ng-model="theme.popupHeight" placeholder="Popup height">
+                    <span class="field-help">Popup height (in pixels)</span>
+
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="bstyles">
