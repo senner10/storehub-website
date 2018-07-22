@@ -14,6 +14,7 @@ app.controller('layerController', [
 
 
         $scope.help = {};
+        $scope.search = "";
 
         $scope.$on('$routeChangeSuccess', function() {
 
@@ -250,13 +251,14 @@ app.controller('layerController', [
             for (var i = $scope.dbCache.length - 1; i >= 0; i--) {
                 var item = $scope.dbCache[i];
                 var selector = `[data-key="${item._id}"]`;
+                var query = $scope.search.toLowerCase();
                 if (item.name)
                     item.name = item.name.toLowerCase();
                 else item.name = "";
 
                 if ($(selector, targ).length == 0) {
 
-                    if (item.name && item.name.includes($scope.search)) {
+                    if (item.name.includes(query)) {
                         item.type = item.resType == "apis" ? "websites" : item.resType;
                         targ.append(`<div data-key="${item._id}" style="height:40px;" class="list-group-item"><a href="#/${item.type}/${item._id}"><h5>${item.name} <small>${item.type}</small></h5></a></div>`);
                         found++;
@@ -264,14 +266,14 @@ app.controller('layerController', [
 
                 } else {
 
-                    if (!item.name.includes($scope.search)) {
+                    if (!item.name.includes(query)) {
                         $(selector, targ).remove();
                     } else found++;
                 }
             }
             if (found == 0) {
-                var search = $scope.search;
-                targ.append(`<p class="text-center remove">No results found for query <strong>${search}</strong> </p>`);
+          
+                targ.append(`<p class="text-center remove">No results found for query <strong>${query}</strong> </p>`);
             }
         }
 
