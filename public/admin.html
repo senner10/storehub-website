@@ -127,6 +127,19 @@
                         </div>
                         <div class="modal-body">
                             <label>Update payment information</label>
+                            <form action="/api/res/save_card" method="POST">
+                              <script
+                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key=""
+                                data-name="Storehub"
+                                data-description="Subscription"
+                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                data-locale="auto"
+                                data-label="Subscribe"
+                                data-panel-label="Subscribe"
+                                data-zip-code="true">
+                              </script>
+                            </form>
                             <h3>Delete account</h3>
                             <p class="field-help">By deleting your account you will permanently lose your data on StoreHub</p>
                             <button ng-click="deleteAccount()" class="field-help btn btn-danger btn-block">Delete </button>

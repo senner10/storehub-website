@@ -17,7 +17,6 @@
     <script type="text/javascript" src="/js/admin/app.js"></script>
     <script type="text/javascript" src="/js/admin/authenticator.js"></script>
     <script type="text/javascript" src="/js/sha256.js"></script>
-
 </head>
 
 <body ng-app="app">
@@ -66,31 +65,68 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <input type="text" ng-model="data.email" class="validate-required field-error" placeholder="Email">
+                            <input type="text" required ng-model="data.email" class="validate-required field-error" placeholder="Email">
                             <label class="field-help">Your email address</label>
                         </div>
-                         <div class="col-md-3">
-                            <input type="text" ng-model="data.name" class="validate-required field-error" placeholder="Name">
+                        <div class="col-md-3">
+                            <input type="text" ng-model="data.name" requires class="validate-required field-error" placeholder="Name">
                             <label class="field-help">Your full name</label>
                         </div>
-                        <div class="col-md-3">
-                            <select ng-model="data.plan_id">
-                                <option value="">Essential</option>
-                                <option>Basic</option>
-                                <option>Professional</option>
-                                <option>Enterprise</option>
-                            </select>
-                            <span class="field-help">Storehub subcription</span>
-                        </div>
-                        <div class="col-md-3">
+                   
+                        <div class="col-md-6">
                             <input required ng-model="data.password" type="password" class="validate-required field-error" placeholder="Password">
                         </div>
                     </div>
-                        <input type="checkbox" ng-model="tos" > I accept the terms of use.
-                        <br />
+                    <h3>Pick your plan</h3>
+                    <hr>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4 text-center">
+                            <h3>Essential</h3>
+                            <hr>
+                            <p style="height: 100px;">For smaller businesses or solopreneurs that need a little pick-me-up</p>
+                            <h5>Choose any three StoreHub apps</h5>
+                            <h3>$29/month</h3>
+                            <ul>
+                                <li>Enhance Your Site Without Rebuilding</li>
+                                <li>Spend Less Time → Get More Sales</li>
+                                <li>Up and Running in Minutes</li>
+                            </ul>
+                            <p class="text-muted" ng-if="data.plan_id == 'Essential'">You selected this plan.</p>
+                            <button class="btn" type="button"  ng-if="data.plan_id != 'Essential'" ng-click="data.plan_id = 'Essential';">select</button>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                            <h3>Professional</h3>
+                            <hr>
+                            <p style="height: 100px;">Larger online presence needing a big boost to innovation and revenue generation. Larger teams that are struggling to keep growth goals</p>
+                            <h5>Get ALL the StoreHub Apps</h5>
+                            <h3>$149/month</h3>
+                            <ul>
+                                <li>Includes all Starter Plan functionality</li>
+                                <li>Handle Retail and eCommerce Growth</li>
+                                <li>Apps Work Together to Save Time</li>
+                            </ul>
+                            <p class="text-muted" ng-if="data.plan_id == 'Professional'">You selected this plan.</p>
+                            <button type="button" class="btn"  ng-if="data.plan_id != 'Professional'" ng-click="data.plan_id = 'Professional';">select</button>
+                        </div>
+                        <div class="col-sm-4 text-center">
+                            <h3>Enterprise</h3>
+                            <hr>
+                            <p style="height: 100px;">Need a premier growth platform with enhancements to meet your companies unique needs? We’ll help you customize the platform to suit all your needs</p>
+                            <h5>Get ALL the StoreHub Apps</h5>
+                            <h3>Contact Us</h3>
+                            <ul>
+                                <li>Includes All Functionality</li>
+                                <li>Large Enterprise Management Tools</li>
+                                <li>Easily Integrate with Existing Systems and Streamline</li>
+                            </ul>
+                            <p class="text-muted" ng-if="data.plan_id == 'Enterprise'">You selected this plan.</p>
+                            <button type="button" class="btn"  ng-if="data.plan_id != 'Enterprise'" ng-click="data.plan_id = 'Enterprise';">select</button>
+                        </div>
+                    </div>
+                      <input type="checkbox" required style="margin-top:2.2em;" ng-model="tos"> I accept the terms of use.
                     <div class="row">
                         <div class="col-sm-4">
-                        
                             <button class="abutton" ng-disabled="!tos" type="submit">Join</button>
                         </div>
                         <div class="col-sm-8"><a href="/login.html">Login</a>
@@ -110,8 +146,8 @@
                 </div>
                 <div class="col-sm-4 text-center">
                     <span class="fade-half">
-								© Copyright 2018 StoreHub - All Rights Reserved
-							</span>
+                                © Copyright 2018 StoreHub - All Rights Reserved
+                            </span>
                 </div>
             </div>
         </div>

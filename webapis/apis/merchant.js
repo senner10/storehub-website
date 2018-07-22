@@ -4,13 +4,39 @@ const Client = require('node-rest-client').Client;
 var restClient = new Client();
 var user = require("../db/models/user")
 
+var stripe = require("stripe")(
+    ""
+);
+
 
 var planMaxs = {
     Essential: 3,
-    Basic: 5,
     Professional: 7,
     Enterprise: 7
 }
+
+router.post("/save_card", (req, res) => {
+    stripe.customers.create({
+        description: 'Account of ' + req.session.userName,
+        source: req.body.stripeToken // obtained with Stripe.js
+    }, function(err, customer) {
+        // asynchronously called
+        if (err) {
+            res.redirect("/admin.html?error=Error saving card, please try again.")
+        } else {
+
+            user.findOneAndUpdate({ _id: req.session.userid }, { $set: { customer_id: customer.id } }, (err) => {
+                if (err) {
+                    res.redirect("/admin.html?error=Error saving card, please try again.")
+                    return;
+                }
+                res.redirect("/admin.html?success=Success, your information is saved!")
+            })
+
+        }
+
+    });
+})
 
 router.get("/activate_account", (req, res) => {
     var args = {
@@ -117,6 +143,21 @@ router.get("/upgrade/:plan", (req, res) => {
                     res.status(500).send(err);
                     return;
                 }
+
+                if (usr.sub_id) {
+                    CancelStripePlan(usr.sub_id, (cancel) => {
+
+                        if (!cancel) {
+                            res.status(500).json({});
+                            return
+                        }
+
+                        initSubscribe(usr.customer_id, plan, res)
+                    })
+                } else {
+                    initSubscribe(usr.customer_id, plan, res)
+                }
+
                 res.json({})
 
             })
@@ -158,6 +199,56 @@ function updateUserApps(req, res) {
         }
         res.json({});
     })
+}
+
+function CancelStripePlan(plan, cb) {
+    stripe.subscriptions.del(
+        plan,
+        function(err, confirmation) {
+            // asynchronously called
+            if (err) {
+                cb(false);
+                return;
+            }
+
+            cb(true);
+        }
+    );
+}
+
+function initSubscribe(customer, plan, res) {
+    Subscribe(customer, plan, (planid) => {
+        if (!planid) {
+            res.status(500).json({})
+            return;
+        }
+
+        user.findOneAndUpdate({customer_id : customer }, { $set : { sub_id : planid } } , (err) => {
+            if (err){
+                res.status(500).send(err)
+                return;
+            }
+
+            res.json({});
+        })
+    })
+}
+
+function Subscribe(customer, plan, cb) {
+    stripe.subscriptions.create({
+        customer: customer,
+        items: [{
+            plan: plan,
+        }, ]
+    }, function(err, subscription) {
+        // asynchronously called
+        if (err) {
+            cb(false);
+            return;
+        }
+
+        cb(subscription.id);
+    });
 }
 
 

@@ -426,6 +426,9 @@ app.controller('layerController', [
             });
         }
 
+        $scope.getPlanId = () => {
+            return $scope.customer_id;
+        }
 
         $scope.getUserApps = () => {
             $scope.Do("GET", "apps", {}, (data) => {
@@ -443,7 +446,7 @@ app.controller('layerController', [
 
         $scope.planMaxs = {
             Essential: 3,
-            Basic: 5,
+            Basic: 3,
             Professional: 7,
             Enterprise: 7
         }

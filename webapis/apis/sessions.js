@@ -10,6 +10,10 @@ var mail = require('mail').Mail({
     password: '',
     port: 587
 });
+var stripe = require("stripe")(
+    ""
+);
+
 
 var month = ((84600 * 1000) * 7) * 4
 
@@ -47,10 +51,30 @@ router.post('/join', (req, res) => {
 })
 
 router.get('/delete_account', (req, res) => {
-    
-    delete req.session.token;
-    
-    
+
+    var qry = User.findOne({ _id: req.session.userid });
+
+    qry.exec((err, usr) => {
+
+        if (err) {
+            res.status(500).send(err);
+            return;
+        }
+
+        stripe.subscriptions.del(
+            usr.sub_id,
+            function(err, confirmation) {
+                // asynchronously called
+                if (err) {
+                    res.status(500).json({});
+                    return;
+                }
+
+                res.json({});
+
+            })
+    })
+
 });
 
 router.post('/reset_password', (req, res) => {

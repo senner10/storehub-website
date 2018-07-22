@@ -8,7 +8,8 @@ base.add({
     expiration_time : Number,
     stripe_token : String,
     plan_id : String,
-    customer_id : String
+    customer_id : String, //stripe customer id
+    sub_id : String, // stripe subscription id
 });
 
 var model = mongoose.model('User', base);

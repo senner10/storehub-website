@@ -4,20 +4,13 @@ app.controller('apps', [
 
         $scope.plans = {
             Essential: {
-                description: "",
-                rate: ""
-            },
-            Basic: {
-                description: "",
-                rate: ""
+                rate: "$29 per month."
             },
             Professional: {
-                description: "",
-                rate: ""
+                rate: "$149 per month."
             },
             Enterprise: {
-                description: "",
-                rate: ""
+                rate: "Custom pricing."
             }
         };
 
@@ -26,10 +19,10 @@ app.controller('apps', [
 
 
         $scope.appList = [
-            { name: "Geolocation marketing", description: "", icon: "glyphicon glyphicon-flag", id: "gm" },
-            { name: "Shop the look", description: "", icon: "glyphicon glyphicon-tags", id: "spl" },
-            { name: "Retail events", description: "", icon: "glyphicon glyphicon-calendar", id: "re" },
-            { name: "Commerce", description: "", icon: "glyphicon glyphicon-barcode", id: "cme" }
+            { name: "Geolocation marketing", description: "Powerful features make it possible to leverage each store location to the max and convert customers on the go.", icon: "glyphicon glyphicon-flag", id: "gm" },
+            { name: "Shop the look", description: "Upload, Link products, Launch Shoppable Images on Any Device. With intuitive shoppable images you’ll be selling more product, faster.", icon: "glyphicon glyphicon-tags", id: "spl" },
+            { name: "Retail events", description: "Drive Sales to Stores With Events. A simple, powerful way to plan and manage events at any store location.", icon: "glyphicon glyphicon-calendar", id: "re" },
+            { name: "Product wishlists", description: "Oftentimes the wishlist is underutilized. Beef it up with recommendations, shareable links, and one-click-add. For retailers who sell online or offline", icon: "glyphicon glyphicon-barcode", id: "cme" }
         ];
 
         $scope.hasApp = (id) => {
@@ -49,7 +42,7 @@ app.controller('apps', [
         }
 
         $scope.upgrade = (id) => {
-            if (!$scope.customer_id) {
+            if (!$scope.getPlanId()) {
                 swal("", "Please enter your payment information to upgrade your account.", "warning");
                 return;
             }
