@@ -47,8 +47,10 @@ app.controller('authenticator', [
                 "/api/join", {
                     email: $scope.data.email,
                     password: sha256($scope.data.password).toUpperCase(),
-                    name: $scope.data.name
+                    name: $scope.data.name,
+                    plan_id : $scope.data.plan_id
                 }, (data) => {
+                  
                     if (!data) {
 
                         swal({

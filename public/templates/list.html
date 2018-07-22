@@ -5,7 +5,7 @@
         <button class="abutton  btn btn-sm" ng-click="deselectAll()">Deselect all</button>
         <button class="abutton  btn btn-sm" ng-click="clone()">Clone</button>
         <button class="abutton btn btn-sm" ng-click="deleteSelected()">Delete</button>
-        <button class="abutton  btn btn-sm"   data-help="{{ tutorial.current + 1  }}"  ng-if="resName != 'location' && resName != 'event'" ng-click="html()">Get HTML code</button>
+        <button class="abutton  btn btn-sm" data-help="{{ tutorial.current + 1  }}" ng-if="resName != 'location' && resName != 'event'" ng-click="html()">Get HTML code</button>
     </div>
     <br>
 </div>
@@ -23,11 +23,11 @@
                 <img src="/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
             </div>
             <div>
-            <input ng-if="$index != 0" type="checkbox" class="full-checkbox" ng-change="nextTip()" ng-model="selectMap[item._id]">
-             <input ng-if="$index == 0" data-help="{{ tutorial.current  }}" type="checkbox" class="full-checkbox" ng-change="nextTip()" ng-model="selectMap[item._id]">
-            <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>
-            <p style="margin-bottom: 4px;">Created : {{ localTime(item.created_at) }} </p>
-            <a href="#/{{ resName == 'api' ?  'website' : resName }}s/{{item._id}}">edit</a>
+                <input ng-if="$index != 0" type="checkbox" class="full-checkbox" ng-change="nextTip()" ng-model="selectMap[item._id]">
+                <input ng-if="$index == 0" data-help="{{ tutorial.current  }}" type="checkbox" class="full-checkbox" ng-change="nextTip()" ng-model="selectMap[item._id]">
+                <h6 style="margin:7px;">{{ item.name ? item.name : "NONAME" }}</h6>
+                <p style="margin-bottom: 4px;">Created : {{ localTime(item.created_at) }} </p>
+                <a href="#/{{ resName == 'api' ?  'website' : resName }}s/{{item._id}}">edit</a>
             </div>
         </div>
     </div>
@@ -84,18 +84,16 @@
                 <div ng-if="resName == 'product'">
                     <label>Preview:</label>
                     <div style="font-family:{{ theme.fontFamily  }} !important;" class="list-group-item">
-                        <h2 style="color:{{ theme.paragraphColor }};font-size: {{ theme.headerSize }}px"> Product name</h2>
+                        <h2 style="font-family:{{ theme.fontFamily  }} !important;color:{{ theme.paragraphColor }};font-size: {{ theme.headerSize }}px"> Product name</h2>
+                        <span style="border-color:{{ theme.buttonBorderColor }};background-color: {{ theme.buttonBackgroundColor }};color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border-radius: {{ theme.buttonRadius}}%;" class="storehub pill">Category</span> <span style="border-color:{{ theme.buttonBorderColor }};background-color: {{ theme.buttonBackgroundColor }};color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border-radius: {{ theme.buttonRadius}}%;" class="storehub pill">Sub category</span>
                         <hr>
+                        <div style="margin-bottom: 25px;">
+                            <img src="https://placehold.it/100x60" style="margin-right: 5px;">
+                            <img src="https://placehold.it/100x60" style="margin-right: 5px;">
+                        </div>
                         <div class="row">
-                            <div class="col-md-4">
-                                <img src="https://placehold.it/400x400">
-                            </div>
                             <div class="col-md-8 storehub">
                                 <p style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;line-height:{{ theme.paragraphSize + 4 }}px;">
-                                    <strong>Category</strong> / category name
-                                    <br>
-                                    <strong>Sub category</strong> / sub category name
-                                    <br style="border-color:{{ theme.buttonBorderColor }}">
                                     <strong>Description</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet placerat est. Nullam vitae cursus lorem. Praesent nec lectus at leo euismod pretium. Aenean rutrum massa quis metus molestie, posuere egestas elit cursus...
                                     <br>
                                     <a style="color:{{ theme.paragraphColor }}">View more</a>

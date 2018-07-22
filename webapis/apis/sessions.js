@@ -11,7 +11,7 @@ var mail = require('mail').Mail({
     port: 587
 });
 
-var month = ((84600 * 1000) * 7) *
+var month = ((84600 * 1000) * 7) * 4
 
 router.get('/logout', (req, res) => {
 

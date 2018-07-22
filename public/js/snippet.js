@@ -354,7 +354,7 @@ function BuildStoreHub() {
             var content = $('<div/>'),
                 rsvp = $(`<button class="form">Save</button>`);
 
-            content.append('<div class="scrolldiv"> </div>')
+            content.append('<div class="scrolldiv" style="height:auto;"> </div>')
 
             if (event.description) {
                 event.description = event.description.replace("\n", "<br>");
@@ -406,11 +406,14 @@ function BuildStoreHub() {
 
             for (var i = event.images.length - 1; i >= 0; i--) {
                 var image = event.images[i]
-                $(".scrolldiv", content).append(`<img src="https://storehub.gophersauce.com/file/${image}" />`)
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`
+                $(".scrolldiv", content).append(`<a rel="prettyPhoto" href="${imagePath}" ><img height="80" style="margin-right:5px" src="${imagePath}" /></a>`)
             }
 
             var panel = StoreHubPanel(event.name, content)
             ShowModal(panel);
+
+            $(`a[rel='prettyPhoto[${data._id}]']`, content).prettyPhoto()
 
         }
 
@@ -909,6 +912,8 @@ function BuildStoreHub() {
             if (wishlist.indexOf(data._id) != -1) {
                 $(".add-wishlist", product).html("Remove from wishlist");
             }
+
+            tag.css("padding", "15px");
 
             tag.append(product);
 
