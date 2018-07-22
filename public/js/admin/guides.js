@@ -143,7 +143,7 @@ var guides = [{
         text: "Describe your event"
     }, {
         title: "Select participating locations",
-        text: "",
+        text: "Set the locations a customer must be in proximity of, to trigger event message.",
         placement : "right"
     } , {
         title: "Update changes",

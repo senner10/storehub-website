@@ -79,7 +79,7 @@ function BuildNav(apps) {
             icon: 'glyphicon glyphicon-cog',
             show: true,
             submenu: [
-                { id: '#/themes', value: 'Colors', action: 'click' },
+                { id: '#/themes', value: 'Styles', action: 'click' },
                 { id: '#/stripe_settings', value: 'Merchant settings', show: true, action: 'click' },
                 { id: '#/mailchimp', value: 'Mailchimp', show: true, action: 'click' },
                 { id: '#/help', value: 'Help', show: true, action: 'click' }
