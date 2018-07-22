@@ -124,7 +124,7 @@ div.pp_pic_holder{display:none;position:absolute;width:100px;z-index:10000}
 .pp_content_container .pp_details{float:left;margin:10px 0 2px}
 .pp_description{display:none;margin:0}
 .pp_social{float:left;margin:0}
-.pp_social .facebook{float:left;margin-left:5px;width:55px;overflow:hidden}
+.pp_social .facebook{float:left;margin-left:5px;width:69px;overflow:hidden}
 .pp_social .twitter{float:left}
 .pp_nav{clear:right;float:left;margin:3px 10px 0 0}
 .pp_nav p{float:left;white-space:nowrap;margin:2px 4px}
@@ -168,3 +168,6 @@ div.dark_rounded #pp_full_res .pp_inline,div.dark_square #pp_full_res .pp_inline
 * html .pp_top .pp_middle,* html .pp_bottom .pp_middle{left:0;position:static}
 .pp_top .pp_right,.pp_bottom .pp_right{height:20px;left:auto;position:absolute;right:0;top:0;width:20px}
 .pp_fade,.pp_gallery li.default a img{display:none}
+.pp_gallery {
+	display: none !important;
+}

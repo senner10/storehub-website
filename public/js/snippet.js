@@ -46,7 +46,7 @@ function BuildStoreHub() {
         AddStyle(baseStyles);
 
         $.ajax({
-            url: "https://localhost/api/get_locations",
+            url: "https://storehub.gophersauce.com/api/get_locations",
             headers: { "token": storeToken },
             contentType: "application/json",
             success: (response) => {
@@ -60,7 +60,7 @@ function BuildStoreHub() {
         var parse = (response) => {
             storehubData = response;
             $.ajax({
-                url: `https://localhost/api/user_theme/${storehubData.w.owner}`,
+                url: `https://storehub.gophersauce.com/api/user_theme/${storehubData.w.owner}`,
                 contentType: "application/json",
                 success: (response) => {
                     theme = response.theme;
@@ -124,7 +124,7 @@ function BuildStoreHub() {
 
             content.append(`<h2 >${location.name} — (${dist} miles away)</a></h2>`)
 
-            content.append('<div class="scrolldiv"> </div>')
+            content.append('<div class="scrolldiv" style="height:auto;"> </div>')
 
             content.append('<div class="float-column one"> </div> <div class="float-column two"> </div>')
 
@@ -169,8 +169,10 @@ function BuildStoreHub() {
 
             for (var i = location.images.length - 1; i >= 0; i--) {
                 var image = location.images[i]
-                $(".scrolldiv", content).append(`<img src="https://localhost/file/${image}" />`)
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`;
+                $(".scrolldiv", content).append(`<a rel="prettyPhoto" href="${imagePath}" ><img height="60" style="margin-right:5px;" src="${imagePath}"/></a>`)
             }
+
 
             return content;
         }
@@ -210,7 +212,7 @@ function BuildStoreHub() {
                         dist = calcCrow(position.latitude, position.longitude, lat, lon);
                         //0.621371
                     }
-                    var locationRow = $(`<div><iframe src="https://localhost/map_viewer.html?lat=${lat}&lon=${lon}" ></iframe></div>`);
+                    var locationRow = $(`<div><iframe src="https://storehub.gophersauce.com/map_viewer.html?lat=${lat}&lon=${lon}" ></iframe></div>`);
 
                     locationRow.prepend(locationElement);
                     var directions = $(`<a class="list-element" style="margin-top: 163px;" href="http://www.google.com/maps/place/${lat},${lon}" target="_blank" >Get directions</a>`);
@@ -229,6 +231,7 @@ function BuildStoreHub() {
                         var locationInformation = generateLocationContent(e.data.location);
                         content.append(locationInformation);
                         locationElements.css('display', "none");
+                        $("a[rel='prettyPhoto']", content).prettyPhoto();
                         return false;
                     })
                     if ((!location.useFence && dist < location.range) || inFence(location)) {
@@ -295,7 +298,7 @@ function BuildStoreHub() {
 
         var checkEvents = () => {
             $.ajax({
-                url: `https://localhost/api/user_events/${storehubData.w.owner}`,
+                url: `https://storehub.gophersauce.com/api/user_events/${storehubData.w.owner}`,
                 contentType: "application/json",
                 success: (response) => {
                     parseEvents(response);
@@ -381,7 +384,7 @@ function BuildStoreHub() {
                 removeLoader();
                 content.append("<p class='loader'><i class='fa fa-spin fa-cog'></i> One moment... </p>")
                 $.ajax({
-                    url: "https://localhost/api/save_email",
+                    url: "https://storehub.gophersauce.com/api/save_email",
                     type: "POST",
                     data: data,
                     success: () => {
@@ -403,7 +406,7 @@ function BuildStoreHub() {
 
             for (var i = event.images.length - 1; i >= 0; i--) {
                 var image = event.images[i]
-                $(".scrolldiv", content).append(`<img src="https://localhost/file/${image}" />`)
+                $(".scrolldiv", content).append(`<img src="https://storehub.gophersauce.com/file/${image}" />`)
             }
 
             var panel = StoreHubPanel(event.name, content)
@@ -447,21 +450,22 @@ function BuildStoreHub() {
 
         var addButton = () => {
 
-            var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; }.storehub p, .storehub .social , .storehub button, .storehub { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social, .storehub input { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header, .remodal.remodal-is-initialized  {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;-webkit-transition:right 1s;transition:right 1s;z-index:30} .storehub .widget-fixed { position:fixed;top:150px;right:-127px;width:160px !important; } .storehub .widget:hover{right:-2px !important;} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storeub .row {     flex-wrap: initial;margin: 0 !important;display: block; } .storehub .row::after { clear:both;  } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub .row > .float-column { max-width: initial; width:calc(33.33333% - 20px);padding: 10px; } .storehub .row > .double { width:calc(50% - 20px); }  .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid ${theme.buttonBorderColor};margin: 0 0 24px 0;width: 100%;max-width:500px;} .remodal-wrapper.remodal-is-opened { text-align:center; } @media only screen and (max-width: 800px) { .float-column { width:100% !important; }  }`;
+            var userStyles = `.storehub { font-family : ${theme.fontFamily};text-align:left; } .storehub .pill { display: inline-block;border: 1px solid;padding: 9px;margin-bottom: 10px;line-height: 9px; } .storehub p, .storehub .social , .storehub button, .storehub, .storehub .pill { color : ${theme.paragraphColor}; font-size: ${theme.paragraphSize}px; } .storehub button,.storehub .social, .storehub input, .storehub .pill { border-color: ${theme.buttonBorderColor}; border-radius: ${theme.buttonRadius}%;background-color : ${theme.buttonBackgroundColor} } .storehub-panel .header > h2 { color:${theme.headerColor};margin:0;font-size : ${theme.headerSize}px;  } .storehub .social {border:1px solid ${theme.buttonBorderColor};margin:2px;display:inline-block;width:50px;text-align:center;height:42px;font-size:30px;line-height:45px}  .storehub-panel .header, .remodal.remodal-is-initialized  {  background-color:${theme.headerBackgroundColor}; } .storehub-panel .panel { background-color : ${theme.panelBackgroundColor}; } .storehub .widget{line-height:22px;-webkit-transition:right 1s;transition:right 1s;z-index:30} .storehub .widget-fixed { position:fixed;top:150px;right:-127px;width:160px !important; } .storehub .widget:hover{right:-2px !important;} .storehub-panel .list-element { text-decoration:none;display:block;max-width:400px;padding:12px } .storeub .row {     flex-wrap: initial;margin: 0 !important;display: block; } .storehub .row::after { clear:both;  } .storehub .float-column { float:left;max-width : 400px; width:50%; } .storehub .row > .float-column { max-width: initial; width:calc(33.33333% - 20px);padding: 10px; } .storehub .row > .double { width:calc(50% - 20px); }  .storehub iframe{width:100%;border:1px solid #333;margin-top:0;height:270px;margin-top:1.2em;} .storehub .list-element{position:absolute;margin-top:200px;display:block;width:100%;background:#333333b3;color:#fff} .storehub hr {  border: none;border-top: 1px solid ${theme.buttonBorderColor};margin: 0 0 24px 0;width: 100%;max-width:500px;} .remodal-wrapper.remodal-is-opened { text-align:center; } @media only screen and (max-width: 800px) { .float-column { width:100% !important; }  }`;
 
             AddStyle(userStyles);
 
 
-            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://localhost/css/remodal.css" />');
-            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://localhost/css/remodal-default-theme.css" />');
-            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://localhost/css/font-awesome.min.css" />');
-            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://localhost/css/taggd.css" />');
-            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://localhost/css/prettyPhoto.css" />');
-            LoadScript("https://localhost/js/remodal.min.js");
-            LoadScript("https://localhost/js/bs.popover.js");
-            LoadScript("https://localhost/js/jquery.prettyPhoto.js");
+            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/remodal.css" />');
+            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/remodal-default-theme.css" />');
+            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/font-awesome.min.css" />');
+            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/taggd.css" />');
+            $("head").append('<link rel="stylesheet" rel="stylesheet" type="text/css" href="https://storehub.gophersauce.com/css/prettyPhoto.css" />');
+            LoadScript("https://storehub.gophersauce.com/js/remodal.min.js");
+            LoadScript("https://storehub.gophersauce.com/js/bs.popover.js");
 
-            var btn = $('<div class="storehub"><button class="widget widget-fixed" > <img style="float: left;position: relative;left: -5px;" src="https://localhost/img/icon.png" width="25" /> <span>Show locations</span></buttton></div>');
+            LoadScript("https://storehub.gophersauce.com/js/jquery.prettyPhoto.js", LoadElements);
+
+            var btn = $('<div class="storehub"><button class="widget widget-fixed" > <img style="float: left;position: relative;left: -5px;" src="https://storehub.gophersauce.com/img/icon.png" width="25" /> <span>Show locations</span></buttton></div>');
 
             var wishlistBtn = $('<div class="storehub"><button style="font-size:12px;display: block; width: 121px;top: 190px;" class="widget widget-fixed wishlist" > <i style="float: left; position: relative;left: 0px;top: 2px;font-size: 20px;" class="fa fa-plus"/> <span>Show wishlist</span></buttton></div>');
 
@@ -485,7 +489,7 @@ function BuildStoreHub() {
                         var b = $(locationButton)
                         b.css("display", "inline")
                         $("button", btn).removeClass("widget-fixed").appendTo(b)
-      
+
                     }
                 )
 
@@ -495,12 +499,13 @@ function BuildStoreHub() {
                         $("i", wishlistBtn).css("margin-right", "7px")
                         b.css("display", "inline")
                         $("button", wishlistBtn).removeClass("widget-fixed").appendTo(b)
-      
+
                     }
                 )
             }
+        }
 
-
+        function LoadElements() {
             getLocation();
             parseProducts();
             parseImages();
@@ -553,7 +558,7 @@ function BuildStoreHub() {
             } else {
                 wishlistElem.append('<p class="text-center"><i class="fa fa-spin fa-cog"/> Loading</p>')
                 $.ajax({
-                    url: `https://localhost/api/user_products/${wishlist.join(',')}`,
+                    url: `https://storehub.gophersauce.com/api/user_products/${wishlist.join(',')}`,
                     success: (response) => {
                         addWishlistItems(wishlistElem, response);
                     }
@@ -575,7 +580,7 @@ function BuildStoreHub() {
                     .css("padding", "12px");
 
                 if (item.images && item.images.length > 0)
-                    itemElem.append(`<img style="height: 34px; float: left;margin: 12px;margin-bottom:20px;"  src="https://localhost/file/${item.images[0]}" />`)
+                    itemElem.append(`<img style="height: 34px; float: left;margin: 12px;margin-bottom:20px;"  src="https://storehub.gophersauce.com/file/${item.images[0]}" />`)
 
                 itemElem.append($(`<h2>${item.name}</h2>`).css("margin-top", "1px"));
                 var index = Object.keys(item.meta.stores);
@@ -642,7 +647,7 @@ function BuildStoreHub() {
 
         function saveMetric(id, type) {
             $.ajax({
-                url: `https://localhost/api/stat/${id}/${type}`,
+                url: `https://storehub.gophersauce.com/api/stat/${id}/${type}`,
                 success: (response) => {
                     console.log("Metric saved");
                 }
@@ -712,7 +717,7 @@ function BuildStoreHub() {
 
 
             $.ajax({
-                url: `https://localhost/api/user_image/${id}`,
+                url: `https://storehub.gophersauce.com/api/user_image/${id}`,
                 success: (response) => {
                     buildImage(response, tag)
                 }
@@ -721,7 +726,7 @@ function BuildStoreHub() {
 
         function fetchProduct(id, tag) {
             $.ajax({
-                url: `https://localhost/api/user_product/${id}`,
+                url: `https://storehub.gophersauce.com/api/user_product/${id}`,
                 success: (response) => {
                     buildProduct(response, tag)
                 }
@@ -729,7 +734,7 @@ function BuildStoreHub() {
         }
 
         function buildImage(image, tag) {
-            var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;height:initial;"> <div class="image-tag-wrapper enabled"><img src="https://localhost/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
+            var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;height:initial;"> <div class="image-tag-wrapper enabled"><img src="https://storehub.gophersauce.com/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
 
             saveMetric(image._id, 0);
 
@@ -755,7 +760,7 @@ function BuildStoreHub() {
 
 
                     $.ajax({
-                        url: `https://localhost/api/user_product/${p._id}`,
+                        url: `https://storehub.gophersauce.com/api/user_product/${p._id}`,
                         success: (response) => {
                             productCache[id] = Object.assign(p, response);
                         }
@@ -844,42 +849,42 @@ function BuildStoreHub() {
             if (!data)
                 return;
 
-            var product = $(`<div><h2 style="font-size:${theme.headerSize}px">${data.name}</h2> <hr> <div class="float-column scrolldiv" style="margin-right:25px; width:calc(50% - 25px)"> </div><div class="float-column two"> <p style="line-height: 22px;"> </p></div><div style="clear:both"></div></div>`);
+            var product = $(`<div><h2 style="font-size:${theme.headerSize}px;margin-bottom:5px;">${data.name}</h2><div class="tags"></div> <hr> <div class="slideshow scrolldiv" style="height:auto;"> </div><div class="two"> <p style="line-height: 22px;"> </p></div><div style="clear:both"></div></div>`),
+                columnSelector = ".two";
 
             tag.html("");
             saveMetric(data._id, 0);
 
+
             for (var i = data.images.length - 1; i >= 0; i--) {
                 var image = data.images[i];
-                $(".float-column.scrolldiv", product).append(`<img src="https://localhost/file/${image}" />`);
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`;
+                $(".slideshow", product).append(`<a rel="prettyPhoto[${data._id}]" href="${imagePath}"><img height="60" style="margin-right:5px;" src="${imagePath}" /></a>`);
             }
 
             if (data.price)
-                $(".float-column.two", product).append(` <strong>Price</strong> / $ ${data.price.toFixed(2)} <br>`)
+                $(columnSelector, product).append(` <strong>Price</strong> / $ ${data.price.toFixed(2)} <br>`)
 
 
             if (data.sku)
-                $(".float-column.two", product).append(` <strong>SKU</strong> / ${data.sku} <br>`)
+                $(columnSelector, product).append(` <strong>SKU</strong> / ${data.sku} <br>`)
 
             if (data.category)
-                $(".float-column.two", product).append(` <strong>Category</strong> / ${data.category} <br>`)
-
-
-
+                $(".tags", product).append(` <span class="pill" >${data.category}</span>`)
 
             if (data.sub_category)
-                $(".float-column.two", product).append(` <strong>Sub category</strong> / ${data.sub_category} <br>`)
+                $(".tags", product).append(` <span class="pill">${data.sub_category}</span>`)
 
             if (data.description) {
                 data.description = data.description.replace("\n", "<br/>");
 
-                $(".float-column.two", product).append(` <strong>Description</strong> / ${data.description.substring(0, 200)} <span style="display:none;" class="add-desc">${data.description.substring(200, 2000)}</span><br>`)
+                $(columnSelector, product).append(` <strong>Description</strong> / ${data.description.substring(0, 200)} <span style="display:none;" class="add-desc">${data.description.substring(200, 2000)}</span><br>`)
 
                 if (data.description.length > 200) {
 
 
 
-                    $(".float-column.two", product).append($('<a class="expander">View more</a>')
+                    $(columnSelector, product).append($('<a class="expander">View more</a>')
                         .click((e) => {
 
                             e.preventDefault();
@@ -897,9 +902,9 @@ function BuildStoreHub() {
                 }
             }
 
-            $(".float-column.two", product).append(`<p class="storehub" style="margin:0;"><button class="add-wishlist">+Wishlist</button></p>`)
+            $(columnSelector, product).append(`<p class="storehub" style="margin:0;"><button class="add-wishlist">+Wishlist</button></p>`)
 
-            $(".float-column.two", product).css("line-height", theme.paragraphSize + 4 + "px")
+            $(columnSelector, product).css("line-height", theme.paragraphSize + 4 + "px")
 
             if (wishlist.indexOf(data._id) != -1) {
                 $(".add-wishlist", product).html("Remove from wishlist");
@@ -925,6 +930,10 @@ function BuildStoreHub() {
                 }, 600, btn, data._id)
 
             });
+
+
+            $(`a[rel='prettyPhoto[${data._id}]']`, product).prettyPhoto()
+
         }
 
         function getLocation() {
@@ -942,9 +951,9 @@ function BuildStoreHub() {
 
         function savePosition(p) {
             position = p.coords;
-            if(!storehubData.w.hideButtons)
+            if (!storehubData.w.hideButtons)
                 $(".storehub .widget").css('display', 'block');
-            LoadScript("https://localhost/js/jquery.visible.js", checkVisibility)
+            LoadScript("https://storehub.gophersauce.com/js/jquery.visible.js", checkVisibility)
 
             checkEvents();
         }
