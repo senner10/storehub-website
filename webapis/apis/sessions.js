@@ -5,12 +5,20 @@ var router = express.Router();
 var User = require("../db/models/user");
 var configd = require("configd");
 const JWTKey = configd.JWTKey;
-var mail = require('mail').Mail({
+const sha256 = require("sha256");
+const nodemailer = require('nodemailer');
+
+
+// create reusable transporter object using the default SMTP transport
+let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    username: configd.SMTPUsername,
-    password: configd.SMTPPassword,
-    port: 587
+    port: 587,
+    auth: {
+        user: configd.SMTPUsername,
+        pass: configd.SMTPPassword
+    }
 });
+
 var stripe = require("stripe")(
     configd.stripeSecret
 );
@@ -81,7 +89,7 @@ router.get('/delete_account', (req, res) => {
 router.post('/reset_password', (req, res) => {
     var new_password = randomstring.generate(6);
 
-    User.findOneAndUpdate({ email: req.body.email }, { $set: { password: new_password } }).exec(function(err, bear) {
+    User.findOneAndUpdate({ email: req.body.email }, { $set: { password: sha256(new_password) } }).exec(function(err, bear) {
         if (err)
             res.status(401).send(err);
         else if (!bear) res.status(401).json({ error: "Invalid account." });
@@ -93,20 +101,21 @@ Your new password is '${new_password}'. We highly recommend updating your passwo
 
 StoreHub`;
 
-            mail.message({
-                    from: configd.SMTPUsername,
-                    to: [bear.email],
-                    subject: 'StoreHub password reset.'
-                })
-                .body(message)
-                .send(function(err) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send(err);
-                        return;
-                    }
-                    res.status(200).json({});
-                });
+            var email = {
+                from: configd.SMTPUsername,
+                to: bear.email,
+                subject: 'StoreHub password reset.',
+                text: message
+            }
+
+            transporter.sendMail(email, function(err) {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send(err);
+                    return;
+                }
+                res.status(200).json({});
+            });
 
         }
     });

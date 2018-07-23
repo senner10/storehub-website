@@ -46,7 +46,7 @@ app.controller('authenticator', [
             Ape.Request("POST",
                 "/api/join", {
                     email: $scope.data.email,
-                    password: sha256($scope.data.password).toUpperCase(),
+                    password: sha256($scope.data.password),
                     name: $scope.data.name,
                     plan_id : $scope.data.plan_id
                 }, (data) => {
@@ -69,7 +69,7 @@ app.controller('authenticator', [
             Ape.Request("POST",
                 "/api/login", {
                     email: $scope.data.email,
-                    password: sha256($scope.data.password).toUpperCase()
+                    password: sha256($scope.data.password)
                 }, (data) => {
                     if (!data) {
 
