@@ -83,7 +83,7 @@ app.controller('layerController', [
                 content: `<p>${tip.text}<br>${index + 1}/${length}</p><p><button class="btn btn-sm" type="button" onclick="exitTutorial()">Quit</button> <button type="button" style="display:${tip.hide ? 'none' : 'initial'}" class="btn btn-sm" onclick="nextTip()">Next</button></p>`,
                 viewport: "body",
                 title: tip.title,
-                trigger : "manual"
+                trigger: "manual"
             };
 
             var target = $(`[data-help="${index}"]`);
@@ -272,7 +272,7 @@ app.controller('layerController', [
                 }
             }
             if (found == 0) {
-          
+
                 targ.append(`<p class="text-center remove">No results found for query <strong>${query}</strong> </p>`);
             }
         }
@@ -480,7 +480,7 @@ app.controller('layerController', [
                 },
                 end: (response, res) => {
                     if (response.error && !response.error.includes("app") && res.status == 401) {
-                        if(!$scope.sessionExpired){
+                        if (!$scope.sessionExpired) {
                             $scope.sessionExpired = true;
                             alert("Your session expired, please login again.")
                         }
@@ -488,8 +488,11 @@ app.controller('layerController', [
                     }
 
                     if (response.error && response.error.includes("app") && res.status == 401) {
-                        swal("App not installed", "The app you are trying to use is not installed", "warning")
-                        window.location = "#/apps";
+                        if (window.location.href.split("#")[1] != "/") {
+                            swal("App not installed", "The app you are trying to use is not installed", "warning")
+                            window.location = "#/apps";
+                        }
+
                     }
                 }
             });
