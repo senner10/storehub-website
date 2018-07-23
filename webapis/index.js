@@ -15,7 +15,7 @@ const analyticsApi = require("./apis/analytics")
 const externalApi = require("./apis/external_api")
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-var session = require('express-session')
+var configd = require("configd")
 
 // Certificate
 const privateKey = fs.readFileSync('./server.key', 'utf8');
@@ -37,12 +37,19 @@ const allowCrossDomain = function(req, res, next) {
     next();
 };
 
-app.use(session({
-    secret: 'keyboard cat',
+
+var sessionMiddleware = new(require('express-session'))({
+    secret: configd.SessionKey,
     resave: false,
-    saveUninitialized: true
-    //cookie: { secure: true }
-}))
+    saveUninitialized: true,
+    cookie: { maxAge: 84600 * 1000 },
+    store: new(require('express-sessions'))({
+        storage: 'mongodb',
+        instance: mongoose
+    })
+})
+
+app.use(sessionMiddleware)
 
 
 // Serve static website

@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
-const JWTKey = "shhh";
+
+const configd =require("configd");
+const JWTKey = configd.JWTKey;
+
 const NoAccess = { "error": "unauthorized request." };
 
 

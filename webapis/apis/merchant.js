@@ -3,9 +3,10 @@ var router = express.Router()
 const Client = require('node-rest-client').Client;
 var restClient = new Client();
 var user = require("../db/models/user")
+var configd = require("configd")
 
 var stripe = require("stripe")(
-    ""
+    configd.stripeSecret
 );
 
 
@@ -25,13 +26,19 @@ router.post("/save_card", (req, res) => {
             res.redirect("/admin.html?error=Error saving card, please try again.")
         } else {
 
-            user.findOneAndUpdate({ _id: req.session.userid }, { $set: { customer_id: customer.id } }, (err) => {
-                if (err) {
+            Subscribe(customer.id, req.session.plan, (planid) => {
+                if(!planid){
                     res.redirect("/admin.html?error=Error saving card, please try again.")
                     return;
                 }
-                res.redirect("/admin.html?success=Success, your information is saved!")
-            })
+                user.findOneAndUpdate({ _id: req.session.userid }, { $set: { customer_id: customer.id, sub_id: planid } }, (err) => {
+                    if (err) {
+                        res.redirect("/admin.html?error=Error saving card, please try again.")
+                        return;
+                    }
+                    res.redirect("/admin.html?success=Success, your information is saved.")
+                })
+            });
 
         }
 
@@ -223,8 +230,8 @@ function initSubscribe(customer, plan, res) {
             return;
         }
 
-        user.findOneAndUpdate({customer_id : customer }, { $set : { sub_id : planid } } , (err) => {
-            if (err){
+        user.findOneAndUpdate({ customer_id: customer }, { $set: { sub_id: planid } }, (err) => {
+            if (err) {
                 res.status(500).send(err)
                 return;
             }

@@ -1,17 +1,18 @@
 const express = require('express')
 const jwt = require('jsonwebtoken');
-const JWTKey = "shhh";
 const randomstring = require("randomstring");
 var router = express.Router();
 var User = require("../db/models/user");
+var configd = require("configd");
+const JWTKey = configd.JWTKey;
 var mail = require('mail').Mail({
     host: 'smtp.gmail.com',
-    username: '',
-    password: '',
+    username: configd.SMTPUsername,
+    password: configd.SMTPPassword,
     port: 587
 });
 var stripe = require("stripe")(
-    ""
+    configd.stripeSecret
 );
 
 
@@ -151,7 +152,7 @@ var GenerateToken = (bear, sess, res) => {
     var token = jwt.sign({
         userid: bear._id,
     }, JWTKey, {
-        expiresIn: '100 days',
+        expiresIn: '2 days',
     });
     sess.userid = bear._id;
     sess.token = token;
