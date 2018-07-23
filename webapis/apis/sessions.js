@@ -94,7 +94,7 @@ Your new password is '${new_password}'. We highly recommend updating your passwo
 StoreHub`;
 
             mail.message({
-                    from: '',
+                    from: configd.SMTPUsername,
                     to: [bear.email],
                     subject: 'StoreHub password reset.'
                 })
