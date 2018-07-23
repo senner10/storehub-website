@@ -246,12 +246,14 @@ app.controller('layerController', [
         $scope.matchResults = () => {
             var targ = $(".search-auto");
 
+
             $(".remove", targ).remove();
             var found = 0;
+            var query = $scope.search.toLowerCase();
             for (var i = $scope.dbCache.length - 1; i >= 0; i--) {
                 var item = $scope.dbCache[i];
                 var selector = `[data-key="${item._id}"]`;
-                var query = $scope.search.toLowerCase();
+
                 if (item.name)
                     item.name = item.name.toLowerCase();
                 else item.name = "";
