@@ -88,7 +88,7 @@ app.use('/api/res',
 var appRedirector = express();
 
 appRedirector.use((req, res, next) => {
-    res.status(301).redirect(`https://storehub.gophersauce.com${req.originalUrl}`)
+    res.status(301).redirect(`https://getstorehub.com${req.originalUrl}`)
 })
 
 const httpServer = http.createServer(appRedirector);
