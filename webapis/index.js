@@ -1,5 +1,4 @@
 const express = require('express')
-const app = express()
 const https = require('https');
 const http = require('http');
 const port = process.env.PORT ? process.env.PORT : "443";
@@ -16,6 +15,7 @@ const externalApi = require("./apis/external_api")
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 var configd = require("configd")
+const Page404 = `${__dirname}/html/404.html`
 
 // Certificate
 const privateKey = fs.readFileSync('./server.key', 'utf8');
@@ -49,6 +49,8 @@ var sessionMiddleware = new(require('express-session'))({
     })
 })
 
+var app = express()
+
 app.use(sessionMiddleware)
 
 
@@ -59,8 +61,6 @@ app.use(
     express.static('../public'),
     fileViewer
 );
-
-
 
 app.use(bodyParser.urlencoded({
     limit: "20mb",
@@ -84,6 +84,11 @@ app.use('/api/res',
     merchantApi,
     analyticsApi
 );
+
+app.use(function (req, res, next) {
+  res.status(404).sendFile(Page404)
+})
+
 
 var appRedirector = express();
 

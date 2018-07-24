@@ -11,7 +11,9 @@ app.controller('events', [
                     data.end_date = data.end_date ? new Date(data.end_date) : new Date();
                     $scope.item = data;
                 } else {
-                    //redirect to 404
+                    // show 404 error
+                    $scope.resourceNotFound();
+                    $scope.back();
                 }
             });
 
@@ -19,8 +21,6 @@ app.controller('events', [
             (data) => {
                 if (data) {
                     $scope.locations = data;
-                } else {
-                    //redirect to 404
                 }
             });
 

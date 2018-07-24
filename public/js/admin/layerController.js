@@ -27,6 +27,7 @@ app.controller('layerController', [
         $scope.getTutorial = () => {
             return $scope.tutorial;
         }
+
         window.getTutorial = $scope.getTutorial;
 
         $scope.startTutorial = (tutorial) => {
@@ -98,6 +99,10 @@ app.controller('layerController', [
 
             $scope.tutorial.current++;
 
+        }
+
+        $scope.resourceNotFound = () => {
+            swal("404", "specified resource was not found.", "warning");
         }
 
 

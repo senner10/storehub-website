@@ -26,7 +26,7 @@ app.controller('locations', [
             $scope.item.images.push(data._id);
             $scope.update('locations', $scope.item._id, $scope.item);
 
-           
+
             $scope.$apply();
         }
 
@@ -81,7 +81,9 @@ app.controller('locations', [
                         })
                     })
                 } else {
-                    //redirect to 404
+                    // show 404 error
+                    $scope.resourceNotFound();
+                    $scope.back();
                 }
             });
 
@@ -113,11 +115,11 @@ app.controller('locations', [
 
             if (!$scope.item.meta.hours) {
                 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-               
-               $scope.item.meta.hours = [];
-               for (var i = 0; i < daysOfWeek.length; i++) {
+
+                $scope.item.meta.hours = [];
+                for (var i = 0; i < daysOfWeek.length; i++) {
                     var day = daysOfWeek[i];
-                    var entry = {day : day,open : true };
+                    var entry = { day: day, open: true };
 
                     $scope.item.meta.hours.push(entry);
                 }

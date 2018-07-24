@@ -138,7 +138,9 @@ app.controller('images', [
                     if (!$scope.item.meta) $scope.item.meta = { items: {}, index: [] };
                     $scope.prepareImage();
                 } else {
-                    //redirect to 404
+                    // show 404 error
+                    $scope.resourceNotFound();
+                    $scope.back();
                 }
             });
 

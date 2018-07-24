@@ -9,7 +9,9 @@ app.controller('products', [
                 if (data) {
                     $scope.item = data;
                 } else {
-                    //redirect to 404
+                    // show 404 error
+                    $scope.resourceNotFound();
+                    $scope.back();
                 }
             });
 
@@ -48,9 +50,7 @@ app.controller('products', [
             (data) => {
                 if (data) {
                     $scope.locations = data;
-                } else {
-                    //redirect to 404
-                }
+                } 
             });
 
         $scope.Do("GET", "products", {},

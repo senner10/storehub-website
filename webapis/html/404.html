@@ -3,23 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login ::: StoreHub</title>
+    <title>Page not found</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/theme-gunmetal.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/css/pace.css">
-    <script type="text/javascript" data-pace-options='{"document":true,"eventLag":true,"restartOnPushState":true,"restartOnRequestAfter":true,"ajax":{"trackMethods":["POST","GET"]}}' src="/js/pace.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript" src="/js/admin/app.js"></script>
-    <script type="text/javascript" src="/js/admin/authenticator.js"></script>
-    <script type="text/javascript" src="/js/sha256.js"></script>
-
 </head>
 
 <body ng-app="app">
@@ -62,27 +52,10 @@
     <div class="main-container" style="min-height: 350px;margin-top: 1em;" ng-controller="authenticator">
         <section>
             <div class="container">
-                <form ng-submit="login()">
-                    <h1>Login</h1>
-                    <p>enter your login information below to access your admin panel.</p>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <input type="text" ng-model="data.email" class="validate-required field-error" placeholder="Email">
-                            <label class="field-help">The email you joined StoreHub with,</label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input ng-model="data.password" type="password" class="validate-required field-error" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <button class="abutton" type="submit">Login</button>
-                        </div>
-                        <div class="col-sm-8"><a href="/join.html">Join StoreHub</a>
-                            <br/> <a href="/reset.html">Reset password</a></div>
-                    </div>
-                </form>
+                <h1>Page not found.</h1>
+                <hr>
+                <p>The page requested was not found.</p>
+                <a href="/" class="btn">HOME</a>
             </div>
         </section>
     </div>
@@ -96,8 +69,8 @@
                 </div>
                 <div class="col-sm-4 text-center">
                     <span class="fade-half">
-								© Copyright 2018 StoreHub - All Rights Reserved
-							</span>
+                                © Copyright 2018 StoreHub - All Rights Reserved
+                            </span>
                 </div>
             </div>
         </div>

@@ -9,7 +9,9 @@ app.controller('websites', [
                 if (data) {
                     $scope.item = data;
                 } else {
-                    //redirect to 404
+                    // show 404 error
+                    $scope.resourceNotFound();
+                    $scope.back();
                 }
             });
 
