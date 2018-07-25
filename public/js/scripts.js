@@ -34,7 +34,7 @@ function LoadForms() {
             name = $("<input type='text' required placeholder='Full name' name='name' />"),
             email = $("<input type='email' required placeholder='Email address' name='email' />"),
             accountType = $(`<label>Account type</label><select name="plan_id"><option>${types}</option></select>`),
-            passwordActual = $("<input type='hidden' required name='passwword' />"),
+            passwordActual = $("<input type='hidden' required name='password' />"),
             passwordInput = $("<input type='password' required style='display:none;' placeholder='Password'  />"),
             signin = $("<a href='/login.html' />");
 
@@ -53,34 +53,33 @@ function LoadForms() {
 
 
         target.append(f)
-        email.change(function(e) {
+        email.change({ passwordInput }, function(e) {
             if ($(e.target).val().length != 0) {
-                passwordInput.css('display', 'block')
+                e.data.passwordInput.css('display', 'block')
             }
             return false;
         });
 
-        passwordInput.change(function(e){
-            var val = $(e.target).val();
-            passwordActual.val(sha256(val));
-
+        passwordInput.keyup({ passwordActual }, function(e) {
+            var val = sha256($(e.target).val());
+            e.data.passwordActual.val(val);
             return false;
         })
 
         var options = {
-            success : function(){
+            success: function() {
 
-                setTimeout(function(){
+                setTimeout(function() {
                     window.location = "/admin.html";
                 }, 5000)
                 swal("Joined!", "Redirecting you to the administrative panel in 5 seconds...", "success");
             },
-            error : function(){
+            error: function() {
                 swal("Error", "Error creating account, your email is in use.", "error");
             }
         }
 
-         f.ajaxForm(options); 
+        f.ajaxForm(options);
 
 
     });
@@ -98,7 +97,7 @@ $(document).ready(function() {
             LoadScript("/js/sha256.js");
         }
 
-        if(!window.swal){
+        if (!window.swal) {
             LoadScript("/js/sweet-alert.js");
         }
 
