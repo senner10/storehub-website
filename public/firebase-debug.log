@@ -1,0 +1,35 @@
+[debug] [2018-07-24T13:12:51.651Z] ----------------------------------------------------------------------
+[debug] [2018-07-24T13:12:51.655Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\student\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase deploy
+[debug] [2018-07-24T13:12:51.655Z] CLI Version:   3.19.3
+[debug] [2018-07-24T13:12:51.655Z] Platform:      win32
+[debug] [2018-07-24T13:12:51.655Z] Node Version:  v8.9.3
+[debug] [2018-07-24T13:12:51.656Z] Time:          Tue Jul 24 2018 09:12:51 GMT-0400 (Eastern Daylight Time)
+[debug] [2018-07-24T13:12:51.656Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-24T13:12:51.699Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-24T13:12:51.700Z] > authorizing via signed-in user
+[debug] [2018-07-24T13:12:51.703Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-07-24T13:12:51.704Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/sY9nslcCSM5r_ySGpBkKPCqXup7IsX_C5NZEko0eVpCWfkmoj2CdI2iJjRsjmIHT',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue Jul 24 2018 09:12:51 GMT-0400 (Eastern Daylight Time)
+[debug] [2018-07-24T13:12:52.053Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-24T13:12:52.072Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/storehub-website  
+  
+ Tue Jul 24 2018 09:12:52 GMT-0400 (Eastern Daylight Time)
+[debug] [2018-07-24T13:12:52.546Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-24T13:12:52.549Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/storehub-website/tokens  
+  
+ Tue Jul 24 2018 09:12:52 GMT-0400 (Eastern Daylight Time)
+[debug] [2018-07-24T13:12:53.102Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'storehub-website'...
+[info] 
+[info] i  deploying hosting
+[info] i  hosting: preparing public directory for upload...
+[debug] [2018-07-24T13:12:59.015Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/storehub-website/uploads/-LIBQ1Z5NhWG6R59nmNQ?fileCount=501&message=  
+  
+ Tue Jul 24 2018 09:12:59 GMT-0400 (Eastern Daylight Time)
