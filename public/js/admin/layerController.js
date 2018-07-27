@@ -480,7 +480,7 @@ app.controller('layerController', [
             $scope.name = data.name;
             $scope.id = data.id;
             Ape.Init({
-                base: "/api/res/",
+                base: "https://storehub.gophersauce.com/api/res",
                 headers: {},
                 start: () => {
 

@@ -20,7 +20,7 @@
     <div class="list-group">
         <div class="list-group-item col-lg-3" ng-if="item.name.includes(getSearchText())" ng-repeat="item in items">
             <div ng-if="resName == 'product' && item.images && item.images.length > 0" class="text-center list-image">
-                <img src="/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
+                <img src="https://storehub.gophersauce.com/file/{{ item.images[0] }}" style="height:100%;max-width: initial;">
             </div>
             <div>
                 <input ng-if="$index != 0" type="checkbox" class="full-checkbox" ng-change="nextTip()" ng-model="selectMap[item._id]">
