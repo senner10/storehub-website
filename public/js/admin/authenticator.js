@@ -3,6 +3,17 @@ app.controller('authenticator', [
     'Ape',
     function($scope, Ape) {
 
+        Ape.Init({
+            base: "https://apiserver.storehub.com",
+            headers: {},
+            start: () => {
+
+            },
+            end: () => {
+
+            }
+        })
+
         $scope.Do = (method, url, data, cb) => {
             Ape.Request(method, url, data, cb);
         }
@@ -48,9 +59,9 @@ app.controller('authenticator', [
                     email: $scope.data.email,
                     password: sha256($scope.data.password),
                     name: $scope.data.name,
-                    plan_id : $scope.data.plan_id
+                    plan_id: $scope.data.plan_id
                 }, (data) => {
-                  
+
                     if (!data) {
 
                         swal({

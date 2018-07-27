@@ -48,11 +48,16 @@ function LoadForms() {
         f.append(passwordInput)
 
 
-        f.append("<button class='btn'>Join</button><br>")
-        f.append(signin.html("Already have an account? Login"))
+        f.append("<button class='btn'>Join</button><br />")
+        f.append(
+            signin
+            .html("Already have an account? Login")
+            .css("display", "block")
+        )
 
 
         target.append(f)
+        
         email.change({ passwordInput }, function(e) {
             if ($(e.target).val().length != 0) {
                 e.data.passwordInput.css('display', 'block')

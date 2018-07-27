@@ -76,6 +76,7 @@ app.use('/api',
 );
 
 app.use('/api/res',
+    allowCrossDomain,
     CRUDapi,
     fileApi,
     emailExporter,
