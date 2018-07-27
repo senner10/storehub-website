@@ -1,0 +1,125 @@
+<div class="row" ng-if="theme">
+    <button ng-click="saveTheme()" ng-disabled="working" class="btn btn-sm abutton">Save</button>
+    <button ng-click="getColorSettings();modal('preview-modal')" class="btn btn-sm abutton"><i class="glyphicon glyphicon-eye"></i> Preview</button>
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="themeTabs" role="tablist">
+            <li role="presentation" class="active"><a href="#tstyles" aria-controls="tstyles" role="tab" data-toggle="tab">Text style</a></li>
+            <li role="presentation"><a href="#tcolors" aria-controls="tcolors" role="tab" data-toggle="tab">Text colors</a></li>
+            <li role="presentation"><a href="#ccolors" aria-controls="ccolors" role="tab" data-toggle="tab">Component colors</a></li>
+            <li role="presentation"><a href="#bstyles" aria-controls="bstyles" role="tab" data-toggle="tab">Button styles</a></li>
+            <li role="presentation"><a href="#pstyles" aria-controls="pstyles" role="tab" data-toggle="tab">Popup styles</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="tstyles">
+                <div class="col-md-6">
+                    <div id="fontAutoComplete">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.fontFamily" placeholder="Font family">
+                        <span class="field-help">Font family, leave empty to use your website's font settings.</span>
+                    </div>
+                    <input type="number" ng-model="theme.headerSize" placeholder="Header font size">
+                    <span class="field-help">Header font size (in pixels)</span>
+                    <input type="number" ng-model="theme.paragraphSize" placeholder="Paragraph font size">
+                    <span class="field-help">Paragraph font size (in pixels)</span>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tcolors">
+                <div class="col-md-6">
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.headerColor" placeholder="Header text color">
+                        <span class="field-help">Header text color</span>
+                    </div>
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.paragraphColor" placeholder="Component text color">
+                        <span class="field-help">Component text color</span>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="pstyles">
+                <div class="col-md-6">
+                    <label>{{ theme.popupRadius }}%</label>
+                    <input type="range" step="1" min="0" max="50" ng-model="theme.popupRadius">
+                    <span class="field-help">Panel border radius</span>
+
+                      <input type="number" ng-model="theme.popupPadding" placeholder="Popup padding">
+                    <span class="field-help">Popup padding (in pixeks)</span>
+
+                      <input type="number" ng-model="theme.popupWidth" placeholder="Popup width">
+                    <span class="field-help">Popup width (in pixels)</span>
+
+                      <input type="number" ng-model="theme.popupHeight" placeholder="Popup height">
+                    <span class="field-help">Popup height (in pixels)</span>
+
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="bstyles">
+                <div class="col-md-6">
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.buttonBackgroundColor" placeholder="Button background color">
+                        <span class="field-help">Background color</span>
+                    </div>
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.buttonBorderColor" placeholder="Border color">
+                        <span class="field-help">Border color</span>
+                    </div>
+                    <label>{{ theme.buttonRadius }}%</label>
+                    <input type="range" step="1" min="0" max="50" ng-model="theme.buttonRadius">
+                    <span class="field-help">Button border radius</span>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="ccolors">
+                <div class="col-md-6">
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.headerBackgroundColor" placeholder="Header background color">
+                        <span class="field-help">Header background color</span>
+                    </div>
+                    <div class="colorTarget">
+                        <span class="preview">&nbsp;</span>
+                        <input type="text" ng-model="theme.panelBackgroundColor" placeholder="Panel background color">
+                        <span class="field-help">Panel background color</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="preview-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Preview</h4>
+            </div>
+            <div class="modal-body" style="font-family:{{ theme.fontFamily  }} !important;">
+                <label>Button</label>
+                <div class="storehub">
+                    <button style="color:{{ theme.paragraphColor }};background-color:{{ theme.buttonBackgroundColor }};font-size: {{ theme.paragraphSize }}px;border-color:{{ theme.buttonBorderColor }};border-radius: {{ theme.buttonRadius}}%"> +Wishlist</button>
+                </div>
+                <label>Panel</label>
+                <div class="storehub-panel" style="border-radius:{{ theme.popupRadius }};padding:{{  theme.popupPadding }}px;background-color: {{ theme.headerBackgroundColor }}">
+                    <div style="background-color: {{ theme.headerBackgroundColor }}" class="header">
+                        <h2 style="color:{{ theme.headerColor }};font-size:{{ theme.headerSize }}px;font-family:{{ theme.fontFamily  }} !important;">Header</h2></div>
+                    <div class="panel" style="background-color: {{ theme.panelBackgroundColor }}">
+                        <p style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px">Sample text</p>
+                        <div class="storehub">
+                            <input type="text" placeholder="Text prompt" style="color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border:1px solid {{ theme.paragraphColor }};background-color: #fff;">
+                            <br>
+                            <button style="border-color:{{ theme.buttonBorderColor }};background-color: {{ theme.buttonBackgroundColor }};color:{{ theme.paragraphColor }};font-size: {{ theme.paragraphSize }}px;border-radius: {{ theme.buttonRadius}}%">Call to action</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- initialize color pickers -->

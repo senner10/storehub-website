@@ -1,0 +1,78 @@
+<div ng-if="item" class="col-sm-6">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#/list/apis">Websites</a></li>
+        <li class="active"> {{ item.name }}</li>
+    </ol>
+    <div class="row">
+        <button class="abutton col-xs-2" ng-click="back()">Back</button>
+        <button class="abutton col-xs-2" ng-click="update('apis', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" ng-click="delete('apis', item._id)">Delete</button>
+    </div>
+    <hr>
+    <input type="text" placeholder="Name" ng-model="item.name">
+    <span class="field-help">Displayed website name</span>
+    <br/>
+    <button ng-click="modal('origin-modal')" class="btn">Manage allowed domain names.</button>
+
+    <hr>
+    <input type="checkbox" ng-model="item.hideButtons"> Hide sidebar buttons
+    <div ng-if="item.hideButtons">
+        <p><i class="glyphicon glyphicon-bell"></i> In order to use StoreHub, you must add these snippets to your website :</p>
+        <label>Location display button</label>
+        <pre>
+            <code>
+&lt;div class="storehub" data-type="locations-button"&gt; lt;/div&gt;
+            </code>
+        </pre>
+        <label>Wishlist button</label>
+        <pre>
+            <code>
+&lt;div class="storehub" data-type="wishlist-button"&gt;&lt;/div&gt;
+            </code>
+        </pre>
+    </div>
+</div>
+<div ng-if="item" class="col-sm-6">
+    <label>API Key</label>
+    <pre><code>{{ item._id }}</code></pre>
+    <label>API Secret</label>
+    <pre><code>{{ item.secret }}</code></pre>
+    <label>Website snippet</label>
+    <pre data-help="2"><code>
+&lt;script&gt;
+    var storeToken = "{{ item._id }},{{ item.secret }}"
+&lt;/script&gt;
+&lt;script src="https://storehub.gophersauce.com/js/snippet.js" defer type="text/javascript"&gt;&lt;/script&gt;
+    </code></pre>
+    <!-- Modal -->
+    <div class="modal fade" id="origin-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Manage allowed domain names</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <input type="text" placeholder="Hostname, ie: example.com" ng-model="data.hostname" name="">
+                        </div>
+                        <div class="col-sm-2">
+                            <button ng-click="addOrigin()" ng-disabled="!data.hostname" class="col-md-12 btn btn-default">Add</button>
+                        </div>
+                    </div>
+                    <div class="list-group" style="margin: 10px ">
+                        <div ng-repeat="org in item.origins.hosts" class="list-group-item">
+                            <button class="pull-right btn " ng-click="removeOrigin(org)">Remove</button>
+                            <h4>{{ org }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

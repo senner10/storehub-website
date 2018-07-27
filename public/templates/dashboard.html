@@ -1,0 +1,60 @@
+<h3 ng-if="currentapp == 'n'">Dashboard</h3>
+<hr ng-if="currentapp == 'n'">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-success" style="min-height: 450px;">
+            <div class="panel-heading">
+                <div class="pull-right">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <button type="button" ng-if="currentapp != 'n'" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Displayed Data <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            <li ng-repeat="item in displayedItems">
+                                <input ng-change="buildChart()" type="checkbox" ng-model="item.show"> {{ item.name }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            Start :
+                            <input type="date" ng-model="filter.start" placeholder="Start date" style=" height: 40px;"> End :
+                            <input type="date" ng-model="filter.end" style=" height: 40px; " placeholder="End date">
+                            <p>
+                                <button class="btn">Search</button>
+                            </p>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select app <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" style="margin-top:-1.5em;padding:10px;">
+                            <li ng-repeat="app in apps" ng-if="appStat[app]">
+                                <button ng-click="setApp(app)" style="margin-bottom: 2px;" class="btn-block  btn btn-sm">{{ appStat[app].name }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <h3 class="panel-title">{{ appStat[currentapp].name }}</h3>
+            </div>
+            <div class="panel-body">
+                <p class="text-center" style="padding-top:22px;"><b>Click on the button above to display customer statistics.</b></p>
+            </div>
+            <div  ng-if="showList">
+            <div  ng-repeat="label in chartData.labels track by $index">
+                <a href="#/" style="display: block;margin:1em;" ng-click="toggle(label)"><i class="glyphicon" ng-class="{'glyphicon-chevron-down' : !toggleMap[label], 'glyphicon-chevron-up' : toggleMap[label] }"></i> {{ label }}</a>
+
+                <div class="list-group " ng-if="toggleMap[label]">
+                    <div class="list-group-item" ng-repeat="set in chartData.datasets">
+                        <h4>{{ set.label }}</h4>
+                        <hr>
+                        <p><strong>Value </strong> {{ getValueForDate(label ,$index) }}</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="col-md-7">
+	<form ng-submit="sendMessage()">
+	<h3>Help</h3>
+	<p>Fill out the form below to get help with your project.</p>
+	<hr/>
+	<label>Subject</label>
+	<select ng-model="help.subject">
+		<option value="">Select a subject</option>
+		<option>Storehub isn't working with my website.</option>
+		<option>I want to setup Geomarketing.</option>
+		<option>I want to sell with StoreHub.</option>
+		<option>I want to import my ecommerce products.</option>
+		<option>Other</option>
+	</select>
+
+	<label>Message</label>
+	<textarea placeholder="TYPE HERE" style="min-height: 200px;" ng-model="help.message"></textarea>
+
+	<button type="submit" class="btn"> <i class="glyphicon glyphicon-send"></i> Send </button>
+	</form>
+</div>

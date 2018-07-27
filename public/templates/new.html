@@ -1,0 +1,10 @@
+<div class="col-md-8" style="margin-top:4em">
+	
+<h3>Create a new {{ resName == "api" ? "Website" : resName  }}</h3>
+	<hr>
+	<form ng-submit="create()">
+	<input required data-help="0" type="text" class="validate-required field-error" ng-model="data.name" placeholder="{{ resName == 'api' ? 'Website' : resName  }} Name">
+	<button class="abutton btn" data-help="1" type="submit">Add</button>
+	</form>
+
+</div>

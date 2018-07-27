@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin panel ::: StoreHub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/themify-icons.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/theme-gunmetal.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/custom.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/jQuery.menuUI.css" media="all">
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400%7CRaleway:100,400,300,500,600,700%7COpen+Sans:400,500,600' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/css/taggd.css">
+    <link rel="stylesheet" type="text/css" href="/css/colorpicker.css">
+    <link rel="stylesheet" type="text/css" href="/css/easy-autocomplete.css">
+    <link rel="stylesheet" type="text/css" href="/css/pace.css">
+    <script type="text/javascript" data-pace-options='{"document":true,"eventLag":true,"restartOnPushState":true,"restartOnRequestAfter":true,"ajax":{"trackMethods":["POST","GET","PUT","DELETE"]}}' src="/js/pace.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+    <script src="/js/sweet-alert.js"></script>
+    <script type="text/javascript" src="/js/admin/app.js"></script>
+    <script type="text/javascript" src="/js/admin/guides.js"></script>
+    <script type="text/javascript" src="/js/admin/layerController.js"></script>
+    <script type="text/javascript" src="/js/admin/router.js"></script>
+    <script type="text/javascript" src="/js/admin/itemControllers.js"></script>
+    <script type="text/javascript" src="/js/admin/dashboard.js"></script>
+    <script type="text/javascript" src="/js/admin/locations.js"></script>
+    <script type="text/javascript" src="/js/admin/products.js"></script>
+    <script type="text/javascript" src="/js/admin/websites.js"></script>
+    <script type="text/javascript" src="/js/admin/events.js"></script>
+    <script type="text/javascript" src="/js/admin/images.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLgmwUaIeLVE6XBhaTo6LVBXZFG3CtLcE&libraries=geometry,places"></script>
+    <script type="text/javascript" src="/js/admin/settings.js"></script>
+</head>
+
+<body ng-app="app">
+    <style type="text/css">
+    .navbar.navbar-default.navbar-fixed-top {
+        display: none;
+    }
+
+    .list-group-item.col-lg-3 {
+        margin: 13px;
+    }
+
+    .popover {
+        width: 250px;
+    }
+
+    .full-checkbox {
+        float: left;
+        height: 65px;
+        position: relative;
+        left: -5px;
+    }
+
+    .list-group-item {
+        line-height: 1px;
+        padding-bottom: 20px;
+    }
+
+    .breadcrumb {
+        position: fixed;
+        top: 55px;
+        left: 32px;
+        width: 100%;
+        background: #fff;
+        z-index: 10;
+        border-bottom: 1px #ededed solid;
+    }
+
+    .dropdown-menu.forAnimate {
+        font-size: 13px;
+        color: #333;
+    }
+
+    #menuUI .navbar-header {
+        display: none;
+    }
+
+    input {
+        background: #ededed !important;
+    }
+    </style>
+    <div ng-controller="layerController">
+        <div class="nav-container">
+            <nav>
+                <div class="nav-bar">
+                    <div class="module left">
+                        <a href="index.html">
+                            <div class="vnu"><img class="logo logo-light" alt="Foundry" src="img/logo-light.png"></div>
+                            <div class="vnu"><img class="logo logo-dark" alt="Foundry" src="img/logo-dark.png"></div>
+                        </a>
+                    </div>
+                    <div class="module widget-handle mobile-toggle right visible-sm visible-xs">
+                        <i class="ti-menu"></i>
+                    </div>
+                    <div class="module-group right">
+                        <div class="module left">
+                            <ul class="menu">
+                                <li class="vpf">
+                                    Welcome back {{ name }}
+                                </li>
+                                <li class="vpf easy-autocomplete search-parent">
+                                    <input ng-focus="showAutoComplete()" ng-change="findResults()" type="text" id="main-search" style="background: #ededed;height: 35px;width: 240px;" ng-model="search" class="validate-required field-error" placeholder="Search">
+                                    <div class="poptarget" style="position: relative;top:-10px;" data-toggle="popover" data-trigger="manual" data-placement="bottom" title="<a class='text-right' href='javascript:closeSearch();'>&times close</a>" data-html="true" data-content="<div class='search-auto list-group'><p class='remove text-center'>Start typing to show suggestions</p></div>"></div>
+                                </li>
+                                <li class="vpf search-parent">
+                                    <a data-toggle="popover" title="<a class='text-right' style='display:block;' href='javascript:clearAlerts();'>&times clear</a>" data-html="true" class="alerts" data-content="<script>LoadAlerts()</script><div class='user-alerts'></div>" data-placement="bottom">Alerts <span ng-if="toolbarAlerts.length > 0" style="position: relative;top: -1px;line-height: 11px;font-size: 11px;padding-bottom: 6px;background: red;text-align: center;padding-left: 8px;" class="badge">{{ toolbarAlerts.length }}</span> </a>
+                                </li>
+                                <li> <a data-toggle="popover" data-html="true" title="Account" class="account" data-content="<script>LoadUser();</script><div class='user-controls'></div>" data-placement="bottom"><i class="glyphicon glyphicon-user"></i></a> </li>
+                                <li>
+                                    <a ng-click="modal('help-modal')">Guides</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Modal -->
+            <div class="modal fade" id="account-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Manage account</h4>
+                        </div>
+                        <div class="modal-body">
+                            <label>Update payment information</label>
+                            <form action="/api/res/save_card" method="POST">
+                              <script
+                                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                data-key="pk_live_mvNLrIlkZ9h4pA7VMBwzwENl"
+                                data-name="Storehub"
+                                data-description="Subscription"
+                                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                data-locale="auto"
+                                data-label="Subscribe"
+                                data-panel-label="Subscribe"
+                                data-zip-code="true">
+                              </script>
+                            </form>
+                            <h3>Delete account</h3>
+                            <p class="field-help">By deleting your account you will permanently lose your data on StoreHub</p>
+                            <button ng-click="deleteAccount()" class="field-help btn btn-danger btn-block">Delete </button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Guides</h4>
+                        </div>
+                        <div ng-if="tutorial" class="modal-body">
+                            <h2>You have an ongoing tutorial</h2>
+                            <hr>
+                            <p>Complete it or quit it to start another one.</p>
+                        </div>
+                        <div ng-if="!tutorial" class="modal-body">
+                            <hr>
+                            <p>Here is a set of interactive Storehub guides.</p>
+                            <div ng-repeat="tutorial in itutorials">
+                                <a ng-click="startTutorial(tutorial)">{{ tutorial.name }}</a>
+                                <br/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Update password</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form ng-submit="updatePassword()">
+                                <input type="password" ng-model="password.password" placeholder="Current password">
+                                <input type="password" ng-model="password.new_password" placeholder="New password">
+                                <button class="btn" type="submit">Update</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal modal-xl fade" id="file-upload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">File upload</h4>
+                        </div>
+                        <div class="modal-body" style="height: 300px;">
+                            <div style="       text-align: center;
+                                                background-color: #ededed;
+                                                height: 282px;
+                                                padding-top: 80px;
+                                                position: absolute;
+                                                left: 0px;
+                                                color:#666;">
+                                <h1>Drag files onto here to upload.</h1>
+                            </div>
+                            <input type="file" style="width: 100%;
+                            height: 290px;
+                            padding-left: 35%;
+                            padding-top: 5px;
+                            background: none !important;
+                            position: absolute;left:0px;" required multiple onchange="handleFiles(this.files)">
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-disabled="working" type="button" class="btn btn-default pull-left" style="margin-bottom: 1px;" ng-click="upload()">Upload</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav id="menuUI"></nav>
+        <div class="main container-fluid">
+            <div class="alerList">
+                <div ng-repeat="alert in alerts track by $index" style="margin-top:2.8em;" class="alert alert-default alert-dismissible fade in">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4>{{ alert.name }}</h4>
+                    <hr>
+                    <p>{{ alert.description }} </p>
+                    <p>
+                        <button type="button" ng-if="alert.link && alert.link.length != 0" onclick="window.location='{{ alert.link }}'" class="btn">Open</button>
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12" ng-if="ready" ng-view>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <div id="alert-template" class="alert alert-info alert-dismissible fade in" role="alert">
+            <h5></h5>
+            <p class="description"> </p>
+            <p>
+                <a type="button" href="" class="btn">Open</a>
+            </p>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script type="text/javascript" src="/js/sha256.js"></script>
+    <script type="text/javascript" src="/js/colorpicker.js"></script>
+    <script type="text/javascript" src="/js/taggd.js"></script>
+    <script type="text/javascript" src="/js/easy-autocomplete.js"></script>
+    <script src="/js/maplace.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/smooth-scroll.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/jQuery.menuUI.min.js"></script>
+    <script type="text/javascript" src="js/admin/navigation.js"></script>
+</body>
+
+</html>

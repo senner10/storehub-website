@@ -1,0 +1,148 @@
+<div ng-if="item" class="col-sm-6">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#/list/locations">Locations</a></li>
+        <li class="active"> {{ item.name }}</li>
+    </ol>
+    <div class="row">
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="back()">Back</button>
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="update('locations', item._id, item)">Update</button>
+        <button class="abutton col-xs-2 btn btn-sm"  ng-click="delete('locations', item._id)">Delete</button>
+    </div>
+    <hr>
+    <input type="text" placeholder="Name" ng-model="item.name">
+    <span class="field-help">Displayed location name</span>
+
+    <input data-help="2" type="text" placeholder="Address" id="location-address" ng-model="item.address">
+    <br/>
+    <div ng-if="!item.location">
+        <p>To set location based targetting, please use the field above to set an address.</p>
+    </div>
+    <div ng-if="item.location">
+        <label>Proximity detection</label>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" ng-model="item.useFence" />
+                <label>GeoFence</label>
+            </div>
+        </div>
+        <p ng-if="!item.useFence">
+            <input type="number" data-help="3" ng-model="item.range" min="0" placeholder="Range in miles">
+            <span class="field-help">Maximum number of miles your customer should be prior to alert.</span>
+        </p>
+        <p ng-if="item.useFence">
+            <button ng-click="initMap();modal('fence-modal')" class="abutton btn">Edit GeoFence</button>
+        </p>
+    </div>
+    <button class="abutton btn col-md-12" ng-click="modal('perk-modal')">Manage store perks</button>
+    <label class="field-help">Specify the amenities offered by this location.</label>
+</div>
+<div ng-if="item" class="col-sm-6">
+    <label>Images</label>
+    <br />
+    <button ng-click="uploadFile(addImage)" data-help="4" class="abutton btn col-md-12">Upload images</button>
+    <br>
+      <button class="btn abutton col-md-12" data-help="5" ng-click="verifyHoursArray();modal('hour-modal')"> Manage hours</button>
+    <div ng-if="item.images.length > 0">
+        <label>Manage images</label>
+        <div class="scrollmenu">
+            <div class="block" ng-repeat="image in item.images">
+            <img src="/file/{{ image }}" style="max-height: 100px;max-width: initial;width:120px;"/><br/>
+            <button ng-click="removeImage(image, removeImage)">Remove</button>
+            </div>
+        </div>
+        <div style="height:120px;"></div>
+    </div>
+    <br/>
+    <label>Social profiles</label>
+    <input type="text" ng-model="item.meta.facebook" placeholder="Facebook page URL">
+    <input type="text" ng-model="item.meta.twitter" placeholder="Twitter profile URL">
+    <input type="text" ng-model="item.meta.pinterest" placeholder="Pinterest URL">
+    <label>Contact information</label>
+    <input type="text" ng-model="item.meta.phone" placeholder="Phone number">
+    <input type="text" ng-model="item.meta.email" placeholder="Email address">
+  
+</div>
+<!-- modals -->
+<!-- Modal -->
+<div class="modal fade" id="perk-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="width:100% !important;" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Manage store perks</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <input type="text" placeholder="Perk name" ng-model="perkbase.name" name="">
+                    </div>
+                    <div class="col-sm-2">
+                        <button ng-click="addPerk()" class="col-md-12 btn btn-default">Add</button>
+                    </div>
+                </div>
+                <div class="list-group" style="margin: 10px ">
+                    <div ng-repeat="perk in item.meta.perks" class="list-group-item">
+                        <button class="pull-right btn " ng-click="removePerk(perk)">Remove</button>
+                        <h4>{{ perk }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal  fade" id="fence-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Geofence</h4>
+            </div>
+            <div class="modal-body">
+                <div style="height:400px;background:#ededed;border-radius:20px;" class="mapl">
+                    <div style="height:100%" id="gmap-polygon"></div>
+                    <div id="controls-polygon"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal  fade" id="hour-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Location hours</h4>
+            </div>
+            <div class="modal-body">
+               <div class="list-group">
+                   <div ng-repeat="day in item.meta.hours" class="list-group-item">
+                     <h3 class="pull-left">{{ day.day }}</h3>
+                       <div class="row pull-right" style="max-width: 320px;">
+                           <div class="col-xs-6">
+                               <input type="text" ng-model="day.open_time" placeholder="Open time">
+                           </div>
+                            <div class="col-xs-6">
+                                <input type="text" ng-model="day.close_time" placeholder="Close time">
+                            </div>
+                       </div>
+                     
+
+                       <p style="clear:both;"> <input type="checkbox" ng-model="day.open" >Open</p>
+                   </div>
+               </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

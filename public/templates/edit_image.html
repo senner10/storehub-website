@@ -1,0 +1,113 @@
+<div ng-if="item" class="col-sm-8 image-viewer">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#/list/images" data-help="5">Images</a></li>
+        <li class="active"> {{ item.name }}</li>
+    </ol>
+    <div class="row">
+        <button class="abutton col-xs-2" ng-click="back()">Back</button>
+        <button class="abutton col-xs-2" data-help="4" ng-click="update('images', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" ng-click="delete('images', item._id)">Delete</button>
+    </div>
+    <hr>
+    <input type="text" placeholder="Name" ng-model="item.name">
+    <span class="field-help">Displayed image name</span>
+    <br>
+    <label>Image</label>
+    <br />
+    <button class="abutton btn" data-help="2" ng-click="uploadFile(addImage)">Upload image</button>
+    <button class="abutton btn sticky-panel-toggle" ng-click="togglePanel()">Edit tags</button>
+    <div data-help="3"></div>
+    <div style="padding-top: 1.0em;" ng-if="item.meta.image" class="text-center">
+        <div class="scrollmenu " style="text-align:left;overflow-y: auto;max-height:1000px;">
+            <p>Click on the image below to tag an item to it.</p>
+            <img class="tag-image" id="tag-image" src="/file/{{ item.meta.image }}" style="max-width:  initial;" width="500">
+            <div style="display:none">
+                <div id="imageForm">
+                    <button class="btn" type="button" onclick="addProduct(this)">Select item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="item && !showitems && item.meta.index.length >  0" ng-class="{'force-display': panelOpen}" class="col-sm-4 sticky-panel">
+    <button class="abutton btn sticky-panel-toggle" ng-click="togglePanel()">Close</button>
+    <label>Items in image</label>
+    <div class="list-group">
+        <div ng-repeat="product in item.meta.index track by $index" class="list-group-item">
+            <h6>{{ item.meta.items[product].name }}</h6>
+            <a ng-click="toggleSettings(product)" ng-if="!toggleMap[product]">Show settings</a>
+            <a ng-click="toggleSettings(product)" ng-if="toggleMap[product]">Hide settings</a>
+            <div ng-if="toggleMap[product ]" style="margin-top: 1.2em;">
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <input type="number" ng-change="updateSize(product)" ng-model="item.meta.items[product].size" max="80" placeholder="Size (In pixels)">
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="text" ng-model="item.meta.items[product].cta" placeholder="Call to action">
+                    </div>
+                    <div class="col-lg-12">
+                        <input type="text" ng-model="item.meta.items[product].url" placeholder="URL">
+                    </div>
+                    <div class="col-md-12">
+                        <textarea ng-model="item.meta.items[product].comment" placeholder="Comments"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <button class=" btn btn-sm abutton" ng-click="editColors(product)">Edit tag</button>
+                        <br>
+                        <button class=" btn btn-sm abutton" ng-click="preview(product)">Toggle preview</button>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 1.2em;">
+                <button class=" btn btn-sm abutton" ng-click="pulse(product)">Pulse</button>
+                <button class=" btn btn-sm abutton" ng-click="removeProduct(product)">REMOVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="item && showitems" class="col-sm-4 force-display sticky-panel">
+    <button class="btn btn-sm btn-block" ng-click="hideitems()">CANCEL</button>
+    <input type="text" ng-model="filterName" placeholder="Filter products by name">
+    <div class="text-center" ng-if="items.length == 0">
+        <h6>You currently have no products listed.</h6>
+        <hr>
+        <a href="#/new/products" class="btn">New</a>
+    </div>
+    <div class="list-group">
+        <div class="list-group-item" ng-if="( !filterName || product.name.contains(filterName) ) && !item.meta.items[product._id]" ng-repeat="product in items">
+            <button ng-click="selectProduct(product)" class="pull-right btn">SELECT</button>
+            <h6>{{ product.name }}</h6>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="tag-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="width:100% !important;" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Update tag settings</h4>
+            </div>
+            <div class="modal-body">
+                <div class="colorTarget">
+                    <span class="preview">&nbsp;</span>
+                    <input type="text" ng-model="imageTag.backgroundColor" placeholder="Background color">
+                    <span class="field-help">Background color of tagged image</span>
+                </div>
+                <div class="colorTarget">
+                    <span class="preview">&nbsp;</span>
+                    <input type="text" ng-model="imageTag.textColor" placeholder="Text color">
+                    <span class="field-help">Font color of tag text</span>
+                </div>
+                <input type="text" placeholder="Text" ng-model="imageTag.text">
+                <span class="field-help">Text inside tag.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="margin:0;" class="btn btn-default" ng-click="saveTagStyle()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

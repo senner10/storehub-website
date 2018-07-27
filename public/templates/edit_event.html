@@ -1,0 +1,72 @@
+<div ng-if="item" class="col-sm-6">
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="#/list/events" >Events</a></li>
+        <li class="active"> {{ item.name }}</li>
+    </ol>
+    <div class="row">
+        <button class="abutton col-xs-2" ng-click="back()">Back</button>
+        <button class="abutton col-xs-2" data-help="7" ng-click="update('events', item._id, item)">Update</button>
+        <button class="abutton col-xs-2" ng-click="delete('events', item._id)">Delete</button>
+         <a class="abutton col-xs-2 " data-help="8" href="/api/res/export_emails/{{ item._id }}/{{item.name}}" style="width:120px;" >export emails</a>
+    </div>
+    <input type="text" placeholder="Name" ng-model="item.name">
+    <span class="field-help">Displayed event name</span>
+    <input data-help="2" type="date" ng-model="item.start_date">
+    <span class="field-help">Start date of event</span>
+    <input data-help="3" type="date" ng-model="item.end_date">
+    <span class="field-help">End date of event</span>
+    <br>
+    <input type="checkbox" ng-model="item.rsvp"> <label>Guests must RSVP prior to event.</label>
+</div>
+<div ng-if="item" class="col-sm-6">
+    <label>Images</label>
+    <br />
+    <button data-help="4" ng-click="uploadFile(addImage)" class="abutton btn col-md-12">Upload images</button>
+    <br>
+    <div ng-if="item.images.length > 0">
+        <label>Manage images</label>
+        <div class="scrollmenu">
+            <div class="block" ng-repeat="image in item.images">
+                <img src="/file/{{ image }}" style="max-height: 100px;max-width: initial;width:120px;" />
+                <br/>
+                <button ng-click="removeImage(image, removeImage)">Remove</button>
+            </div>
+        </div>
+        <div style="height:120px;"></div>
+    </div>
+    <br/>
+     <button ng-click="modal('store-modal')" data-help="6" class="btn">Set location availability</button>
+    <br/>
+    <label>Description</label>
+    <textarea data-help="5" style="height: 200px;" placeholder="TYPE HERE" ng-model="item.description"></textarea>
+    <div class="modal  fade" id="store-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Location availability</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>Locations</h5>
+                    <hr>
+                    <div class="text-center" ng-if="locations.length == 0">
+                        <h6>You currently have no locations listed.</h6>
+                        <hr>
+                        <a href="#/new/locations" class="btn">New</a>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-group-item" ng-repeat="location in locations">
+                            <button class="btn pull-right" ng-if="!item.meta || !item.meta.stores[location._id]" ng-click="addStore(location)">Add</button>
+                            <button class="btn pull-right" ng-if="item.meta && item.meta.stores[location._id]" ng-click="removeStore(location)">Remove</button>
+                            <h4>{{ location.name }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
