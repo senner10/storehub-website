@@ -4,7 +4,7 @@ app.controller('authenticator', [
     function($scope, Ape) {
 
         Ape.Init({
-            base: "https://apiserver.storehub.com",
+            base: "https://storehub.gophersauce.com",
             headers: {},
             start: () => {
 

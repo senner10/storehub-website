@@ -46,7 +46,7 @@ function BuildStoreHub() {
         AddStyle(baseStyles);
 
         $.ajax({
-            url: "https://apiserver.getstorehub.com/api/get_locations",
+            url: "https://storehub.gophersauce.com/api/get_locations",
             headers: { "token": storeToken },
             contentType: "application/json",
             success: (response) => {
@@ -60,7 +60,7 @@ function BuildStoreHub() {
         var parse = (response) => {
             storehubData = response;
             $.ajax({
-                url: `https://apiserver.getstorehub.com/api/user_theme/${storehubData.w.owner}`,
+                url: `https://storehub.gophersauce.com/api/user_theme/${storehubData.w.owner}`,
                 contentType: "application/json",
                 success: (response) => {
                     theme = response.theme;
@@ -169,7 +169,7 @@ function BuildStoreHub() {
 
             for (var i = location.images.length - 1; i >= 0; i--) {
                 var image = location.images[i]
-                var imagePath = `https://apiserver.getstorehub.com/file/${image}`;
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`;
                 $(".scrolldiv", content).append(`<a rel="prettyPhoto" href="${imagePath}" ><img height="60" style="margin-right:5px;" src="${imagePath}"/></a>`)
             }
 
@@ -298,7 +298,7 @@ function BuildStoreHub() {
 
         var checkEvents = () => {
             $.ajax({
-                url: `https://apiserver.getstorehub.com/api/user_events/${storehubData.w.owner}`,
+                url: `https://storehub.gophersauce.com/api/user_events/${storehubData.w.owner}`,
                 contentType: "application/json",
                 success: (response) => {
                     parseEvents(response);
@@ -384,7 +384,7 @@ function BuildStoreHub() {
                 removeLoader();
                 content.append("<p class='loader'><i class='fa fa-spin fa-cog'></i> One moment... </p>")
                 $.ajax({
-                    url: "https://apiserver.getstorehub.com/api/save_email",
+                    url: "https://storehub.gophersauce.com/api/save_email",
                     type: "POST",
                     data: data,
                     success: () => {
@@ -406,7 +406,7 @@ function BuildStoreHub() {
 
             for (var i = event.images.length - 1; i >= 0; i--) {
                 var image = event.images[i]
-                var imagePath = `https://apiserver.getstorehub.com/file/${image}`
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`
                 $(".scrolldiv", content).append(`<a rel="prettyPhoto" href="${imagePath}" ><img height="80" style="margin-right:5px" src="${imagePath}" /></a>`)
             }
 
@@ -561,7 +561,7 @@ function BuildStoreHub() {
             } else {
                 wishlistElem.append('<p class="text-center"><i class="fa fa-spin fa-cog"/> Loading</p>')
                 $.ajax({
-                    url: `https://apiserver.getstorehub.com/api/user_products/${wishlist.join(',')}`,
+                    url: `https://storehub.gophersauce.com/api/user_products/${wishlist.join(',')}`,
                     success: (response) => {
                         addWishlistItems(wishlistElem, response);
                     }
@@ -583,7 +583,7 @@ function BuildStoreHub() {
                     .css("padding", "12px");
 
                 if (item.images && item.images.length > 0)
-                    itemElem.append(`<img style="height: 34px; float: left;margin: 12px;margin-bottom:20px;"  src="https://apiserver.getstorehub.com/file/${item.images[0]}" />`)
+                    itemElem.append(`<img style="height: 34px; float: left;margin: 12px;margin-bottom:20px;"  src="https://storehub.gophersauce.com/file/${item.images[0]}" />`)
 
                 itemElem.append($(`<h2>${item.name}</h2>`).css("margin-top", "1px"));
                 var index = Object.keys(item.meta.stores);
@@ -650,7 +650,7 @@ function BuildStoreHub() {
 
         function saveMetric(id, type) {
             $.ajax({
-                url: `https://apiserver.getstorehub.com/api/stat/${id}/${type}`,
+                url: `https://storehub.gophersauce.com/api/stat/${id}/${type}`,
                 success: (response) => {
                     console.log("Metric saved");
                 }
@@ -720,7 +720,7 @@ function BuildStoreHub() {
 
 
             $.ajax({
-                url: `https://apiserver.getstorehub.com/api/user_image/${id}`,
+                url: `https://storehub.gophersauce.com/api/user_image/${id}`,
                 success: (response) => {
                     buildImage(response, tag)
                 }
@@ -729,7 +729,7 @@ function BuildStoreHub() {
 
         function fetchProduct(id, tag) {
             $.ajax({
-                url: `https://apiserver.getstorehub.com/api/user_product/${id}`,
+                url: `https://storehub.gophersauce.com/api/user_product/${id}`,
                 success: (response) => {
                     buildProduct(response, tag)
                 }
@@ -737,7 +737,7 @@ function BuildStoreHub() {
         }
 
         function buildImage(image, tag) {
-            var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;height:initial;"> <div class="image-tag-wrapper enabled"><img src="https://apiserver.getstorehub.com/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
+            var wrapper = $(`<div class="scrolldiv storehub" style="text-align:left;overflow-y: auto;max-height:1000px;height:initial;"> <div class="image-tag-wrapper enabled"><img src="https://storehub.gophersauce.com/file/${image.meta.image}" style="max-width:  initial;" width="500"></div></div><hr>`);
 
             saveMetric(image._id, 0);
 
@@ -763,7 +763,7 @@ function BuildStoreHub() {
 
 
                     $.ajax({
-                        url: `https://apiserver.getstorehub.com/api/user_product/${p._id}`,
+                        url: `https://storehub.gophersauce.com/api/user_product/${p._id}`,
                         success: (response) => {
                             productCache[id] = Object.assign(p, response);
                         }
@@ -861,7 +861,7 @@ function BuildStoreHub() {
 
             for (var i = data.images.length - 1; i >= 0; i--) {
                 var image = data.images[i];
-                var imagePath = `https://apiserver.getstorehub.com/file/${image}`;
+                var imagePath = `https://storehub.gophersauce.com/file/${image}`;
                 $(".slideshow", product).append(`<a rel="prettyPhoto[${data._id}]" href="${imagePath}"><img height="60" style="margin-right:5px;" src="${imagePath}" /></a>`);
             }
 
